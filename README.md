@@ -1,0 +1,1 @@
+A command line implementation of the classic game, for two players.
