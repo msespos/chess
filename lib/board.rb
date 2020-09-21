@@ -8,14 +8,10 @@ class Board
 
   # build a board with opening setup
   def board
-    @board = []
-    @board.push(%i[WR WN WB WQ WK WB WN WR])
-    @board.push(%i[WP WP WP WP WP WP WP WP])
-    @board.push([nil, nil, nil, nil, nil, nil, nil, nil])
-    @board.push([nil, nil, nil, nil, nil, nil, nil, nil])
-    @board.push([nil, nil, nil, nil, nil, nil, nil, nil])
-    @board.push([nil, nil, nil, nil, nil, nil, nil, nil])
-    @board.push(%i[BP BP BP BP BP BP BP BP])
-    @board.push(%i[BR BN BB BK BQ BB BN BR])
+    @board = Array.new(8) { Array.new(8) { nil } }
+    @board[0] = %i[WR WN WB WQ WK WB WN WR]
+    @board[1] = %i[WP WP WP WP WP WP WP WP]
+    @board[6] = %i[BP BP BP BP BP BP BP BP]
+    @board[7] = %i[BR BN BB BK BQ BB BN BR]
   end
 end
