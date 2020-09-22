@@ -25,12 +25,12 @@ RSpec.describe Board do
         expect(board.instance_variable_get(:@board).size).to eq(8)
       end
 
-      it 'generates a board with :WR in a1' do
-        expect(board.instance_variable_get(:@board)[0][0]).to eq(:WR)
+      it 'generates a board with WR in a1' do
+        expect(board.instance_variable_get(:@board)[0][0]).to eq(" \u2656".encode('utf-8'))
       end
 
-      it 'generates a board with :BR in h8' do
-        expect(board.instance_variable_get(:@board)[7][7]).to eq(:BR)
+      it 'generates a board with BR in h8' do
+        expect(board.instance_variable_get(:@board)[7][7]).to eq(" \u265C".encode('utf-8'))
       end
 
       it 'generates a board with nil in a4' do
@@ -39,19 +39,6 @@ RSpec.describe Board do
 
       it 'generates a board with nil in c5' do
         expect(board.instance_variable_get(:@board)[4][2]).to eq(nil)
-      end
-
-      it 'generates the full board' do
-        expect(board.instance_variable_get(:@board)).to eq(
-          [%i[WR WN WB WQ WK WB WN WR],
-           %i[WP WP WP WP WP WP WP WP],
-           [nil, nil, nil, nil, nil, nil, nil, nil],
-           [nil, nil, nil, nil, nil, nil, nil, nil],
-           [nil, nil, nil, nil, nil, nil, nil, nil],
-           [nil, nil, nil, nil, nil, nil, nil, nil],
-           %i[BP BP BP BP BP BP BP BP],
-           %i[BR BN BB BK BQ BB BN BR]]
-        )
       end
     end
   end
