@@ -25,12 +25,20 @@ RSpec.describe Board do
         expect(board.instance_variable_get(:@board)[0].size).to eq(10)
       end
 
-      it 'generates a board with WR in a1' do
+      it 'generates a board with a white rook in a1' do
         expect(board.instance_variable_get(:@board)[3][1]).to eq(" \u2656".encode('utf-8'))
       end
 
-      it 'generates a board with BR in h8' do
+      it 'generates a board with a black rook in h8' do
         expect(board.instance_variable_get(:@board)[10][8]).to eq(" \u265C".encode('utf-8'))
+      end
+
+      it 'generates a board with a white knight in c1' do
+        expect(board.instance_variable_get(:@board)[3][2]).to eq(" \u2658".encode('utf-8'))
+      end
+
+      it 'generates a board with a black pawn in g7' do
+        expect(board.instance_variable_get(:@board)[9][7]).to eq(" \u265F".encode('utf-8'))
       end
 
       it 'generates a board with " -" in a4' do
