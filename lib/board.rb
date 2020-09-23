@@ -69,4 +69,8 @@ class Board
     end
     string
   end
+
+  def on_board?(coordinates)
+    coordinates[0] > 2 && coordinates[0] < 11 && coordinates[1].positive? && coordinates[1] < 9
+  end
 end
