@@ -25,11 +25,25 @@ class Board
   # build a board with opening setup
   def opening_board
     @board = Array.new(12) { Array.new(10) { EMPTY_SQUARE } }
-    @board[0] = Array.new(10) { BLANK_SPOT }
-    @board[1] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
-    @board[2] = Array.new(10) { BLANK_SPOT }
+    opening_board_piece_lines
+    opening_board_letter_lines
+    opening_board_number_columns
+    opening_board_blank_lines
+  end
+
+  def opening_board_piece_lines
     @board[3] = [' 1  ', W_ROOK, W_KNIGHT, W_BISHOP, W_QUEEN, W_KING, W_BISHOP, W_KNIGHT, W_ROOK, '   1']
     @board[4] = [' 2  ', W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, W_PAWN, '   2']
+    @board[9] = [' 7  ', B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, '   7']
+    @board[10] = [' 8  ', B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK, '   8']
+  end
+
+  def opening_board_letter_lines
+    @board[1] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
+    @board[12] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
+  end
+
+  def opening_board_number_columns
     @board[5][0] = ' 3  '
     @board[5][9] = '   3'
     @board[6][0] = ' 4  '
@@ -38,10 +52,12 @@ class Board
     @board[7][9] = '   5'
     @board[8][0] = ' 6  '
     @board[8][9] = '   6'
-    @board[9] = [' 7  ', B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, B_PAWN, '   7']
-    @board[10] = [' 8  ', B_ROOK, B_KNIGHT, B_BISHOP, B_QUEEN, B_KING, B_BISHOP, B_KNIGHT, B_ROOK, '   8']
+  end
+
+  def opening_board_blank_lines
+    @board[0] = Array.new(10) { BLANK_SPOT }
+    @board[2] = Array.new(10) { BLANK_SPOT }
     @board[11] = Array.new(10) { BLANK_SPOT }
-    @board[12] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
     @board[13] = Array.new(10) { BLANK_SPOT }
   end
 
