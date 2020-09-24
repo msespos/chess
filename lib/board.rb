@@ -61,6 +61,12 @@ class Board
     string
   end
 
+  def translate_coordinates(coordinates)
+    coordinates[0] += 3
+    coordinates[1] += 1
+    coordinates
+  end
+
   def on_board?(coordinates)
     coordinates[0] > 2 && coordinates[0] < 11 && coordinates[1].positive? && coordinates[1] < 9
   end
