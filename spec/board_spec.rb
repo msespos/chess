@@ -50,7 +50,6 @@ RSpec.describe Board do
       end
     end
   end
-<<<<<<< HEAD
 
   describe '#to_s' do
     context 'at the beginning of the game' do
@@ -104,8 +103,6 @@ RSpec.describe Board do
       end
     end
   end
-=======
->>>>>>> parent of 3a28d00... Add tests for Board#on_board?
 end
 
 # rubocop:enable Metrics/BlockLength
