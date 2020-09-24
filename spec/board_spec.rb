@@ -51,7 +51,30 @@ RSpec.describe Board do
     end
   end
 
-  describe 'on_board?' do
+  describe '#to_s' do
+    context 'at the beginning of the game' do
+      it 'displays the opening board setup correctly' do
+        expect { puts(board) }.to output(<<-BOARD).to_stdout
+
+     a b c d e f g h
+
+ 8   ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜   8
+ 7   ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟   7
+ 6   - - - - - - - -   6
+ 5   - - - - - - - -   5
+ 4   - - - - - - - -   4
+ 3   - - - - - - - -   3
+ 2   ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙   2
+ 1   ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖   1
+
+     a b c d e f g h
+
+        BOARD
+      end
+    end
+  end
+
+  describe '#on_board?' do
     context 'when [0, 0] is passed' do
       it 'returns false' do
         is_on_board = board.on_board?([0, 0])
