@@ -24,11 +24,11 @@ class Board
 
   # build a board with opening setup
   def opening_board
-    @board = Array.new(12) { Array.new(10) { EMPTY_SQUARE } }
+    @board = Array.new(14) { Array.new(10) { nil } }
     opening_board_piece_lines
     opening_board_letter_lines
+    opening_board_empty_squares
     opening_board_number_columns
-    opening_board_blank_lines
   end
 
   def opening_board_piece_lines
@@ -39,26 +39,17 @@ class Board
   end
 
   def opening_board_letter_lines
-    @board[1] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
-    @board[12] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', BLANK_SPOT]
+    @board[1] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', nil]
+    @board[12] = [BLANK_SPOT, '   a', ' b', ' c', ' d', ' e', ' f', ' g', ' h', nil]
+  end
+
+  def opening_board_empty_squares
+    (5..8).each { |row| @board[row] = Array.new(10) { EMPTY_SQUARE } }
   end
 
   def opening_board_number_columns
-    @board[5][0] = ' 3  '
-    @board[5][9] = '   3'
-    @board[6][0] = ' 4  '
-    @board[6][9] = '   4'
-    @board[7][0] = ' 5  '
-    @board[7][9] = '   5'
-    @board[8][0] = ' 6  '
-    @board[8][9] = '   6'
-  end
-
-  def opening_board_blank_lines
-    @board[0] = Array.new(10) { BLANK_SPOT }
-    @board[2] = Array.new(10) { BLANK_SPOT }
-    @board[11] = Array.new(10) { BLANK_SPOT }
-    @board[13] = Array.new(10) { BLANK_SPOT }
+    (5..8).each { |row| @board[row][0] = ' ' + (row - 2).to_s + '  ' }
+    (5..8).each { |row| @board[row][9] = '   ' + (row - 2).to_s }
   end
 
   def to_s
@@ -68,9 +59,5 @@ class Board
       string += "\n"
     end
     string
-  end
-
-  def on_board?(coordinates)
-    coordinates[0] > 2 && coordinates[0] < 11 && coordinates[1].positive? && coordinates[1] < 9
   end
 end
