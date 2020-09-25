@@ -4,8 +4,8 @@
 class Game
   def initialize
     @board = Board.new
-    @playing_field = Array.new(8) { Array.new(8) { nil } }
     create_pieces
+    opening_playing_field
   end
 
   def create_pieces
@@ -36,7 +36,7 @@ class Game
     @w_queen = Queen.new(:white)
     @w_king = King.new(:white)
   end
-  
+
   def black_pawns
     @b_pawn_a = Pawn.new(:black)
     @b_pawn_b = Pawn.new(:black)
@@ -57,5 +57,17 @@ class Game
     @b_rook_h = Rook.new(:black)
     @b_queen = Queen.new(:black)
     @b_king = King.new(:black)
+  end
+
+  def opening_playing_field
+    @playing_field = Array.new(8) { Array.new(8) { nil } }
+    @playing_field[0] = [@w_rook_a, @w_knight_b, @w_bishop_c, @w_queen,
+                         @w_king, @w_bishop_f, @w_knight_g, @w_rook_h]
+    @playing_field[1] = [@w_pawn_a, @w_pawn_b, @w_pawn_c, @w_pawn_d,
+                         @w_pawn_e, @w_pawn_f, @w_pawn_g, @w_pawn_h]
+    @playing_field[6] = [@b_pawn_a, @b_pawn_b, @b_pawn_c, @b_pawn_d,
+                         @b_pawn_e, @b_pawn_f, @b_pawn_g, @b_pawn_h]
+    @playing_field[7] = [@b_rook_a, @b_knight_b, @b_bishop_c, @b_queen,
+                         @b_king, @b_bishop_f, @b_knight_g, @b_rook_h]
   end
 end
