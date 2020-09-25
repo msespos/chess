@@ -77,8 +77,8 @@ RSpec.describe Board do
   describe '#on_board?' do
     context 'when [0, 0] is passed' do
       it 'returns false' do
-        is_on_board = board.on_board?([0, 0])
-        expect(is_on_board).to eq(false)
+        is_not_on_board = board.on_board?([0, 0])
+        expect(is_not_on_board).to eq(false)
       end
     end
 
@@ -91,8 +91,8 @@ RSpec.describe Board do
 
     context 'when [11, 9] is passed' do
       it 'returns false' do
-        is_on_board = board.on_board?([11, 9])
-        expect(is_on_board).to eq(false)
+        is_not_on_board = board.on_board?([11, 9])
+        expect(is_not_on_board).to eq(false)
       end
     end
 
@@ -100,6 +100,40 @@ RSpec.describe Board do
       it 'returns true' do
         is_on_board = board.on_board?([10, 8])
         expect(is_on_board).to eq(true)
+      end
+    end
+  end
+
+  describe '#translate_coordinates' do
+    context 'when [1, 0] is passed' do
+      it 'returns [2, 3]' do
+        translated = board.translate_coordinates([1, 0])
+        expect(translated).to eq([2, 3])
+      end
+    end
+  end
+
+  describe '#swap_coordinates' do
+    context 'when [1, 0] is passed' do
+      it 'returns [0, 1]' do
+        swapped = board.swap_coordinates([1, 0])
+        expect(swapped).to eq([0, 1])
+      end
+    end
+  end
+
+  describe '#overwrite_square' do
+    context 'when [1, 0] and no other argument is passed' do
+      it 'sets board[3][2] to " -"' do
+        board.overwrite_square([1, 0])
+        expect(board.instance_variable_get(:@board)[3][2]).to eq(' -')
+      end
+    end
+
+    context 'when [1, 0] and a knight are passed' do
+      it 'sets board[3][2] to " ♘"' do
+        board.overwrite_square([1, 0], Board::W_KNIGHT)
+        expect(board.instance_variable_get(:@board)[3][2]).to eq(' ♘')
       end
     end
   end
