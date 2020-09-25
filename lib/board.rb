@@ -66,13 +66,18 @@ class Board
   end
 
   def translate_coordinates(coordinates)
-    coordinates[0] += 3
-    coordinates[1] += 1
+    coordinates[0] += 1
+    coordinates[1] += 3
     coordinates
   end
 
-  def place_piece(piece, coordinates)
-    translate_coordinates(coordinates)
-    @board[coordinates[1]][coordinates[0]] = piece
+  def swap_coordinates(coordinates)
+    coordinates[0], coordinates[1] = coordinates[1], coordinates[0]
+    coordinates
+  end
+
+  def overwrite_square(coordinates, piece = EMPTY_SQUARE)
+    coordinates = swap_coordinates(translate_coordinates(coordinates))
+    @board[coordinates[0]][coordinates[1]] = piece
   end
 end
