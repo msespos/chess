@@ -31,8 +31,8 @@ class Game
     @w_knight_g = Knight.new(:white)
     @w_bishop_c = Bishop.new(:white)
     @w_bishop_f = Bishop.new(:white)
-    @w_rook_a = Bishop.new(:white)
-    @w_rook_h = Bishop.new(:white)
+    @w_rook_a = Rook.new(:white)
+    @w_rook_h = Rook.new(:white)
     @w_queen = Queen.new(:white)
     @w_king = King.new(:white)
   end
@@ -53,8 +53,8 @@ class Game
     @b_knight_g = Knight.new(:black)
     @b_bishop_c = Bishop.new(:black)
     @b_bishop_f = Bishop.new(:black)
-    @b_rook_a = Bishop.new(:black)
-    @b_rook_h = Bishop.new(:black)
+    @b_rook_a = Rook.new(:black)
+    @b_rook_h = Rook.new(:black)
     @b_queen = Queen.new(:black)
     @b_king = King.new(:black)
   end
