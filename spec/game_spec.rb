@@ -14,6 +14,12 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
+      it 'creates an instance of Rook' do
+        rook = game.instance_variable_get(:@rook)
+        expect(rook).to be_a(Rook)
+        game.send(:initialize)
+      end
+
       it 'calls #starting_playing_field' do
         expect(game).to receive(:starting_playing_field)
         game.send(:initialize)

@@ -5,6 +5,7 @@ class Game
   def initialize
     @board = Board.new
     starting_playing_field
+    @rook = Rook.new
   end
 
   # set up the playing field for the start of the game
