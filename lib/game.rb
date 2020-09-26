@@ -4,10 +4,10 @@
 class Game
   def initialize
     @board = Board.new
-    opening_playing_field
+    starting_playing_field
   end
 
-  def opening_playing_field
+  def starting_playing_field
     @playing_field = Array.new(8) { Array.new(8) { nil } }
     @playing_field[0] = %i[w_rook w_knight w_bishop w_queen w_king w_bishop w_knight w_rook]
     @playing_field[1] = %i[w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn]
@@ -16,6 +16,6 @@ class Game
   end
 
   def algebraic_to_cartesian(algebraic_expression)
-    cartesian_coordinates = [algebraic_expression[0].to_i, algebraic_expression[1].to_i]
+    [algebraic_expression.ord - 97, algebraic_expression[1].to_i - 1]
   end
 end
