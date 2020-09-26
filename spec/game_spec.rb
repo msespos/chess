@@ -37,6 +37,29 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#algebraic_to_cartesian' do
+    context 'with "a1" is passed in' do
+      it 'returns [0, 0]' do
+        coords = game.algebraic_to_cartesian('a1')
+        expect(coords).to eq([0, 0])
+      end
+    end
+
+    context 'with "c3" is passed in' do
+      it 'returns [2, 2]' do
+        coords = game.algebraic_to_cartesian('c3')
+        expect(coords).to eq([2, 2])
+      end
+    end
+
+    context 'with "h4" is passed in' do
+      it 'returns [7, 3]' do
+        coords = game.algebraic_to_cartesian('h4')
+        expect(coords).to eq([7, 3])
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
