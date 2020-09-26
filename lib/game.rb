@@ -21,4 +21,19 @@ class Game
   def algebraic_to_cartesian(algebraic_expression)
     [algebraic_expression.ord - 97, algebraic_expression[1].to_i - 1]
   end
+
+  # move a piece (capturing or not) given start and finish coordinates
+  # castle and en passant and pawn promotion will be separate functions to be incorporated later
+  # the validation function will be dependent on the piece and the current playing field
+  # the capture function will just be dependent on whether or not there is a piece in the finish square
+  def move_piece(start, finish)
+    s0, s1, f0, f1 = start[0], start[1], finish[0], finish[1]
+    return :invalid unless valid_move?(start, finish)
+
+    temp = @playing_field[s0][s1]
+    @playing_field[s0][s1] = nil
+    captured = @playing_field[f0][f1] if capture?
+    @playing_field[f0][f1] = temp
+    captured
+  end
 end
