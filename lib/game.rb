@@ -14,4 +14,8 @@ class Game
     @playing_field[6] = %i[b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn]
     @playing_field[7] = %i[b_rook b_knight b_bishop b_queen b_king b_bishop b_knight b_rook]
   end
+
+  def algebraic_to_cartesian(algebraic_expression)
+    cartesian_coordinates = [algebraic_expression[0].to_i, algebraic_expression[1].to_i]
+  end
 end
