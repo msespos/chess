@@ -15,6 +15,7 @@ class Game
     @playing_field[1] = %i[w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn]
     @playing_field[6] = %i[b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn]
     @playing_field[7] = %i[b_rook b_knight b_bishop b_queen b_king b_bishop b_knight b_rook]
+    @playing_field = @playing_field.transpose
   end
 
   # convert an algebraic expression (user input) to cartesian coordinates (for piece manipulation)
@@ -27,13 +28,20 @@ class Game
   # the validation function will be dependent on the piece and the current playing field
   # the capture function will just be dependent on whether or not there is a piece in the finish square
   def move_piece(start, finish)
-    s0, s1, f0, f1 = start[0], start[1], finish[0], finish[1]
     return :invalid unless valid_move?(start, finish)
 
+    s0 = start[0]
+    s1 = start[1]
+    f0 = finish[0]
+    f1 = finish[1]
     temp = @playing_field[s0][s1]
     @playing_field[s0][s1] = nil
-    captured = @playing_field[f0][f1] if capture?
+    captured = capture?(start, finish) ? @playing_field[f0][f1] : nil
     @playing_field[f0][f1] = temp
     captured
   end
+
+  def valid_move?(start, finish) end
+
+  def capture?(start, finish) end
 end
