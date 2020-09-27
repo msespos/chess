@@ -104,36 +104,91 @@ RSpec.describe Board do
     end
   end
 
-  describe '#translate_coordinates' do
-    context 'when [1, 0] is passed' do
-      it 'returns [2, 3]' do
-        translated = board.translate_coordinates([1, 0])
-        expect(translated).to eq([2, 3])
+  describe '#overwrite_playing_field' do
+    context 'when it receives an opening board from Game' do
+      it 'prints out the opening board' do
+        board.overwrite_playing_field([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                                       [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                                       [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                                       [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                                       [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                                       [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                                       [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                                       [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
+        expect { puts(board) }.to output(<<-BOARD).to_stdout
+
+     a b c d e f g h
+
+ 8   ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜   8
+ 7   ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟   7
+ 6   - - - - - - - -   6
+ 5   - - - - - - - -   5
+ 4   - - - - - - - -   4
+ 3   - - - - - - - -   3
+ 2   ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙   2
+ 1   ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖   1
+
+     a b c d e f g h
+
+        BOARD
       end
     end
-  end
 
-  describe '#swap_coordinates' do
-    context 'when [1, 0] is passed' do
-      it 'returns [0, 1]' do
-        swapped = board.swap_coordinates([1, 0])
-        expect(swapped).to eq([0, 1])
+    context 'when it receives a board with a few opening moves from Game' do
+      it 'prints out the current board' do
+        board.overwrite_playing_field([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                                       [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, nil],
+                                       [nil, :w_pawn, nil, nil, nil, :b_knight, :b_pawn, :b_bishop],
+                                       [:w_queen, nil, nil, :w_pawn, :b_pawn, nil, nil, :b_queen],
+                                       [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                                       [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                                       [:w_knight, :w_pawn, nil, nil, :w_bishop, nil, :b_pawn, :b_knight],
+                                       [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
+        expect { puts(board) }.to output(<<-BOARD).to_stdout
+
+     a b c d e f g h
+
+ 8   ♜ - ♝ ♛ ♚ ♝ ♞ ♜   8
+ 7   ♟ ♟ ♟ - ♟ ♟ ♟ ♟   7
+ 6   - - ♞ - - - - -   6
+ 5   - - - ♟ - - ♗ -   5
+ 4   - - - ♙ - - - -   4
+ 3   - - - - - - - -   3
+ 2   ♙ ♙ ♙ - ♙ ♙ ♙ ♙   2
+ 1   ♖ ♘ - ♕ ♔ ♗ ♘ ♖   1
+
+     a b c d e f g h
+
+        BOARD
       end
     end
-  end
 
-  describe '#overwrite_square' do
-    context 'when [1, 0] and no other argument is passed' do
-      it 'sets board[3][2] to " -"' do
-        board.overwrite_square([1, 0])
-        expect(board.instance_variable_get(:@board)[3][2]).to eq(' -')
-      end
-    end
+    context 'when it receives a board with an endgame situation' do
+      it 'prints out the current board' do
+        board.overwrite_playing_field([[nil, nil, nil, nil, :b_pawn, nil, nil, nil],
+                                       [:w_king, nil, :w_pawn, nil, nil, nil, nil, nil],
+                                       [nil, nil, :w_pawn, nil, nil, nil, nil, nil],
+                                       [nil, nil, nil, :b_king, nil, nil, nil, nil],
+                                       [nil, nil, nil, nil, nil, nil, nil, nil],
+                                       [nil, nil, nil, nil, nil, :w_pawn, nil, nil],
+                                       [nil, nil, :b_queen, nil, nil, nil, nil, nil],
+                                       [nil, nil, :w_pawn, nil, nil, nil, nil, nil]])
+        expect { puts(board) }.to output(<<-BOARD).to_stdout
 
-    context 'when [1, 0] and a knight are passed' do
-      it 'sets board[3][2] to " ♘"' do
-        board.overwrite_square([1, 0], Board::W_KNIGHT)
-        expect(board.instance_variable_get(:@board)[3][2]).to eq(' ♘')
+     a b c d e f g h
+
+ 8   - - - - - - - -   8
+ 7   - - - - - - - -   7
+ 6   - - - - - ♙ - -   6
+ 5   ♟ - - - - - - -   5
+ 4   - - - ♚ - - - -   4
+ 3   - ♙ ♙ - - - ♛ ♙   3
+ 2   - - - - - - - -   2
+ 1   - ♔ - - - - - -   1
+
+     a b c d e f g h
+
+        BOARD
       end
     end
   end
