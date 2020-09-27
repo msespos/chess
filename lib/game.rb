@@ -49,7 +49,9 @@ class Game
   end
 
   # checks if the pieces in the start and finish square are the same color or not
-  def same_color?(start, finish) end
+  def same_color?(start, finish)
+    @playing_field[start[0]][start[1]][0] == @playing_field[finish[0]][finish[1]][0]
+  end
 
   # determines if there is a path from the start to the finish using the piece, the start and finish
   # coordinates, and the current state of the playing field
