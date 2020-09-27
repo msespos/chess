@@ -24,24 +24,34 @@ class Game
   end
 
   # move a piece (capturing or not) given start and finish coordinates
-  # castle and en passant and pawn promotion will be separate functions to be incorporated later
-  # the validation function will be dependent on the piece and the current playing field
-  # the capture function will just be dependent on whether or not there is a piece in the finish square
+  # castling and en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
     return :invalid unless valid_move?(start, finish)
 
-    s0 = start[0]
-    s1 = start[1]
-    f0 = finish[0]
-    f1 = finish[1]
-    temp = @playing_field[s0][s1]
-    @playing_field[s0][s1] = nil
-    captured = capture?(start, finish) ? @playing_field[f0][f1] : nil
-    @playing_field[f0][f1] = temp
+    temp = @playing_field[start[0]][start[1]]
+    @playing_field[start[0]][start[1]] = nil
+    captured = capture?(finish) ? @playing_field[finish[0]][finish[1]] : nil
+    @playing_field[finish[0]][finish[1]] = temp
     captured
   end
 
-  def valid_move?(start, finish) end
+  # checks if the move is valid by calling path_to? on the piece in the start square
+  # and the start and finish coordinates
+  def valid_move?(start, finish)
+    return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
 
-  def capture?(start, finish) end
+    path_to?(@playing_field[start[0]][start[1]], start, finish)
+  end
+
+  # checks if there is a capture in the move by checking if there is a piece in the finish square
+  def capture?(finish)
+    !@playing_field[finish[0]][finish[1]].nil?
+  end
+
+  # checks if the pieces in the start and finish square are the same color or not
+  def same_color?(start, finish) end
+
+  # determines if there is a path from the start to the finish using the piece, the start and finish
+  # coordinates, and the current state of the playing field
+  def path_to?(piece, start, finish) end
 end
