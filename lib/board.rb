@@ -18,6 +18,18 @@ class Board
   BLANK_SPOT = '  '
   BOARD_HEIGHT = 14
 
+  SYMBOL_TO_CONSTANT = { w_pawn: W_PAWN,
+                         w_knight: W_KNIGHT,
+                         w_bishop: W_BISHOP,
+                         w_rook: W_ROOK,
+                         w_queen: W_QUEEN,
+                         w_king: W_KING,
+                         b_pawn: B_PAWN,
+                         b_knight: B_KNIGHT,
+                         b_bishop: B_BISHOP,
+                         b_rook: B_ROOK,
+                         b_queen: B_QUEEN,
+                         b_king: B_KING }.freeze
   def initialize
     opening_board
   end
@@ -66,23 +78,16 @@ class Board
     coordinates[0] > 2 && coordinates[0] < 11 && coordinates[1].positive? && coordinates[1] < 9
   end
 
-  # used by #overwrite_square to help translate Game board coordinates to Board board coordinates
-  def translate_coordinates(coordinates)
-    coordinates[0] += 1
-    coordinates[1] += 3
-    coordinates
-  end
-
-  # used by #overwrite_square to help translate Game board coordinates to Board board coordinates
-  def swap_coordinates(coordinates)
-    coordinates[0], coordinates[1] = coordinates[1], coordinates[0]
-    coordinates
-  end
-
-  # overwrite a Board board square with a piece or an empty square at the given coordinate
-  # used by Game
-  def overwrite_square(coordinates, piece = EMPTY_SQUARE)
-    coordinates = swap_coordinates(translate_coordinates(coordinates))
-    @board[coordinates[0]][coordinates[1]] = piece
+  # overwrite the playing field using an 8x8 playing field input from Game and #overwrite_square
+  def overwrite_playing_field(playing_field)
+    (0..7).each do |column|
+      (0..7).each do |row|
+        @board[row + 3][column + 1] = if playing_field[column][row].nil?
+                                        EMPTY_SQUARE
+                                      else
+                                        SYMBOL_TO_CONSTANT[playing_field[column][row]]
+                                      end
+      end
+    end
   end
 end
