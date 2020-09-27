@@ -44,8 +44,7 @@ class Game
     captured
   end
 
-  # check if the move is valid by calling path_to? on the piece in the start square
-  # and the start and finish coordinates
+  # check if the move is valid by calling path_to? on the start and finish coordinates
   def valid_move?(start0, start1, finish0, finish1)
     return false if same_color?(@playing_field[start0][start1], @playing_field[finish0][finish1])
 
@@ -62,7 +61,7 @@ class Game
     start_piece[0] == finish_piece[0]
   end
 
-  # determines if there is a path from the start to the finish using the piece, the start and finish
-  # coordinates, and the current state of the playing field
+  # determine if there is a path from the start to the finish using the start and finish
+  # coordinates, the piece found from those coordinates, and the current state of the playing field
   def path_to?(start0, start1, finish0, finish1) end
 end
