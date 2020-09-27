@@ -128,6 +128,47 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#valid_move?' do
+    context 'when the pieces are the same color' do
+      it 'returns false' do
+        expect(game).to receive(:same_color?).and_return(true)
+        expect(game.valid_move?([0, 0], [0, 1])).to eq(false)
+      end
+    end
+
+    context 'when the pieces are not the same color and #path_to? is false' do
+      it 'returns false' do
+        expect(game).to receive(:same_color?).and_return(false)
+        expect(game).to receive(:path_to?).and_return(false)
+        expect(game.valid_move?([0, 0], [0, 1])).to eq(false)
+      end
+    end
+
+    context 'when the pieces are not the same color and #path_to? is true' do
+      it 'returns false' do
+        expect(game).to receive(:same_color?).and_return(false)
+        expect(game).to receive(:path_to?).and_return(true)
+        expect(game.valid_move?([0, 0], [0, 1])).to eq(true)
+      end
+    end
+  end
+
+  describe 'capture?' do
+    context 'when the finish square is empty' do
+      it 'returns false' do
+        game.instance_variable_get(:@playing_field)[7][5] = nil
+        expect(game.capture?([7, 5])).to eq(false)
+      end
+    end
+
+    context 'when the finish square has a piece on it' do
+      it 'returns true' do
+        game.instance_variable_get(:@playing_field)[7][5] = :w_rook
+        expect(game.capture?([7, 5])).to eq(true)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
