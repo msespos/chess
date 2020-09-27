@@ -169,6 +169,24 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#same_color?' do
+    context 'when the pieces are the same color' do
+      it 'returns true' do
+        game.instance_variable_get(:@playing_field)[7][5] = :b_rook
+        game.instance_variable_get(:@playing_field)[7][3] = :b_rook
+        expect(game.same_color?([7, 5], [7, 3])).to eq(true)
+      end
+    end
+
+    context 'when the pieces are different colors' do
+      it 'returns false' do
+        game.instance_variable_get(:@playing_field)[7][5] = :b_rook
+        game.instance_variable_get(:@playing_field)[7][3] = :w_rook
+        expect(game.same_color?([7, 5], [7, 3])).to eq(false)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
