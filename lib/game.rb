@@ -2,6 +2,19 @@
 
 # game class
 class Game
+  SYMBOL_TO_INSTANCE = { w_pawn: @pawn,
+                         w_knight: @knight,
+                         w_bishop: @bishop,
+                         w_rook: @rook,
+                         w_queen: @queen,
+                         w_king: @king,
+                         b_pawn: @pawn,
+                         b_knight: @knight,
+                         b_bishop: @bishop,
+                         b_rook: @rook,
+                         b_queen: @queen,
+                         b_king: @king }.freeze
+
   def initialize
     @board = Board.new
     starting_playing_field
