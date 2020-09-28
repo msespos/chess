@@ -67,6 +67,25 @@ RSpec.describe Game do
     end
   end
 
+  describe '#playing_field_to_board' do
+    let(:board_field) { instance_double(Board) }
+    context 'when a playing field is passed in' do
+      it 'calls Board#overwrite_playing_field with the playing field' do
+        game.instance_variable_set(:@board, board_field)
+        playing_field = ([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                          [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                          [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
+        expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
+        game.playing_field_to_board(playing_field)
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
