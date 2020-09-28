@@ -8,15 +8,15 @@ RSpec.describe Board do
   subject(:board) { described_class.new }
   describe '#initialize' do
     context 'when the board class is instantiated' do
-      it 'calls #opening_board' do
-        expect(board).to receive(:opening_board)
+      it 'calls #initial_board' do
+        expect(board).to receive(:initial_board)
         board.send(:initialize)
       end
     end
   end
 
-  describe '#opening_board' do
-    context 'when #opening_board is called' do
+  describe '#initial_board' do
+    context 'when #initial_board is called' do
       it 'generates a 14 row board' do
         expect(board.instance_variable_get(:@board).size).to eq(14)
       end
@@ -53,7 +53,7 @@ RSpec.describe Board do
 
   describe '#to_s' do
     context 'at the beginning of the game' do
-      it 'displays the opening board setup correctly' do
+      it 'displays the initial board setup correctly' do
         expect { puts(board) }.to output(<<-BOARD).to_stdout
 
      a b c d e f g h
@@ -105,8 +105,8 @@ RSpec.describe Board do
   end
 
   describe '#overwrite_playing_field' do
-    context 'when it receives an opening board from Game' do
-      it 'prints out the opening board' do
+    context 'when it receives an initial board from Game' do
+      it 'prints out the initial board' do
         board.overwrite_playing_field([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
                                        [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                                        [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
