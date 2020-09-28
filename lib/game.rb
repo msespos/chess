@@ -36,7 +36,7 @@ class Game
     captured
   end
 
-  # used by move_piece
+  # used by #move_piece
   def start_finish_to_variables(start, finish)
     start0 = start[0]
     start1 = start[1]
