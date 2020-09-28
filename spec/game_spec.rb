@@ -72,14 +72,14 @@ RSpec.describe Game do
     context 'when a playing field is passed in' do
       it 'calls Board#overwrite_playing_field with the playing field' do
         game.instance_variable_set(:@board, board_field)
-        playing_field = ([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                          [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                          [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
+        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
         expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
         game.playing_field_to_board(playing_field)
       end
