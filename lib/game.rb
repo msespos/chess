@@ -23,6 +23,11 @@ class Game
     [algebraic_expression.ord - 97, algebraic_expression[1].to_i - 1]
   end
 
+  # transfer a playing field to the board by calling Board#overwrite_playing_field
+  def playing_field_to_board(playing_field)
+    @board.overwrite_playing_field(playing_field)
+  end
+
   # move a piece (capturing or not) given start and finish coordinates
   # castling and en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
