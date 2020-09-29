@@ -2,18 +2,18 @@
 
 # game class
 class Game
-  SYMBOL_TO_INSTANCE = { w_pawn: pawn_path?,
-                         w_knight: @knight_path?,
-                         w_bishop: @bishop_path?,
-                         w_rook: @rook_path?,
-                         w_queen: @queen_path?,
-                         w_king: @king_path?,
-                         b_pawn: @pawn_path?,
-                         b_knight: @knight_path?,
-                         b_bishop: @bishop_path?,
-                         b_rook: @rook_path?,
-                         b_queen: @queen_path?,
-                         b_king: @king_path? }.freeze
+  SYMBOL_TO_METHOD = { w_pawn: pawn_path?,
+                       w_knight: @knight_path?,
+                       w_bishop: @bishop_path?,
+                       w_rook: @rook_path?,
+                       w_queen: @queen_path?,
+                       w_king: @king_path?,
+                       b_pawn: @pawn_path?,
+                       b_knight: @knight_path?,
+                       b_bishop: @bishop_path?,
+                       b_rook: @rook_path?,
+                       b_queen: @queen_path?,
+                       b_king: @king_path? }.freeze
 
   def initialize
     @board = Board.new
