@@ -69,7 +69,8 @@ class Game
   def valid_move?(start0, start1, finish0, finish1)
     return false if same_color?(@playing_field[start0][start1], @playing_field[finish0][finish1])
 
-    @piece.send(SYMBOL_TO_METHOD[@playing_field[start0][start1]], start0, start1, finish0, finish1, @playing_field)
+    path_check = SYMBOL_TO_METHOD[@playing_field[start0][start1]]
+    @piece.send(path_check, start0, start1, finish0, finish1, @playing_field)
   end
 
   # used by #move_piece
