@@ -14,9 +14,9 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
-      it 'creates an instance of Rook' do
-        rook = game.instance_variable_get(:@rook)
-        expect(rook).to be_a(Rook)
+      it 'creates an instance of Piece' do
+        piece = game.instance_variable_get(:@piece)
+        expect(piece).to be_a(Piece)
         game.send(:initialize)
       end
 
@@ -89,8 +89,8 @@ RSpec.describe Game do
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
-        expect(game).to receive(:valid_move?).and_return(true)
-        expect(game).to receive(:capture?).and_return(false)
+        allow(game).to receive(:valid_move?).and_return(true)
+        allow(game).to receive(:capture?).and_return(false)
       end
 
       it 'returns nil' do
@@ -114,7 +114,7 @@ RSpec.describe Game do
   describe '#move_piece' do
     context 'when a white rook attempts to move from a1 to a4 illegally' do
       it 'returns :invalid' do
-        expect(game).to receive(:valid_move?).and_return(false)
+        allow(game).to receive(:valid_move?).and_return(false)
         move = game.move_piece([0, 0], [0, 3])
         expect(move).to eq(:invalid)
       end
@@ -124,8 +124,8 @@ RSpec.describe Game do
   describe '#move_piece' do
     context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
       before do
-        expect(game).to receive(:valid_move?).and_return(true)
-        expect(game).to receive(:capture?).and_return(true)
+        allow(game).to receive(:valid_move?).and_return(true)
+        allow(game).to receive(:capture?).and_return(true)
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
       end
 
@@ -151,23 +151,29 @@ RSpec.describe Game do
   describe '#valid_move?' do
     context 'when the pieces are the same color' do
       it 'returns false' do
-        expect(game).to receive(:same_color?).and_return(true)
+        allow(game).to receive(:same_color?).and_return(true)
         expect(game.valid_move?(0, 0, 0, 1)).to eq(false)
       end
     end
 
-    context 'when the pieces are not the same color and #path_to? is false' do
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
+    context 'when the pieces are not the same color and #legal_path? is false' do
+      let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
-        expect(game).to receive(:same_color?).and_return(false)
-        expect(game).to receive(:path_to?).and_return(false)
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:rook_path?).and_return(false)
         expect(game.valid_move?(0, 0, 0, 1)).to eq(false)
       end
     end
 
-    context 'when the pieces are not the same color and #path_to? is true' do
-      it 'returns false' do
-        expect(game).to receive(:same_color?).and_return(false)
-        expect(game).to receive(:path_to?).and_return(true)
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
+    context 'when the pieces are not the same color and #legal_path? is true' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:rook_path?).and_return(true)
         expect(game.valid_move?(0, 0, 0, 1)).to eq(true)
       end
     end
