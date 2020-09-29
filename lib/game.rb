@@ -18,7 +18,7 @@ class Game
   def initialize
     @board = Board.new
     starting_playing_field
-    @rook = Rook.new
+    @piece = Piece.new
   end
 
   # set up the playing field for the start of the game
@@ -63,12 +63,13 @@ class Game
     [start0, start1, finish0, finish1]
   end
 
-  # used by #move_piece
-  # check if the move is valid by calling same_color? and path_to? on the start and finish coordinates
+  # check if the move is valid by calling same_color? with the start and finish coordinates,
+  # and the appropriate Piece method (using the SYMBOL_TO_METHOD hash to look up the method
+  # based on the piece), with the start and finish coordinates and the playing field as arguments
   def valid_move?(start0, start1, finish0, finish1)
     return false if same_color?(@playing_field[start0][start1], @playing_field[finish0][finish1])
 
-    path_to?(start0, start1, finish0, finish1)
+    @piece.send(SYMBOL_TO_METHOD[@playing_field[start0][start1]], start0, start1, finish0, finish1, @playing_field)
   end
 
   # used by #move_piece
