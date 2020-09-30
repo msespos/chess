@@ -152,7 +152,8 @@ RSpec.describe Game do
     context 'when the pieces are the same color' do
       it 'returns false' do
         allow(game).to receive(:same_color?).and_return(true)
-        expect(game.valid_move?([0, 0], [0, 1])).to eq(false)
+        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        expect(valid_or_not).to eq(false)
       end
     end
 
@@ -163,7 +164,8 @@ RSpec.describe Game do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:same_color?).and_return(false)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
-        expect(game.valid_move?([0, 0], [0, 1])).to eq(false)
+        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        expect(valid_or_not).to eq(false)
       end
     end
 
@@ -174,7 +176,8 @@ RSpec.describe Game do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:same_color?).and_return(false)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
-        expect(game.valid_move?([0, 0], [0, 1])).to eq(true)
+        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        expect(valid_or_not).to eq(true)
       end
     end
   end
@@ -183,14 +186,16 @@ RSpec.describe Game do
     context 'when the finish square is empty' do
       it 'returns false' do
         game.instance_variable_get(:@playing_field)[7][5] = nil
-        expect(game.capture([7, 5])).to eq(nil)
+        capture_or_none = game.capture([7, 5])
+        expect(capture_or_none).to eq(nil)
       end
     end
 
     context 'when the finish square has a piece on it' do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-        expect(game.capture([7, 5])).to eq(:w_rook)
+        capture_or_none = game.capture([7, 5])
+        expect(capture_or_none).to eq(:w_rook)
       end
     end
   end
@@ -198,13 +203,15 @@ RSpec.describe Game do
   describe '#same_color?' do
     context 'when the pieces are the same color' do
       it 'returns true' do
-        expect(game.same_color?(:b_rook, :b_rook)).to eq(true)
+        same_color_or_not = game.same_color?(:b_rook, :b_rook)
+        expect(same_color_or_not).to eq(true)
       end
     end
 
     context 'when the pieces are different colors' do
       it 'returns false' do
-        expect(game.same_color?(:b_rook, :w_rook)).to eq(false)
+        same_color_or_not = game.same_color?(:b_rook, :w_rook)
+        expect(same_color_or_not).to eq(false)
       end
     end
   end
