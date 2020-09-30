@@ -48,7 +48,7 @@ class Game
 
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
-    captured = capture?(finish) ? @playing_field[finish[0]][finish[1]] : nil
+    captured = capture(finish)
     @playing_field[finish[0]][finish[1]] = temp
     captured
   end
@@ -65,8 +65,11 @@ class Game
 
   # used by #move_piece
   # check if there is a capture in the move by checking if there is a piece in the finish square
-  def capture?(finish)
-    !@playing_field[finish[0]][finish[1]].nil?
+  # make the capture and return the piece if there is - otherwise return nil
+  def capture(finish)
+    return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
+
+    nil
   end
 
   # used by #valid_move?
