@@ -18,35 +18,43 @@ RSpec.describe Board do
   describe '#initial_board' do
     context 'when #initial_board is called' do
       it 'generates a 14 row board' do
-        expect(board.instance_variable_get(:@board).size).to eq(14)
+        board_size = board.instance_variable_get(:@board).size
+        expect(board_size).to eq(14)
       end
 
       it 'generates a 10 column board' do
-        expect(board.instance_variable_get(:@board)[0].size).to eq(10)
+        board_size = board.instance_variable_get(:@board)[0].size
+        expect(board_size).to eq(10)
       end
 
       it 'generates a board with a white rook in a1' do
-        expect(board.instance_variable_get(:@board)[3][1]).to eq(" \u2656".encode('utf-8'))
+        white_rook = board.instance_variable_get(:@board)[3][1]
+        expect(white_rook).to eq(" \u2656".encode('utf-8'))
       end
 
       it 'generates a board with a black rook in h8' do
-        expect(board.instance_variable_get(:@board)[10][8]).to eq(" \u265C".encode('utf-8'))
+        black_rook = board.instance_variable_get(:@board)[10][8]
+        expect(black_rook).to eq(" \u265C".encode('utf-8'))
       end
 
       it 'generates a board with a white knight in c1' do
-        expect(board.instance_variable_get(:@board)[3][2]).to eq(" \u2658".encode('utf-8'))
+        white_knight = board.instance_variable_get(:@board)[3][2]
+        expect(white_knight).to eq(" \u2658".encode('utf-8'))
       end
 
       it 'generates a board with a black pawn in g7' do
-        expect(board.instance_variable_get(:@board)[9][7]).to eq(" \u265F".encode('utf-8'))
+        black_pawn = board.instance_variable_get(:@board)[9][7]
+        expect(black_pawn).to eq(" \u265F".encode('utf-8'))
       end
 
       it 'generates a board with " -" in a4' do
-        expect(board.instance_variable_get(:@board)[6][1]).to eq(' -')
+        blank_space = board.instance_variable_get(:@board)[6][1]
+        expect(blank_space).to eq(' -')
       end
 
       it 'generates a board with " -" in c5' do
-        expect(board.instance_variable_get(:@board)[7][5]).to eq(' -')
+        blank_space = board.instance_variable_get(:@board)[7][5]
+        expect(blank_space).to eq(' -')
       end
     end
   end
