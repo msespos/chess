@@ -20,14 +20,14 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
-      it 'calls #starting_playing_field' do
-        expect(game).to receive(:starting_playing_field)
+      it 'calls #initial_playing_field' do
+        expect(game).to receive(:initial_playing_field)
         game.send(:initialize)
       end
     end
   end
 
-  describe '#starting_playing_field' do
+  describe '#initial_playing_field' do
     context 'when playing field is created' do
       it 'has the pieces and empty squares set up correctly' do
         field = game.instance_variable_get(:@playing_field)
@@ -39,7 +39,7 @@ RSpec.describe Game do
                              [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
                              [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                              [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
-        game.starting_playing_field
+        game.initial_playing_field
       end
     end
   end
