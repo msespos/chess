@@ -54,7 +54,7 @@ class Game
   end
 
   # check if the move is valid by calling same_color? with the start and finish coordinates,
-  # and the appropriate Piece method (using #obtain_path_method look up the method
+  # and the appropriate Piece method (using #obtain_path_method to look up the method
   # based on the piece), with the start and finish coordinates and the playing field as arguments
   def valid_move?(start, finish)
     return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
