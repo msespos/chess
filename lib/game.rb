@@ -54,13 +54,19 @@ class Game
   end
 
   # check if the move is valid by calling same_color? with the start and finish coordinates,
-  # and the appropriate Piece method (using the SYMBOL_TO_METHOD hash to look up the method
+  # and the appropriate Piece method (using #obtain_path_method look up the method
   # based on the piece), with the start and finish coordinates and the playing field as arguments
   def valid_move?(start, finish)
     return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
 
-    path_check = SYMBOL_TO_METHOD[@playing_field[start[0]][start[1]]]
-    @piece.send(path_check, start, finish, @playing_field)
+    path_method = obtain_path_method(start)
+    @piece.send(path_method, start, finish, @playing_field)
+  end
+
+  # used by #valid_move to look up the appropriate method using the SYMBOL_TO_METHOD hash
+  # and the piece on the starting square of the path
+  def obtain_path_method(start)
+    SYMBOL_TO_METHOD[@playing_field[start[0]][start[1]]]
   end
 
   # used by #move_piece
