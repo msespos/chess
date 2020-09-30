@@ -44,39 +44,29 @@ class Game
   # move a piece (capturing or not) given start and finish coordinates
   # castling and en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
-    start0, start1, finish0, finish1 = start_finish_to_variables(start, finish)
-    return :invalid unless valid_move?(start0, start1, finish0, finish1)
+    return :invalid unless valid_move?(start, finish)
 
-    temp = @playing_field[start0][start1]
-    @playing_field[start0][start1] = nil
-    captured = capture?(finish0, finish1) ? @playing_field[finish0][finish1] : nil
-    @playing_field[finish0][finish1] = temp
+    temp = @playing_field[start[0]][start[1]]
+    @playing_field[start[0]][start[1]] = nil
+    captured = capture?(finish) ? @playing_field[finish[0]][finish[1]] : nil
+    @playing_field[finish[0]][finish[1]] = temp
     captured
-  end
-
-  # used by #move_piece
-  def start_finish_to_variables(start, finish)
-    start0 = start[0]
-    start1 = start[1]
-    finish0 = finish[0]
-    finish1 = finish[1]
-    [start0, start1, finish0, finish1]
   end
 
   # check if the move is valid by calling same_color? with the start and finish coordinates,
   # and the appropriate Piece method (using the SYMBOL_TO_METHOD hash to look up the method
   # based on the piece), with the start and finish coordinates and the playing field as arguments
-  def valid_move?(start0, start1, finish0, finish1)
-    return false if same_color?(@playing_field[start0][start1], @playing_field[finish0][finish1])
+  def valid_move?(start, finish)
+    return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
 
-    path_check = SYMBOL_TO_METHOD[@playing_field[start0][start1]]
-    @piece.send(path_check, start0, start1, finish0, finish1, @playing_field)
+    path_check = SYMBOL_TO_METHOD[@playing_field[start[0]][start[1]]]
+    @piece.send(path_check, start, finish, @playing_field)
   end
 
   # used by #move_piece
   # check if there is a capture in the move by checking if there is a piece in the finish square
-  def capture?(finish0, finish1)
-    !@playing_field[finish0][finish1].nil?
+  def capture?(finish)
+    !@playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by #valid_move?
