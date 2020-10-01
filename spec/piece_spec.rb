@@ -40,6 +40,22 @@ RSpec.describe Piece do
     end
 
     # integration test for the second line of #rook_path? and Rook#path? and related methods
+    context 'when it is called with a rank path that is blocked, left to right' do
+      it 'returns true' do
+        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        path_or_not = piece.rook_path?([0, 1], [4, 1], playing_field)
+        expect(path_or_not).to eq(false)
+      end
+    end
+
+    # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a rank path that is blocked, right to left' do
       it 'returns true' do
         playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
@@ -98,7 +114,7 @@ RSpec.describe Piece do
                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        rank_free_or_not = piece.rank_free?([0, 0], [3, 0], playing_field)
+        rank_free_or_not = piece.rank_free?([4, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(true)
       end
     end
@@ -113,7 +129,7 @@ RSpec.describe Piece do
                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        rank_free_or_not = piece.rank_free?([0, 0], [7, 0], playing_field)
+        rank_free_or_not = piece.rank_free?([5, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(false)
       end
     end
@@ -145,7 +161,7 @@ RSpec.describe Piece do
                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        file_free_or_not = piece.file_free?([0, 0], [0, 5], playing_field)
+        file_free_or_not = piece.file_free?([0, 1], [0, 7], playing_field)
         expect(file_free_or_not).to eq(false)
       end
     end
