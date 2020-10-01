@@ -2,8 +2,8 @@
 
 # rook class
 class Rook < Piece
-  # determines if a path is legal for a rook using the start, finish and playing field
-  # uses #along_rank?, #along_file?, #rank_free? and #file_free?
+  # determine if a path is legal for a rook using the start, finish and playing field
+  # uses functions in Piece
   def path?(start, finish, playing_field)
     return false unless along_rank?(start, finish) || along_file?(start, finish)
 
