@@ -6,6 +6,21 @@ require_relative '../lib/piece.rb'
 
 RSpec.describe Piece do
   subject(:piece) { described_class.new }
+  describe '#rook_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Rook' do
+        piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        rook = piece.instance_variable_get(:@rook)
+        expect(rook).to be_a(Rook)
+      end
+      it 'the Rook instance calls #path?' do
+        piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        rook_a = piece.instance_variable_get(:@rook)
+        expect(rook_a).to receive(:path?).with([0, 0], [5, 5], ['playing field'])
+      end
+    end
+  end
+      
   describe '#rank_free?' do
     context 'when there is a clear path between the start and finish squares along a rank' do
       it 'returns true' do
