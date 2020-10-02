@@ -8,7 +8,6 @@ class Rook < Piece
   # uses methods in Piece
   def path?(start, finish, playing_field)
     return false unless along_rank?(start, finish) || along_file?(start, finish)
-
     return rank_free?(start, finish, playing_field) if along_rank?(start, finish)
     return file_free?(start, finish, playing_field) if along_file?(start, finish)
   end
