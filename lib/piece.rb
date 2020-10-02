@@ -45,7 +45,7 @@ class Piece
   # used by #file_free to check that the inspected spaces are free
   def blank_file_path?(bottom, top, start, playing_field)
     (bottom + 1..top - 1).each do |rank|
-      return false unless playing_field[start[1]][rank].nil?
+      return false unless playing_field[start[0]][rank].nil?
     end
     true
   end
@@ -91,7 +91,7 @@ class Piece
   # used by #negative_diagonal_free to check that the inspected spaces are free
   def blank_negative_diagonal_path?(left, right, top, playing_field)
     (1..right - left - 1).each do |step|
-      return false unless playing_field[left - step][top - step].nil?
+      return false unless playing_field[left + step][top - step].nil?
     end
     true
   end
