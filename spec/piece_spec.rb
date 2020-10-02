@@ -26,14 +26,9 @@ RSpec.describe Piece do
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a rank path that is open, left to right' do
       it 'returns true' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][0] = :w_rook
+        playing_field[4][0] = :b_bishop
         path_or_not = piece.rook_path?([0, 0], [4, 0], playing_field)
         expect(path_or_not).to eq(true)
       end
@@ -42,14 +37,10 @@ RSpec.describe Piece do
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a rank path that is blocked, left to right' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][1] = :w_rook
+        playing_field[2][1] = :w_rook
+        playing_field[4][1] = :b_bishop
         path_or_not = piece.rook_path?([0, 1], [4, 1], playing_field)
         expect(path_or_not).to eq(false)
       end
@@ -58,30 +49,33 @@ RSpec.describe Piece do
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a rank path that is blocked, right to left' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        path_or_not = piece.rook_path?([7, 0], [4, 0], playing_field)
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :b_bishop
+        playing_field[6][0] = :w_rook
+        playing_field[7][0] = :w_rook
+        path_or_not = piece.rook_path?([7, 0], [5, 0], playing_field)
         expect(path_or_not).to eq(false)
+      end
+    end
+
+    # integration test for the second line of #rook_path? and Rook#path? and related methods
+    context 'when it is called with a file path that is open, up to down' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[7][5] = :b_bishop
+        playing_field[7][7] = :w_rook
+        path_or_not = piece.rook_path?([7, 7], [7, 5], playing_field)
+        expect(path_or_not).to eq(true)
       end
     end
 
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a file path that is blocked, up to down' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[7][5] = :b_bishop
+        playing_field[7][6] = :w_pawn
+        playing_field[7][7] = :w_rook
         path_or_not = piece.rook_path?([7, 7], [7, 5], playing_field)
         expect(path_or_not).to eq(false)
       end
@@ -90,14 +84,10 @@ RSpec.describe Piece do
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a file path that is blocked, down to up' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[7][0] = :w_rook
+        playing_field[7][1] = :w_pawn
+        playing_field[7][3] = :w_rook
         path_or_not = piece.rook_path?([7, 0], [7, 3], playing_field)
         expect(path_or_not).to eq(false)
       end
@@ -124,14 +114,8 @@ RSpec.describe Piece do
     # integration test for the second line of #bishop_path? and Bishop#path? and related methods
     context 'when it is called with a positive diagonal path that is open, left to right' do
       it 'returns true' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, nil, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_bishop
         path_or_not = piece.bishop_path?([5, 0], [7, 2], playing_field)
         expect(path_or_not).to eq(true)
       end
@@ -140,63 +124,78 @@ RSpec.describe Piece do
     # integration test for the second line of #bishop_path? and Bishop#path? and related methods
     context 'when it is called with a positive diagonal path that is blocked, left to right' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_bishop
+        playing_field[6][1] = :w_pawn
+        playing_field[7][2] = :w_rook
         path_or_not = piece.bishop_path?([5, 0], [7, 2], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
 
     # integration test for the second line of #bishop_path? and Bishop#path? and related methods
+    context 'when it is called with a positive diagonal path that is open, right to left' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][7] = :w_bishop
+        playing_field[2][4] = :b_bishop
+        path_or_not = piece.bishop_path?([5, 7], [2, 4], playing_field)
+        expect(path_or_not).to eq(true)
+      end
+    end
+
+    # integration test for the second line of #bishop_path? and Bishop#path? and related methods
     context 'when it is called with a positive diagonal path that is blocked, right to left' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][7] = :w_bishop
+        playing_field[4][6] = :w_pawn
+        playing_field[2][4] = :b_bishop
         path_or_not = piece.bishop_path?([5, 7], [2, 4], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
 
     # integration test for the second line of #bishop_path? and Bishop#path? and related methods
+    context 'when it is called with a negative diagonal path that is open, left to right' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[2][7] = :w_bishop
+        playing_field[5][4] = :b_bishop
+        path_or_not = piece.bishop_path?([2, 7], [5, 4], playing_field)
+        expect(path_or_not).to eq(true)
+      end
+    end
+
+    # integration test for the second line of #bishop_path? and Bishop#path? and related methods
     context 'when it is called with a negative diagonal path that is blocked, left to right' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[2][7] = :w_bishop
+        playing_field[3][6] = :w_pawn
+        playing_field[5][4] = :b_bishop
         path_or_not = piece.bishop_path?([2, 7], [5, 4], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
 
     # integration test for the second line of #bishop_path? and Bishop#path? and related methods
+    context 'when it is called with a negative diagonal path that is open, right to left' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_bishop
+        path_or_not = piece.bishop_path?([5, 0], [3, 2], playing_field)
+        expect(path_or_not).to eq(true)
+      end
+    end
+    # integration test for the second line of #bishop_path? and Bishop#path? and related methods
     context 'when it is called with a negative diagonal path that is blocked, right to left' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        path_or_not = piece.bishop_path?([5, 0], [3, 2], playing_field)
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_bishop
+        playing_field[4][3] = :w_pawn
+        playing_field[2][1] = :b_bishop
+        path_or_not = piece.bishop_path?([5, 0], [2, 1], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -205,14 +204,9 @@ RSpec.describe Piece do
   describe '#rank_free?' do
     context 'when there is a clear path between the start and finish squares along a rank' do
       it 'returns true' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][0] = :w_rook
+        playing_field[1][0] = :b_rook
         rank_free_or_not = piece.rank_free?([4, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(true)
       end
@@ -220,14 +214,10 @@ RSpec.describe Piece do
 
     context 'when there is not a clear path between the start and finish squares along a rank' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [nil, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_rook
+        playing_field[3][0] = :w_pawn
+        playing_field[1][0] = :b_bishop
         rank_free_or_not = piece.rank_free?([5, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(false)
       end
@@ -237,14 +227,8 @@ RSpec.describe Piece do
   describe '#file_free?' do
     context 'when there is a clear path between the start and finish squares along a file' do
       it 'returns true' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][1] = :w_rook
         file_free_or_not = piece.file_free?([0, 1], [0, 5], playing_field)
         expect(file_free_or_not).to eq(true)
       end
@@ -252,14 +236,9 @@ RSpec.describe Piece do
 
     context 'when there is not a clear path between the start and finish squares along a file' do
       it 'returns false' do
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][1] = :w_rook
+        playing_field[0][3] = :w_pawn
         file_free_or_not = piece.file_free?([0, 1], [0, 7], playing_field)
         expect(file_free_or_not).to eq(false)
       end
@@ -294,6 +273,50 @@ RSpec.describe Piece do
       it 'returns false' do
         along_file_or_not = piece.along_file?([1, 1], [3, 1])
         expect(along_file_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#positive_diagonal_free?' do
+    context 'when there is a clear path between the start and finish squares along a positive diagonal' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][0] = :w_bishop
+        playing_field[7][3] = :b_rook
+        positive_diagonal_free_or_not = piece.positive_diagonal_free?([4, 0], [7, 3], playing_field)
+        expect(positive_diagonal_free_or_not).to eq(true)
+      end
+    end
+
+    context 'when there is not a clear path between the start and finish squares along a positive diagonal' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][0] = :w_bishop
+        playing_field[6][1] = :w_pawn
+        playing_field[7][2] = :b_bishop
+        positive_diagonal_free_or_not = piece.positive_diagonal_free?([5, 0], [7, 2], playing_field)
+        expect(positive_diagonal_free_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#negative_diagonal_free?' do
+    context 'when there is a clear path between the start and finish squares along a negative_diagonal' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][1] = :w_bishop
+        negative_diagonal_free_or_not = piece.negative_diagonal_free?([5, 1], [0, 6], playing_field)
+        expect(negative_diagonal_free_or_not).to eq(true)
+      end
+    end
+
+    context 'when there is not a clear path between the start and finish squares along a negative_diagonal' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[5][1] = :w_bishop
+        playing_field[4][2] = :w_pawn
+        negative_diagonal_free_or_not = piece.negative_diagonal_free?([5, 1], [0, 6], playing_field)
+        expect(negative_diagonal_free_or_not).to eq(false)
       end
     end
   end
