@@ -32,7 +32,7 @@ class Piece
     true
   end
 
-  # used by #Rook#path? and Queen#path? to determine if all spaces on a rank
+  # used by #Rook#path? and Queen#path? to determine if all spaces on a file
   # between the start and finish are free
   def file_free?(start, finish, playing_field)
     if start[1] < finish[1]
@@ -60,10 +60,40 @@ class Piece
     start[0] == finish[0]
   end
 
+  # used by #Bishop#path? and Queen#path? to determine if all spaces on a positive diagonal
+  # between the start and finish are free
   def positive_diagonal_free?(start, finish, playing_field)
+    if start[0] < finish[0]
+      blank_positive_diagonal_path?(start[0], finish[0], start[1], playing_field)
+    else
+      blank_positive_diagonal_path?(finish[0], start[0], finish[1], playing_field)
+    end
   end
 
+  # used by #positive_diagonal_free to check that the inspected spaces are free
+  def blank_positive_diagonal_path?(left, right, bottom, playing_field)
+    (1..right - left - 1).each do |step|
+      return false unless playing_field[left + step][bottom + step].nil?
+    end
+    true
+  end
+
+  # used by #Bishop#path? and Queen#path? to determine if all spaces on a negative diagonal
+  # between the start and finish are free
   def negative_diagonal_free?(start, finish, playing_field)
+    if start[0] < finish[0]
+      blank_negative_diagonal_path?(start[0], finish[0], start[1], playing_field)
+    else
+      blank_negative_diagonal_path?(finish[0], start[0], finish[1], playing_field)
+    end
+  end
+
+  # used by #negative_diagonal_free to check that the inspected spaces are free
+  def blank_negative_diagonal_path?(left, right, top, playing_field)
+    (1..right - left - 1).each do |step|
+      return false unless playing_field[left - step][top - step].nil?
+    end
+    true
   end
 
   # used by #Bishop#path? and #Queen#path? to determine if the potential path is along a positive diagonal
