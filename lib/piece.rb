@@ -9,6 +9,11 @@ class Piece
     @rook.path?(start, finish, playing_field)
   end
 
+  def bishop_path?(start, finish, playing_field)
+    @bishop = Bishop.new
+    @bishop.path?(start, finish, playing_field)
+  end
+
   # used by Rook#path? and Queen#path? to determine if all spots on a rank
   # between the start and finish are free
   def rank_free?(start, finish, playing_field)
@@ -53,5 +58,21 @@ class Piece
   # used by #Rook#path? and #Queen#path? to determine if the potential path is along a file
   def along_file?(start, finish)
     start[0] == finish[0]
+  end
+
+  def positive_diagonal_free?(start, finish, playing_field)
+  end
+
+  def negative_diagonal_free?(start, finish, playing_field)
+  end
+
+  # used by #Bishop#path? and #Queen#path? to determine if the potential path is along a positive diagonal
+  def along_positive_diagonal?(start, finish)
+    finish[0] - start[0] == finish[1] - start[1]
+  end
+
+  # used by #Bishop#path? and #Queen#path? to determine if the potential path is along a negative diagonal
+  def along_negative_diagonal?(start, finish)
+    finish[0] - start[1] == start[0] - finish[1]
   end
 end
