@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
-# rook class
+require_relative 'piece.rb'
+
+# bishop class
 class Bishop < Piece
   # determine if a path is legal for a bishop using the start, finish and playing field
-  # uses functions in Piece
+  # uses methods in Piece
   def path?(start, finish, playing_field)
     return false unless along_positive_diagonal?(start, finish) || along_negative_diagonal?(start, finish)
 
