@@ -198,6 +198,38 @@ RSpec.describe Piece do
       end
     end
   end
+
+  describe '#along_positive_diagonal?' do
+    context 'when the potential path is along a positive_diagonal' do
+      it 'returns true' do
+        along_positive_diagonal_or_not = piece.along_positive_diagonal?([1, 0], [4, 3])
+        expect(along_positive_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when the potential path is not along a positive_diagonal' do
+      it 'returns false' do
+        along_positive_diagonal_or_not = piece.along_positive_diagonal?([1, 3], [3, 3])
+        expect(along_positive_diagonal_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#along_negative_diagonal?' do
+    context 'when the potential path is along a negative_diagonal' do
+      it 'returns true' do
+        along_negative_diagonal_or_not = piece.along_negative_diagonal?([1, 5], [5, 1])
+        expect(along_negative_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when the potential path is not along a negative_diagonal' do
+      it 'returns false' do
+        along_negative_diagonal_or_not = piece.along_negative_diagonal?([1, 5], [4, 1])
+        expect(along_negative_diagonal_or_not).to eq(false)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
