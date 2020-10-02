@@ -14,6 +14,11 @@ class Piece
     @bishop.path?(start, finish, playing_field)
   end
 
+  def queen_path?(start, finish, playing_field)
+    @queen = Queen.new
+    @queen.path?(start, finish, playing_field)
+  end
+
   # used by Rook#path? and Queen#path? to determine if all spots on a rank
   # between the start and finish are free
   def rank_free?(start, finish, playing_field)
