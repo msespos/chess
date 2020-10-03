@@ -149,6 +149,7 @@ RSpec.describe Game do
   end
 
   describe '#valid_move?' do
+    #integration test - tests #on_playing_field as well
     context 'when the start coordinates are not on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, -1], [0, 5])
@@ -156,6 +157,7 @@ RSpec.describe Game do
       end
     end
 
+    #integration test - tests #on_playing_field as well
     context 'when the end coordinates are not on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, 1], [0, 8])
@@ -163,6 +165,7 @@ RSpec.describe Game do
       end
     end
 
+    #integration test - tests #on_playing_field as well
     context 'when neither the start nor the end coordinates are on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, -1], [0, 8])
