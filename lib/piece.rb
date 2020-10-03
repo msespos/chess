@@ -25,7 +25,7 @@ class Piece
   end
 
   def knight_path?(start, finish, _playing_field)
-    @knight = King.new
+    @knight = Knight.new
     @knight.path?(start, finish)
   end
 
