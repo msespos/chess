@@ -149,6 +149,27 @@ RSpec.describe Game do
   end
 
   describe '#valid_move?' do
+    context 'when the start coordinates are not on the playing field' do
+      it 'returns false' do
+        valid_or_not = game.valid_move?([0, -1], [0, 5])
+        expect(valid_or_not).to eq(false)
+      end
+    end
+
+    context 'when the end coordinates are not on the playing field' do
+      it 'returns false' do
+        valid_or_not = game.valid_move?([0, 1], [0, 8])
+        expect(valid_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither the start nor the end coordinates are on the playing field' do
+      it 'returns false' do
+        valid_or_not = game.valid_move?([0, -1], [0, 8])
+        expect(valid_or_not).to eq(false)
+      end
+    end
+
     context 'when the pieces are the same color' do
       it 'returns false' do
         allow(game).to receive(:same_color?).and_return(true)
@@ -178,6 +199,36 @@ RSpec.describe Game do
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(true)
+      end
+    end
+  end
+
+  describe '#on_playing_field?' do
+    context 'when [-1, -1] is passed' do
+      it 'returns false' do
+        is_not_on_playing_field = game.on_playing_field?([-1, -1])
+        expect(is_not_on_playing_field).to eq(false)
+      end
+    end
+
+    context 'when [3, 1] is passed' do
+      it 'returns true' do
+        is_on_playing_field = game.on_playing_field?([3, 1])
+        expect(is_on_playing_field).to eq(true)
+      end
+    end
+
+    context 'when [8, 9] is passed' do
+      it 'returns false' do
+        is_not_on_playing_field = game.on_playing_field?([8, 9])
+        expect(is_not_on_playing_field).to eq(false)
+      end
+    end
+
+    context 'when [7, 7] is passed' do
+      it 'returns true' do
+        is_on_playing_field = game.on_playing_field?([7, 7])
+        expect(is_on_playing_field).to eq(true)
       end
     end
   end

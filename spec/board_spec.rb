@@ -82,36 +82,6 @@ RSpec.describe Board do
     end
   end
 
-  describe '#on_board?' do
-    context 'when [0, 0] is passed' do
-      it 'returns false' do
-        is_not_on_board = board.on_board?([0, 0])
-        expect(is_not_on_board).to eq(false)
-      end
-    end
-
-    context 'when [3, 1] is passed' do
-      it 'returns true' do
-        is_on_board = board.on_board?([3, 1])
-        expect(is_on_board).to eq(true)
-      end
-    end
-
-    context 'when [11, 9] is passed' do
-      it 'returns false' do
-        is_not_on_board = board.on_board?([11, 9])
-        expect(is_not_on_board).to eq(false)
-      end
-    end
-
-    context 'when [10, 8] is passed' do
-      it 'returns true' do
-        is_on_board = board.on_board?([10, 8])
-        expect(is_on_board).to eq(true)
-      end
-    end
-  end
-
   describe '#overwrite_playing_field' do
     context 'when it receives an initial board from Game' do
       it 'prints out the initial board' do
