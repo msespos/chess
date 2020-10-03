@@ -34,6 +34,52 @@ RSpec.describe King do
       end
     end
   end
+
+  describe 'only_one_space?' do
+    context 'the start and finish are more than one space apart' do
+      it 'returns false' do
+        only_one_space_or_not = king.only_one_space?([4, 0], [6, 0])
+        expect(only_one_space_or_not).to eq(false)
+      end
+
+      it 'returns false' do
+        only_one_space_or_not = king.only_one_space?([4, 0], [4, 5])
+        expect(only_one_space_or_not).to eq(false)
+      end
+
+      it 'returns false' do
+        only_one_space_or_not = king.only_one_space?([1, 1], [3, 3])
+        expect(only_one_space_or_not).to eq(false)
+      end
+
+      it 'returns false' do
+        only_one_space_or_not = king.only_one_space?([1, 2], [0, 0])
+        expect(only_one_space_or_not).to eq(false)
+      end
+    end
+
+    context 'the start and finish are one space apart' do
+      it 'returns true' do
+        only_one_space_or_not = king.only_one_space?([4, 0], [5, 0])
+        expect(only_one_space_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        only_one_space_or_not = king.only_one_space?([4, 0], [4, 1])
+        expect(only_one_space_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        only_one_space_or_not = king.only_one_space?([1, 1], [2, 2])
+        expect(only_one_space_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        only_one_space_or_not = king.only_one_space?([1, 2], [2, 3])
+        expect(only_one_space_or_not).to eq(true)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
