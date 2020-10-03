@@ -378,6 +378,26 @@ RSpec.describe Piece do
     end
   end
 
+  describe '#king_path?' do
+    context 'when it is called' do
+      it 'creates an instance of King' do
+        piece.king_path?([0, 0], [1, 0], 'playing field')
+        king = piece.instance_variable_get(:@king)
+        expect(king).to be_a(King)
+      end
+    end
+  end
+
+  describe '#knight_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Knight' do
+        piece.knight_path?([0, 0], [1, 2], 'playing field')
+        knight = piece.instance_variable_get(:@knight)
+        expect(knight).to be_a(Knight)
+      end
+    end
+  end
+
   describe '#rank_free?' do
     context 'when there is a clear path between the start and finish squares along a rank' do
       it 'returns true' do
