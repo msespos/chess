@@ -67,7 +67,7 @@ class Game
     @piece.send(path_method, start, finish, @playing_field)
   end
 
-  # check if a set of coordinates is on the board
+  # used by #valid_move to check if a set of coordinates is on the board
   def on_playing_field?(coordinates)
     coordinates[0] >= 0 && coordinates[0] <= 7 && coordinates[1] >= 0 && coordinates[1] <= 7
   end
