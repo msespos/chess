@@ -13,9 +13,9 @@ class King < Piece
   end
 
   def only_one_space?(start, finish)
-    (0..1).each { |coord| start[coord] - finish[coord] <= 1 && start[coord] - finish[coord] >= -1 }
+    start[0] - finish[0] <= 1 && start[0] - finish[0] >= -1 &&
+      start[1] - finish[1] <= 1 && start[1] - finish[1] >= -1
   end
 
-  def castling?(start, finish, playing_field)
-  end
+  def castling?(start, finish, playing_field) end
 end
