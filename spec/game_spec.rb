@@ -161,7 +161,7 @@ RSpec.describe Game do
       end
     end
 
-      # integration test - tests #on_playing_field as well
+    # integration test - tests #on_playing_field as well
     context 'when the start coordinates are not on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, -1], [0, 5])
