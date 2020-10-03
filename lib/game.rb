@@ -57,10 +57,17 @@ class Game
   # and the appropriate Piece method (using #obtain_path_method to look up the method
   # based on the piece), with the start and finish coordinates and the playing field as arguments
   def valid_move?(start, finish)
+    return false unless on_playing_field?(start) && on_playing_field?(finish)
+
     return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
 
     path_method = obtain_path_method(start)
     @piece.send(path_method, start, finish, @playing_field)
+  end
+
+  # check if a set of coordinates is on the board - may rewrite and move to Game class
+  def on_playing_field?(coordinates)
+    coordinates[0] >= 0 && coordinates[0] <= 7 && coordinates[1] >= 0 && coordinates[1] <= 7
   end
 
   # used by #valid_move to look up the appropriate method using the SYMBOL_TO_METHOD hash

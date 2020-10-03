@@ -77,11 +77,6 @@ class Board
     string
   end
 
-  # check if a set of coordinates is on the board - may rewrite and move to Game class
-  def on_board?(coordinates)
-    coordinates[0] > 2 && coordinates[0] < 11 && coordinates[1].positive? && coordinates[1] < 9
-  end
-
   # overwrite the 8x8 playing field section of the board using an 8x8 playing field input from Game
   def overwrite_playing_field(playing_field)
     (0..7).each do |column|
