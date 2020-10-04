@@ -41,8 +41,8 @@ class Game
     @board.overwrite_playing_field(playing_field)
   end
 
-  # move a piece (capturing or not) given start and finish coordinates
-  # castling and en passant and pawn promotion still need to be incorporated
+  # move a piece or a pawn (capturing or not) given start and finish coordinates
+  # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
     return :invalid unless valid_move?(start, finish)
 
@@ -53,29 +53,32 @@ class Game
     captured
   end
 
-  # check if the move is valid by calling same_color? with the start and finish coordinates,
-  # and the appropriate Piece method (using #obtain_path_method to look up the method
-  # based on the piece), with the start and finish coordinates and the playing field as arguments
+  # check if the move is valid by checking if the start and finish squares are different,
+  # and checking if the start and finish squares are on the playing field,
+  # and checking if the start and finish squares are the same color,
+  # and looking up the appropriate Piece path method using the SYMBOL_TO_METHOD hash
+  # and the piece on the starting square, and calling it on @piece
   def valid_move?(start, finish)
     return false if start == finish
 
     return false unless on_playing_field?(start) && on_playing_field?(finish)
 
-    return false if same_color?(@playing_field[start[0]][start[1]], @playing_field[finish[0]][finish[1]])
+    start_piece = @playing_field[start[0]][start[1]]
+    finish_piece = @playing_field[finish[0]][finish[1]]
+    return false if same_color?(start_piece, finish_piece)
 
-    path_method = obtain_path_method(start)
-    @piece.send(path_method, start, finish, @playing_field)
+    @piece.send(SYMBOL_TO_METHOD[start_piece], start, finish, @playing_field)
   end
 
-  # used by #valid_move to check if a set of coordinates is on the board
+  # used by #valid_move? to check if a set of coordinates is on the board
   def on_playing_field?(coordinates)
     coordinates[0] >= 0 && coordinates[0] <= 7 && coordinates[1] >= 0 && coordinates[1] <= 7
   end
 
-  # used by #valid_move to look up the appropriate method using the SYMBOL_TO_METHOD hash
-  # and the piece on the starting square of the path
-  def obtain_path_method(start)
-    SYMBOL_TO_METHOD[@playing_field[start[0]][start[1]]]
+  # used by #valid_move?
+  # check if the pieces in the start and finish square are the same color or not
+  def same_color?(start_piece, finish_piece)
+    start_piece[0] == finish_piece[0]
   end
 
   # used by #move_piece
@@ -85,11 +88,5 @@ class Game
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
-  end
-
-  # used by #valid_move?
-  # check if the pieces in the start and finish square are the same color or not
-  def same_color?(start_piece, finish_piece)
-    start_piece[0] == finish_piece[0]
   end
 end
