@@ -549,6 +549,26 @@ RSpec.describe Piece do
       end
     end
   end
+
+  describe '#white_pawn_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Pawn' do
+        piece.white_pawn_path?([0, 1], [0, 2], ['playing field'])
+        pawn = piece.instance_variable_get(:@pawn)
+        expect(pawn).to be_a(Pawn)
+      end
+    end
+  end
+
+  describe '#black_pawn_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Pawn' do
+        piece.black_pawn_path?([0, 7], [0, 6], ['playing field'])
+        pawn = piece.instance_variable_get(:@pawn)
+        expect(pawn).to be_a(Pawn)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
