@@ -29,6 +29,16 @@ class Piece
     @knight.path?(start, finish)
   end
 
+  def white_pawn_path?(start, finish, playing_field)
+    @pawn = Pawn.new
+    @pawn.path?(start, finish, playing_field, :w)
+  end
+
+  def black_pawn_path?(start, finish, playing_field)
+    @pawn = Pawn.new
+    @pawn.path?(start, finish, playing_field, :b)
+  end
+
   # used by Rook#path? and Queen#path? to determine if all spots on a rank
   # between the start and finish are free
   def rank_free?(start, finish, playing_field)
