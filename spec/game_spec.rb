@@ -194,7 +194,7 @@ RSpec.describe Game do
     end
 
     # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
-    context 'when the pieces are not the same color and #legal_path? is false' do
+    context 'when the pieces are not the same color and #rook_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
@@ -206,13 +206,37 @@ RSpec.describe Game do
     end
 
     # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
-    context 'when the pieces are not the same color and #legal_path? is true' do
+    context 'when the pieces are not the same color and #rook_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:same_color?).and_return(false)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
+        expect(valid_or_not).to eq(true)
+      end
+    end
+
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#knight_path exists
+    context 'when the pieces are not the same color and #knight_path? is true' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:knight_path?).and_return(true)
+        valid_or_not = game.valid_move?([1, 0], [2, 2])
+        expect(valid_or_not).to eq(true)
+      end
+    end
+
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
+    context 'when the pieces are not the same color and #queen_path? is true' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:queen_path?).and_return(true)
+        valid_or_not = game.valid_move?([3, 0], [4, 0])
         expect(valid_or_not).to eq(true)
       end
     end
