@@ -60,7 +60,23 @@ class Pawn < Piece
   # used by #standard_conditions_met? to determine if the square in front of a
   # starting position pawn is free
   def one_square_ahead_free?(start, finish, playing_field, color)
+    if color == :white
+      white_one_square?(start, finish, playing_field)
+    else
+      black_one_square?(start, finish, playing_field)
+    end
+  end
+
+  # used by one_square_ahead_free? to determine if the one square ahead
+  # of a white pawn are free
+  def white_one_square?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == start[1] + 1 && playing_field[finish[0]][finish[1]].nil?
+  end
+
+  # used by one_square_ahead_free? to determine if the one square ahead
+  # of a black pawn are free
+  def black_one_square?(start, finish, playing_field)
+    finish[0] == start[0] && finish[1] == start[1] - 1 && playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by #standard_conditions_met? to determine if a left diagonal capture is possible
