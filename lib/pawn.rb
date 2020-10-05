@@ -15,7 +15,7 @@ class Pawn < Piece
     false
   end
 
-  # used by #white_pawn_path? to determine if a pawn is on the second rank
+  # used by #path? to determine if a pawn is on the second rank
   # (starting position for white pawns)
   def on_starting_rank?(start, color)
     start[1] == if color == :white
@@ -25,7 +25,7 @@ class Pawn < Piece
                 end
   end
 
-  # used by #white_pawn_path? to determine if the two squares in front of a
+  # used by #path? to determine if the two squares in front of a
   # starting position pawn are free
   def two_squares_ahead_free?(start, finish, playing_field, color)
     if color == :white
@@ -35,17 +35,21 @@ class Pawn < Piece
     end
   end
 
+  # used by two_squares_ahead_free? to determine if the two squared ahead
+  # of a white pawn are free
   def white_two_squares?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == 3 &&
       playing_field[start[0]][2].nil? && playing_field[start[0]][3].nil?
   end
 
+  # used by two_squares_ahead_free? to determine if the two squared ahead
+  # of a black pawn are free
   def black_two_squares?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == 4 &&
       playing_field[start[0]][5].nil? && playing_field[start[0]][4].nil?
   end
 
-  # used by #white_pawn_path to determine if the standard (not moving two spaces) conditions
+  # used by #path? to determine if the standard (not moving two spaces) conditions
   # are met for a pawn to make a move
   def standard_conditions_met?(start, finish, playing_field, color)
     one_square_ahead_free?(start, finish, playing_field, color) ||
