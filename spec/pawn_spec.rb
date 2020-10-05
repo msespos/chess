@@ -249,43 +249,91 @@ RSpec.describe Pawn do
   end
 
   describe '#left_diagonal_capture?' do
-    context 'when a left diagonal capture is possible' do
+  end
+
+  describe '#white_left_diagonal?' do
+    context 'when it is a white pawn and a left diagonal capture is possible' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][5] = :b_pawn
-        left_diagonal_capture_or_not = pawn.left_diagonal_capture?([4, 4], [3, 5], playing_field, 'color')
-        expect(left_diagonal_capture_or_not).to eq(true)
+        white_left_diagonal_or_not = pawn.white_left_diagonal?([4, 4], [3, 5], playing_field)
+        expect(white_left_diagonal_or_not).to eq(true)
       end
     end
 
-    context 'when a left diagonal capture is not possible' do
+    context 'when it is a white pawn and a left diagonal capture is not possible' do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
-        left_diagonal_capture_or_not = pawn.left_diagonal_capture?([3, 1], [2, 2], playing_field, 'color')
-        expect(left_diagonal_capture_or_not).to eq(false)
+        white_left_diagonal_or_not = pawn.white_left_diagonal?([3, 1], [2, 2], playing_field)
+        expect(white_left_diagonal_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#black_left_diagonal?' do
+    context 'when it is a black pawn and a left diagonal capture is possible' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][5] = :b_pawn
+        playing_field[5][4] = :w_pawn
+        black_left_diagonal_or_not = pawn.black_left_diagonal?([4, 5], [5, 4], playing_field)
+        expect(black_left_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn and a left diagonal capture is not possible' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[2][2] = :b_pawn
+        black_left_diagonal_or_not = pawn.black_left_diagonal?([2, 2], [3, 1], playing_field)
+        expect(black_left_diagonal_or_not).to eq(false)
       end
     end
   end
 
   describe '#right_diagonal_capture?' do
-    context 'when a right diagonal capture is possible' do
+  end
+
+  describe '#white_right_diagonal?' do
+    context 'when it is a white pawn and a right diagonal capture is possible' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][1] = :w_pawn
-        playing_field[1][2] = :w_pawn
-        right_diagonal_capture_or_not = pawn.right_diagonal_capture?([0, 1], [1, 2], playing_field, 'color')
-        expect(right_diagonal_capture_or_not).to eq(true)
+        playing_field[1][2] = :b_pawn
+        white_right_diagonal_or_not = pawn.white_right_diagonal?([0, 1], [1, 2], playing_field)
+        expect(white_right_diagonal_or_not).to eq(true)
       end
     end
 
-    context 'when a left diagonal capture is not possible' do
+    context 'when it is a white pawn and a right diagonal capture is not possible' do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
-        right_diagonal_capture_or_not = pawn.right_diagonal_capture?([3, 1], [4, 2], playing_field, 'color')
-        expect(right_diagonal_capture_or_not).to eq(false)
+        white_right_diagonal_or_not = pawn.white_right_diagonal?([3, 1], [4, 2], playing_field)
+        expect(white_right_diagonal_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#black_right_diagonal?' do
+    context 'when it is a black pawn and a right diagonal capture is possible' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[1][2] = :b_pawn
+        playing_field[0][1] = :w_pawn
+        black_right_diagonal_or_not = pawn.black_right_diagonal?([1, 2], [0, 1], playing_field)
+        expect(black_right_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn and a right diagonal capture is not possible' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][2] = :b_pawn
+        black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field)
+        expect(black_right_diagonal_or_not).to eq(false)
       end
     end
   end
