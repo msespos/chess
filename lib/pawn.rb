@@ -35,14 +35,14 @@ class Pawn < Piece
     end
   end
 
-  # used by two_squares_ahead_free? to determine if the two squared ahead
+  # used by two_squares_ahead_free? to determine if the two squares ahead
   # of a white pawn are free
   def white_two_squares?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == 3 &&
       playing_field[start[0]][2].nil? && playing_field[start[0]][3].nil?
   end
 
-  # used by two_squares_ahead_free? to determine if the two squared ahead
+  # used by two_squares_ahead_free? to determine if the two squares ahead
   # of a black pawn are free
   def black_two_squares?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == 4 &&
