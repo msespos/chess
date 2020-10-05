@@ -31,12 +31,12 @@ class Piece
 
   def white_pawn_path?(start, finish, playing_field)
     @pawn = Pawn.new
-    @pawn.path?(start, finish, playing_field, :w)
+    @pawn.path?(start, finish, playing_field, :white)
   end
 
   def black_pawn_path?(start, finish, playing_field)
     @pawn = Pawn.new
-    @pawn.path?(start, finish, playing_field, :b)
+    @pawn.path?(start, finish, playing_field, :black)
   end
 
   # used by Rook#path? and Queen#path? to determine if all spots on a rank
