@@ -81,13 +81,39 @@ class Pawn < Piece
 
   # used by #standard_conditions_met? to determine if a left diagonal capture is possible
   def left_diagonal_capture?(start, finish, playing_field, color)
+    if color == :white
+      white_left_diagonal?(start, finish, playing_field)
+    else
+      black_left_diagonal?(start, finish, playing_field)
+    end
+  end
+
+  def white_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0].to_i - 1 && finish[1] == start[1] + 1 &&
-      !playing_field[finish[0]][finish [1]].nil?
+      !playing_field[finish[0]][finish[1]].nil?
+  end
+
+  def black_left_diagonal?(start, finish, playing_field)
+    finish[0] == start[0].to_i + 1 && finish[1] == start[1] - 1 &&
+      !playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by #standard_conditions_met? to determine if a right diagonal capture is possible
   def right_diagonal_capture?(start, finish, playing_field, color)
+    if color == :white
+      white_right_diagonal?(start, finish, playing_field)
+    else
+      black_right_diagonal?(start, finish, playing_field)
+    end
+  end
+
+  def white_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      !playing_field[finish[0]][finish [1]].nil?
+      !playing_field[finish[0]][finish[1]].nil?
+  end
+
+  def black_right_diagonal?(start, finish, playing_field)
+    finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
+      !playing_field[finish[0]][finish[1]].nil?
   end
 end
