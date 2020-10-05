@@ -59,14 +59,14 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it is a white pawn not the starting rank' do
+    context 'when it is a white pawn not on the starting rank' do
       it 'returns false' do
         starting_rank_or_not = pawn.on_starting_rank?([7, 6], :white)
         expect(starting_rank_or_not).to eq(false)
       end
     end
 
-    context 'when it is a black pawn not the starting rank' do
+    context 'when it is a black pawn not on the starting rank' do
       it 'returns false' do
         starting_rank_or_not = pawn.on_starting_rank?([4, 1], :black)
         expect(starting_rank_or_not).to eq(false)
@@ -75,31 +75,60 @@ RSpec.describe Pawn do
   end
 
   describe '#two_squares_ahead_free?' do
-    context 'when the two squares ahead are free' do
+    context 'when it is a white pawn and the two squares ahead are free' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][1] = :w_pawn
-        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([0, 1], [0, 3], playing_field, 'color')
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([0, 1], [0, 3], playing_field, :white)
         expect(two_squares_ahead_free_or_not).to eq(true)
       end
     end
 
-    context 'when the two squares ahead are not free' do
+    context 'when it is a black pawn and the two squares ahead are free' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][6] = :w_pawn
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([0, 6], [0, 4], playing_field, :black)
+        expect(two_squares_ahead_free_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn and the two squares ahead are not free' do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         playing_field[3][2] = :w_pawn
-        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, 'color')
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, :white)
         expect(two_squares_ahead_free_or_not).to eq(false)
       end
     end
 
-    context 'when the two squares ahead are not free' do
+    context 'when it is a black pawn and the two squares ahead are not free' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][6] = :w_pawn
+        playing_field[3][5] = :w_pawn
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 6], [3, 4], playing_field, :black)
+        expect(two_squares_ahead_free_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a white pawn and the two squares ahead are not free' do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         playing_field[3][3] = :w_pawn
-        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, 'color')
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, :white)
+        expect(two_squares_ahead_free_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a black pawn and the two squares ahead are not free' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][6] = :w_pawn
+        playing_field[3][4] = :w_pawn
+        two_squares_ahead_free_or_not = pawn.two_squares_ahead_free?([3, 6], [3, 4], playing_field, :black)
         expect(two_squares_ahead_free_or_not).to eq(false)
       end
     end
