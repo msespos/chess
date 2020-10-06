@@ -6,6 +6,7 @@ require_relative '../lib/game.rb'
 
 RSpec.describe Game do
   subject(:game) { described_class.new }
+  subject(:game) { described_class.new }
   describe '#initialize' do
     context 'when the game class is instantiated' do
       it 'creates an instance of Board' do
@@ -252,6 +253,7 @@ RSpec.describe Game do
         expect(valid_or_not).to eq(true)
       end
     end
+
     # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
     context 'when the pieces are not the same color and #king_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
