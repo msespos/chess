@@ -173,6 +173,7 @@ RSpec.describe Pawn do
     context 'when it has a right diagonal capture available' do
       it 'returns true' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
+        allow(pawn).to receive(:left_diagonal_capture?).and_return(false)
         allow(pawn).to receive(:right_diagonal_capture?).and_return(true)
         standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(true)
