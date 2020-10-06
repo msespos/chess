@@ -73,11 +73,11 @@ class Game
   # used by #valid_move to get the path method to be used from the piece symbol passed in
   def path_method_from_piece(start_piece)
     if start_piece == :w_pawn
-      :w_pawn_path?
+      'w_pawn_path?'
     elsif start_piece == :b_pawn
-      :b_pawn_path?
+      'b_pawn_path?'
     else
-      (start_piece[2..-1] + '_path?').to_sym
+      (start_piece[2..-1] + '_path?')
     end
   end
 
