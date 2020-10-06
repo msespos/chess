@@ -68,7 +68,8 @@ class Game
     finish_piece = @playing_field[finish[0]][finish[1]]
     return false if same_color?(start_piece, finish_piece)
 
-    @piece.send(SYMBOL_TO_METHOD[start_piece], start, finish, @playing_field)
+    path_method = path_method_from_piece(start_piece)
+    @piece.send(path_method, start, finish, @playing_field)
   end
 
   # used by #valid_move? to check if a set of coordinates is on the board
@@ -80,6 +81,17 @@ class Game
   # check if the pieces in the start and finish square are the same color or not
   def same_color?(start_piece, finish_piece)
     start_piece[0] == finish_piece[0]
+  end
+
+  # used by #valid_move to get the path method to be used from the piece symbol passed in
+  def path_method_from_piece(start_piece)
+    if start_piece == :w_pawn
+      :w_pawn_path?
+    elsif start_piece == :b_pawn
+      :b_pawn_path?
+    else
+      (start_piece[2..-1] + '_path?').to_sym
+    end
   end
 
   # used by #move_piece
