@@ -240,20 +240,43 @@ RSpec.describe Game do
         expect(valid_or_not).to eq(true)
       end
     end
+
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
+    context 'when the pieces are not the same color and #w_pawn_path? is false' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
+        valid_or_not = game.valid_move?([3, 1], [3, 2])
+        expect(valid_or_not).to eq(true)
+      end
+    end
+    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
+    context 'when the pieces are not the same color and #king_path? is false' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        allow(game).to receive(:same_color?).and_return(false)
+        allow(piece_valid).to receive(:king_path?).and_return(false)
+        valid_or_not = game.valid_move?([4, 0], [1, 0])
+        expect(valid_or_not).to eq(false)
+      end
+    end
   end
 
   describe 'path_method_from_piece' do
     context 'when a white pawn is passed in' do
-      it 'returns :w_pawn_path?' do
+      it 'returns :white_pawn_path?' do
         method = game.path_method_from_piece(:w_pawn)
-        expect(method).to eq('w_pawn_path?')
+        expect(method).to eq('white_pawn_path?')
       end
     end
 
     context 'when a black pawn is passed in' do
-      it 'returns :b_pawn_path?' do
+      it 'returns :black_pawn_path?' do
         method = game.path_method_from_piece(:b_pawn)
-        expect(method).to eq('b_pawn_path?')
+        expect(method).to eq('black_pawn_path?')
       end
     end
 
