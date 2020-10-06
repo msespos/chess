@@ -53,6 +53,7 @@ class Game
     captured
   end
 
+  # used by #move_piece
   # check if the move is valid by checking if the start and finish squares are different,
   # and checking if the start and finish squares are on the playing field,
   # and checking if the start and finish squares are the same color,
