@@ -89,12 +89,12 @@ class Pawn < Piece
   end
 
   def white_left_diagonal?(start, finish, playing_field)
-    finish[0] == start[0].to_i - 1 && finish[1] == start[1] + 1 &&
+    finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
       !playing_field[finish[0]][finish[1]].nil?
   end
 
   def black_left_diagonal?(start, finish, playing_field)
-    finish[0] == start[0].to_i + 1 && finish[1] == start[1] - 1 &&
+    finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
       !playing_field[finish[0]][finish[1]].nil?
   end
 
