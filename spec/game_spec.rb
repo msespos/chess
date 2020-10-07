@@ -6,7 +6,6 @@ require_relative '../lib/game.rb'
 
 RSpec.describe Game do
   subject(:game) { described_class.new }
-  subject(:game) { described_class.new }
   describe '#initialize' do
     context 'when the game class is instantiated' do
       it 'creates an instance of Board' do
@@ -45,6 +44,40 @@ RSpec.describe Game do
     end
   end
 
+  describe '#playing_field_to_board' do
+    let(:board_field) { instance_double(Board) }
+    context 'when a playing field is passed in' do
+      it 'calls Board#overwrite_playing_field with the playing field' do
+        game.instance_variable_set(:@board, board_field)
+        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
+        game.playing_field_to_board(playing_field)
+      end
+    end
+  end
+
+  describe '#player_move_to_start_finish' do
+    context 'when "a1a3" is passed in' do
+      it 'returns [[0, 0], [0, 2]]' do
+        start_finish = game.player_move_to_start_finish('a1a3')
+        expect(start_finish).to eq([[0, 0], [0, 2]])
+      end
+    end
+    context 'when "h7f5" is passed in' do
+      it 'returns [[7, 6], [5, 4]]' do
+        start_finish = game.player_move_to_start_finish('h7f5')
+        expect(start_finish).to eq([[7, 6], [5, 4]])
+      end
+    end
+  end
+
   describe '#algebraic_to_cartesian' do
     context 'when "a1" is passed in' do
       it 'returns [0, 0]' do
@@ -64,25 +97,6 @@ RSpec.describe Game do
       it 'returns [7, 3]' do
         coords = game.algebraic_to_cartesian('h4')
         expect(coords).to eq([7, 3])
-      end
-    end
-  end
-
-  describe '#playing_field_to_board' do
-    let(:board_field) { instance_double(Board) }
-    context 'when a playing field is passed in' do
-      it 'calls Board#overwrite_playing_field with the playing field' do
-        game.instance_variable_set(:@board, board_field)
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
-        game.playing_field_to_board(playing_field)
       end
     end
   end
