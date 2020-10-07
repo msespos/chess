@@ -4,8 +4,8 @@
 class Game
   def initialize
     @board = Board.new
-    initial_playing_field
     @piece = Piece.new
+    initial_playing_field
   end
 
   # set up the playing field for the start of the game
