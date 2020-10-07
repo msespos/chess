@@ -21,7 +21,7 @@ class Game
   end
 
   def play
-    puts "Intro text and Intro board"
+    puts 'Intro text and Intro board'
     puts @board
     play_turn
   end
@@ -30,7 +30,7 @@ class Game
     move = @player.player_move
     start, finish = player_move_to_start_finish(move)
     move_piece(start, finish)
-    @current_player = current_player = :white ? :black : :white
+    @current_player = current_player == :white ? :black : :white
     playing_field_to_board(@playing_field)
     puts @board
   end
