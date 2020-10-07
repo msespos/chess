@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'board.rb'
+require_relative 'game.rb'
 
-puts Board.new
+Game.new.play
