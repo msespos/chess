@@ -23,6 +23,12 @@ class Game
     @board.overwrite_playing_field(playing_field)
   end
 
+  def player_move_to_start_finish(move)
+    start = [move[0].ord - 97, move[1].to_i - 1]
+    finish = [move[2].ord - 97, move[3].to_i - 1]
+    [start, finish]
+  end
+
   # convert an algebraic expression (user input) to cartesian coordinates (for piece manipulation)
   def algebraic_to_cartesian(algebraic_expression)
     [algebraic_expression.ord - 97, algebraic_expression[1].to_i - 1]
