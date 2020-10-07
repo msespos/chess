@@ -5,6 +5,8 @@ class Game
   def initialize
     @board = Board.new
     @piece = Piece.new
+    @player = Player.new
+    @current_player = :white
     initial_playing_field
   end
 
@@ -16,6 +18,21 @@ class Game
     @playing_field[6] = %i[b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn]
     @playing_field[7] = %i[b_rook b_knight b_bishop b_queen b_king b_bishop b_knight b_rook]
     @playing_field = @playing_field.transpose
+  end
+
+  def play
+    puts "Intro text and Intro board"
+    puts @board
+    play_turn
+  end
+
+  def play_turn
+    move = @player.player_move
+    start, finish = player_move_to_start_finish(move)
+    move_piece(start, finish)
+    @current_player = current_player = :white ? :black : :white
+    playing_field_to_board(@playing_field)
+    puts @board
   end
 
   # transfer a playing field to the board by calling Board#overwrite_playing_field
