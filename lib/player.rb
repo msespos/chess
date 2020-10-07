@@ -12,4 +12,8 @@ class Player
 
     move =~ /[a-h][1-8][a-h][1-8]/ ? true : false
   end
+
+  def invalid_move_message(move)
+    'That is not a valid move! Please enter a valid move'
+  end
 end
