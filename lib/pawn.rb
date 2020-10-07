@@ -3,7 +3,7 @@
 require_relative 'piece.rb'
 
 # pawn class
-class Pawn < Piece
+class Pawn
   # determine if a path is legal for a pawn using the start, finish, playing field and color
   def path?(start, finish, playing_field, color)
     if on_starting_rank?(start, color)

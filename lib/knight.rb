@@ -3,7 +3,7 @@
 require_relative 'piece.rb'
 
 # knight class
-class Knight < Piece
+class Knight
   # determine if a path is legal for a knight using the start, finish and playing field
   def path?(start, finish)
     vertical_l?(start, finish) || horizontal_l?(start, finish)
