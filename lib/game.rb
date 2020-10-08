@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require_relative 'board.rb'
+require_relative 'piece.rb'
+require_relative 'player.rb'
+
 # game class
 class Game
   def initialize
@@ -30,7 +34,7 @@ class Game
     move = @player.player_move
     start, finish = player_move_to_start_finish(move)
     move_piece(start, finish)
-    @current_player = current_player == :white ? :black : :white
+    @current_player = @current_player == :white ? :black : :white
     playing_field_to_board(@playing_field)
     puts @board
   end
@@ -46,15 +50,10 @@ class Game
     [start, finish]
   end
 
-  # convert an algebraic expression (user input) to cartesian coordinates (for piece manipulation)
-  def algebraic_to_cartesian(algebraic_expression)
-    [algebraic_expression.ord - 97, algebraic_expression[1].to_i - 1]
-  end
-
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
-    return :invalid unless valid_move?(start, finish)
+    return nil unless valid_move?(start, finish)
 
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
