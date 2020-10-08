@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'pry'
 require_relative 'board.rb'
 require_relative 'piece.rb'
 require_relative 'player.rb'
