@@ -78,29 +78,6 @@ RSpec.describe Game do
     end
   end
 
-  describe '#algebraic_to_cartesian' do
-    context 'when "a1" is passed in' do
-      it 'returns [0, 0]' do
-        coords = game.algebraic_to_cartesian('a1')
-        expect(coords).to eq([0, 0])
-      end
-    end
-
-    context 'when "c3" is passed in' do
-      it 'returns [2, 2]' do
-        coords = game.algebraic_to_cartesian('c3')
-        expect(coords).to eq([2, 2])
-      end
-    end
-
-    context 'when "h4" is passed in' do
-      it 'returns [7, 3]' do
-        coords = game.algebraic_to_cartesian('h4')
-        expect(coords).to eq([7, 3])
-      end
-    end
-  end
-
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
@@ -128,10 +105,10 @@ RSpec.describe Game do
 
   describe '#move_piece' do
     context 'when a white rook attempts to move from a1 to a4 illegally' do
-      it 'returns :invalid' do
+      it 'returns nil' do
         allow(game).to receive(:valid_move?).and_return(false)
         move = game.move_piece([0, 0], [0, 3])
-        expect(move).to eq(:invalid)
+        expect(move).to eq(nil)
       end
     end
   end
