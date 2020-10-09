@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'piece.rb'
+
 # rook class
 class Rook < Piece
   # determine if a path is legal for a rook using the start, finish and playing field

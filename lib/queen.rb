@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'piece.rb'
+
 # queen class
 class Queen < Piece
   # determine if a path is legal for a queen using the start, finish and playing field
