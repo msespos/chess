@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'piece.rb'
-
 # knight class
 class Knight
   # determine if a path is legal for a knight using the start, finish and playing field

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'piece.rb'
-
 # king class
 class King
   # determine if a path is legal for a king using the start and finish (playing field not used)
