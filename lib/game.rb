@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
 require 'pry'
-require_relative 'board.rb'
-require_relative 'piece.rb'
-require_relative 'player.rb'
 
 # game class
 class Game
@@ -64,11 +61,11 @@ class Game
   end
 
   # used by #move_piece
-  # check if the move is valid by checking if the start and finish squares are different,
-  # and checking if the start and finish squares are on the playing field,
-  # and checking if the start and finish squares are the same color,
-  # and looking up the appropriate Piece path method using the SYMBOL_TO_METHOD hash
-  # and the piece on the starting square, and calling it on @piece
+  # check if the move is valid by checking if the start and finish squares are different
+  # and checking if the start and finish squares are on the playing field
+  # and checking if the start and finish squares are the same color or the finish is not nil)
+  # and looking up the appropriate Piece path method using path_method_from_piece
+  # and calling it on @piece
   def valid_move?(start, finish)
     return false if start == finish
 
@@ -76,7 +73,7 @@ class Game
 
     start_piece = @playing_field[start[0]][start[1]]
     finish_piece = @playing_field[finish[0]][finish[1]]
-    return false if same_color?(start_piece, finish_piece)
+    return false if same_color_or_finish_not_nil?(start_piece, finish_piece)
 
     path_method = path_method_from_piece(start_piece)
     @piece.send(path_method, start, finish, @playing_field)
@@ -89,8 +86,15 @@ class Game
 
   # used by #valid_move?
   # check if the pieces in the start and finish square are the same color or not
+  # or if the piece in the finish square is nil or not
+  def same_color_or_finish_not_nil?(start_piece, finish_piece)
+    same_color?(start_piece, finish_piece) || !finish_piece.nil?
+  end
+
+  # used by #same_color_or_finish_not_nil?
+  # check if the pieces in the start and finish square are the same color or not
   def same_color?(start_piece, finish_piece)
-    start_piece[0] == finish_piece[0]
+    start_piece[0] == finish_piece[0] unless finish_piece.nil?
   end
 
   # used by #valid_move to get the path method to be used from the piece symbol passed in
