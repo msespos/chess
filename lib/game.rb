@@ -25,20 +25,18 @@ class Game
   def play
     puts 'Intro text and Intro board'
     puts @board
-    play_turn
+    play_turn until game_over?
   end
 
   def play_turn
-    until game_over?
+    start, finish = call_player_move_and_convert_it
+    while move_piece(start, finish) == :invalid
+      puts @player.invalid_move_message
       start, finish = call_player_move_and_convert_it
-      while move_piece(start, finish) == :invalid
-        puts @player.invalid_move_message
-        start, finish = call_player_move_and_convert_it
-      end
-      @current_player = @current_player == :white ? :black : :white
-      playing_field_to_board(@playing_field)
-      puts @board
     end
+    @current_player = @current_player == :white ? :black : :white
+    playing_field_to_board(@playing_field)
+    puts @board
   end
 
   def call_player_move_and_convert_it
