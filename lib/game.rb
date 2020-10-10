@@ -84,14 +84,14 @@ class Game
 
     return false unless on_playing_field?(start) && on_playing_field?(finish)
 
-    return false unless check_start_and_finish_pieces(start, finish)
+    return false unless start_and_finish_pieces_valid?(start, finish)
 
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
     @piece.send(path_method, start, finish, @playing_field)
   end
 
-  def check_start_and_finish_pieces(start, finish)
+  def start_and_finish_pieces_valid?(start, finish)
     start_piece = @playing_field[start[0]][start[1]]
     finish_piece = @playing_field[finish[0]][finish[1]]
     return false if start_piece.nil?
