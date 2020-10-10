@@ -398,6 +398,26 @@ RSpec.describe Piece do
     end
   end
 
+  describe '#white_pawn_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Pawn' do
+        piece.white_pawn_path?([0, 1], [0, 2], ['playing field'])
+        pawn = piece.instance_variable_get(:@pawn)
+        expect(pawn).to be_a(Pawn)
+      end
+    end
+  end
+
+  describe '#black_pawn_path?' do
+    context 'when it is called' do
+      it 'creates an instance of Pawn' do
+        piece.black_pawn_path?([0, 7], [0, 6], ['playing field'])
+        pawn = piece.instance_variable_get(:@pawn)
+        expect(pawn).to be_a(Pawn)
+      end
+    end
+  end
+
   describe '#rank_free?' do
     context 'when there is a clear path between the start and finish squares along a rank' do
       it 'returns true' do
@@ -546,26 +566,6 @@ RSpec.describe Piece do
       it 'returns false' do
         along_negative_diagonal_or_not = piece.along_negative_diagonal?([1, 5], [4, 1])
         expect(along_negative_diagonal_or_not).to eq(false)
-      end
-    end
-  end
-
-  describe '#white_pawn_path?' do
-    context 'when it is called' do
-      it 'creates an instance of Pawn' do
-        piece.white_pawn_path?([0, 1], [0, 2], ['playing field'])
-        pawn = piece.instance_variable_get(:@pawn)
-        expect(pawn).to be_a(Pawn)
-      end
-    end
-  end
-
-  describe '#black_pawn_path?' do
-    context 'when it is called' do
-      it 'creates an instance of Pawn' do
-        piece.black_pawn_path?([0, 7], [0, 6], ['playing field'])
-        pawn = piece.instance_variable_get(:@pawn)
-        expect(pawn).to be_a(Pawn)
       end
     end
   end
