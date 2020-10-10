@@ -30,17 +30,20 @@ class Game
 
   def play_turn
     until game_over?
-      move = @player.player_move
-      start, finish = player_move_to_start_finish(move)
+      start, finish = call_player_move_and_convert_it
       while move_piece(start, finish) == :invalid
         puts @player.invalid_move_message
-        move = @player.player_move
-        start, finish = player_move_to_start_finish(move)
+        start, finish = call_player_move_and_convert_it
       end
       @current_player = @current_player == :white ? :black : :white
       playing_field_to_board(@playing_field)
       puts @board
     end
+  end
+
+  def call_player_move_and_convert_it
+    move = @player.player_move
+    player_move_to_start_finish(move)
   end
 
   def game_over?
