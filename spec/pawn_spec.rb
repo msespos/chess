@@ -250,6 +250,19 @@ RSpec.describe Pawn do
   end
 
   describe '#left_diagonal_capture?' do
+    context 'when it is a white pawn' do
+      it 'calls white_left_diagonal?' do
+        expect(pawn).to receive(:white_left_diagonal?)
+        pawn.left_diagonal_capture?('start', 'finish', 'playing field', :white)
+      end
+    end
+
+    context 'when it is a black pawn' do
+      it 'calls black_left_diagonal?' do
+        expect(pawn).to receive(:black_left_diagonal?)
+        pawn.left_diagonal_capture?('start', 'finish', 'playing field', :black)
+      end
+    end
   end
 
   describe '#white_left_diagonal?' do
@@ -295,6 +308,19 @@ RSpec.describe Pawn do
   end
 
   describe '#right_diagonal_capture?' do
+    context 'when it is a white pawn' do
+      it 'calls white_right_diagonal?' do
+        expect(pawn).to receive(:white_right_diagonal?)
+        pawn.right_diagonal_capture?('start', 'finish', 'playing field', :white)
+      end
+    end
+
+    context 'when it is a black pawn' do
+      it 'calls black_right_diagonal?' do
+        expect(pawn).to receive(:black_right_diagonal?)
+        pawn.right_diagonal_capture?('start', 'finish', 'playing field', :black)
+      end
+    end
   end
 
   describe '#white_right_diagonal?' do
