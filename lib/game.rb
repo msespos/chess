@@ -86,6 +86,8 @@ class Game
 
     start_piece = @playing_field[start[0]][start[1]]
     finish_piece = @playing_field[finish[0]][finish[1]]
+    return false if start_piece.nil?
+
     return false unless finish_space_valid?(start_piece, finish_piece)
 
     path_method = path_method_from_piece(start_piece)
