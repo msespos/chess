@@ -85,7 +85,7 @@ class Game
     return false unless on_playing_field?(start) && on_playing_field?(finish)
 
     return false unless check_start_and_finish_pieces(start, finish)
-    
+
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
     @piece.send(path_method, start, finish, @playing_field)
