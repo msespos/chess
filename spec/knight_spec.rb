@@ -17,7 +17,7 @@ RSpec.describe Knight do
     end
   end
 
-  describe 'vertical_l?' do
+  describe '#vertical_l?' do
     context 'when the start and finish are a vertical L apart' do
       it 'returns true' do
         vertical_l_or_not = knight.vertical_l?([4, 0], [5, 2])
@@ -46,7 +46,9 @@ RSpec.describe Knight do
         expect(vertical_l_or_not).to eq(false)
       end
     end
+  end
 
+  describe '#horizontal_l?' do
     context 'when the start and finish are a horizontal L apart' do
       it 'returns true' do
         horizontal_l_or_not = knight.horizontal_l?([4, 0], [2, 1])
