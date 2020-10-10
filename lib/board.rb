@@ -18,18 +18,6 @@ class Board
   BLANK_SPOT = '  '
   BOARD_HEIGHT = 14
 
-  SYMBOL_TO_CONSTANT = { w_pawn: W_PAWN,
-                         w_knight: W_KNIGHT,
-                         w_bishop: W_BISHOP,
-                         w_rook: W_ROOK,
-                         w_queen: W_QUEEN,
-                         w_king: W_KING,
-                         b_pawn: B_PAWN,
-                         b_knight: B_KNIGHT,
-                         b_bishop: B_BISHOP,
-                         b_rook: B_ROOK,
-                         b_queen: B_QUEEN,
-                         b_king: B_KING }.freeze
   def initialize
     initial_board
   end
@@ -78,13 +66,15 @@ class Board
   end
 
   # overwrite the 8x8 playing field section of the board using an 8x8 playing field input from Game
+  # by accessing either nil or a piece from the playing field, and converting nil or the piece symbols
+  # to Board constants that represent empty squares or the pieces
   def overwrite_playing_field(playing_field)
     (0..7).each do |column|
       (0..7).each do |row|
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
                                         EMPTY_SQUARE
                                       else
-                                        SYMBOL_TO_CONSTANT[playing_field[column][row]]
+                                        Board.const_get(playing_field[column][row].to_s.upcase)
                                       end
       end
     end
