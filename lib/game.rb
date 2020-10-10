@@ -29,12 +29,22 @@ class Game
   end
 
   def play_turn
-    move = @player.player_move
-    start, finish = player_move_to_start_finish(move)
-    move_piece(start, finish)
-    @current_player = @current_player == :white ? :black : :white
-    playing_field_to_board(@playing_field)
-    puts @board
+    until game_over?
+      move = @player.player_move
+      start, finish = player_move_to_start_finish(move)
+      while move_piece(start, finish) == :invalid
+        puts @player.invalid_move_message
+        move = @player.player_move
+        start, finish = player_move_to_start_finish(move)
+      end
+      @current_player = @current_player == :white ? :black : :white
+      playing_field_to_board(@playing_field)
+      puts @board
+    end
+  end
+
+  def game_over?
+    false
   end
 
   # transfer a playing field to the board by calling Board#overwrite_playing_field
@@ -51,7 +61,7 @@ class Game
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
-    return nil unless valid_move?(start, finish)
+    return :invalid unless valid_move?(start, finish)
 
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
@@ -73,7 +83,7 @@ class Game
 
     start_piece = @playing_field[start[0]][start[1]]
     finish_piece = @playing_field[finish[0]][finish[1]]
-    return false if same_color_or_finish_not_nil?(start_piece, finish_piece)
+    return false unless finish_space_valid?(start_piece, finish_piece)
 
     path_method = path_method_from_piece(start_piece)
     @piece.send(path_method, start, finish, @playing_field)
@@ -85,16 +95,14 @@ class Game
   end
 
   # used by #valid_move?
-  # check if the pieces in the start and finish square are the same color or not
-  # or if the piece in the finish square is nil or not
-  def same_color_or_finish_not_nil?(start_piece, finish_piece)
-    same_color?(start_piece, finish_piece) || !finish_piece.nil?
-  end
-
-  # used by #same_color_or_finish_not_nil?
-  # check if the pieces in the start and finish square are the same color or not
-  def same_color?(start_piece, finish_piece)
-    start_piece[0] == finish_piece[0] unless finish_piece.nil?
+  # check if the piece in the finish square is nil or not
+  # or if the pieces in the start and finish square are the same color or not
+  def finish_space_valid?(start_piece, finish_piece)
+    if finish_piece.nil?
+      true
+    else
+      start_piece[0] != finish_piece[0]
+    end
   end
 
   # used by #valid_move to get the path method to be used from the piece symbol passed in
