@@ -105,10 +105,10 @@ RSpec.describe Game do
 
   describe '#move_piece' do
     context 'when a white rook attempts to move from a1 to a4 illegally' do
-      it 'returns nil' do
+      it 'returns :invalid' do
         allow(game).to receive(:valid_move?).and_return(false)
         move = game.move_piece([0, 0], [0, 3])
-        expect(move).to eq(nil)
+        expect(move).to eq(:invalid)
       end
     end
   end
@@ -248,7 +248,7 @@ RSpec.describe Game do
     # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
     context 'when the pieces are not the same color and #king_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
-      it 'returns true' do
+      it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
@@ -320,15 +320,15 @@ RSpec.describe Game do
 
   describe 'capture' do
     context 'when the finish square is empty' do
-      it 'returns false' do
+      it 'returns nil' do
         game.instance_variable_get(:@playing_field)[7][5] = nil
         capture_or_none = game.capture([7, 5])
         expect(capture_or_none).to eq(nil)
       end
     end
 
-    context 'when the finish square has a piece on it' do
-      it 'returns true' do
+    context 'when the finish square has a white rook on it' do
+      it 'returns :w_rook' do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
         capture_or_none = game.capture([7, 5])
         expect(capture_or_none).to eq(:w_rook)
@@ -338,28 +338,21 @@ RSpec.describe Game do
 
   describe '#finish_space_valid?' do
     context 'when the finish space is nil' do
-      it 'returns false' do
+      it 'returns true' do
         finish_space_valid_or_not = game.finish_space_valid?(:b_rook, nil)
-        expect(finish_space_valid_or_not).to eq(false)
-      end
-    end
-
-    context 'when the start space is nil' do
-      it 'returns false' do
-        finish_space_valid_or_not = game.finish_space_valid?(nil, :b_rook)
-        expect(finish_space_valid_or_not).to eq(false)
+        expect(finish_space_valid_or_not).to eq(true)
       end
     end
 
     context 'when the pieces are the same color' do
-      it 'returns true' do
+      it 'returns false' do
         finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :b_rook)
         expect(finish_space_valid_or_not).to eq(false)
       end
     end
 
     context 'when the pieces are different colors' do
-      it 'returns false' do
+      it 'returns true' do
         finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :w_rook)
         expect(finish_space_valid_or_not).to eq(true)
       end
