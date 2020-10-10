@@ -179,7 +179,7 @@ RSpec.describe Game do
 
     context 'when the pieces are the same color' do
       it 'returns false' do
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(true)
+        allow(game).to receive(:finish_space_valid?).and_return(false)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(false)
       end
@@ -190,7 +190,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(false)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(false)
@@ -202,7 +202,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(true)
@@ -214,7 +214,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
         valid_or_not = game.valid_move?([1, 0], [2, 2])
         expect(valid_or_not).to eq(true)
@@ -226,7 +226,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 0], [4, 0])
         expect(valid_or_not).to eq(true)
@@ -238,7 +238,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2])
         expect(valid_or_not).to eq(true)
@@ -250,7 +250,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:same_color_or_finish_not_nil?).and_return(false)
+        allow(game).to receive(:finish_space_valid?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0])
         expect(valid_or_not).to eq(false)
@@ -336,18 +336,32 @@ RSpec.describe Game do
     end
   end
 
-  describe '#same_color?' do
+  describe '#finish_space_valid?' do
+    context 'when the finish space is nil' do
+      it 'returns false' do
+        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, nil)
+        expect(finish_space_valid_or_not).to eq(false)
+      end
+    end
+
+    context 'when the start space is nil' do
+      it 'returns false' do
+        finish_space_valid_or_not = game.finish_space_valid?(nil, :b_rook)
+        expect(finish_space_valid_or_not).to eq(false)
+      end
+    end
+
     context 'when the pieces are the same color' do
       it 'returns true' do
-        same_color_or_not = game.same_color?(:b_rook, :b_rook)
-        expect(same_color_or_not).to eq(true)
+        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :b_rook)
+        expect(finish_space_valid_or_not).to eq(false)
       end
     end
 
     context 'when the pieces are different colors' do
       it 'returns false' do
-        same_color_or_not = game.same_color?(:b_rook, :w_rook)
-        expect(same_color_or_not).to eq(false)
+        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :w_rook)
+        expect(finish_space_valid_or_not).to eq(true)
       end
     end
   end
