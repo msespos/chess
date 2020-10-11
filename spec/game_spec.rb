@@ -44,40 +44,6 @@ RSpec.describe Game do
     end
   end
 
-  describe '#playing_field_to_board' do
-    let(:board_field) { instance_double(Board) }
-    context 'when a playing field is passed in' do
-      it 'calls Board#overwrite_playing_field with the playing field' do
-        game.instance_variable_set(:@board, board_field)
-        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
-                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
-                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
-                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
-                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
-        expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
-        game.playing_field_to_board(playing_field)
-      end
-    end
-  end
-
-  describe '#player_move_to_start_finish' do
-    context 'when "a1a3" is passed in' do
-      it 'returns [[0, 0], [0, 2]]' do
-        start_finish = game.player_move_to_start_finish('a1a3')
-        expect(start_finish).to eq([[0, 0], [0, 2]])
-      end
-    end
-    context 'when "h7f5" is passed in' do
-      it 'returns [[7, 6], [5, 4]]' do
-        start_finish = game.player_move_to_start_finish('h7f5')
-        expect(start_finish).to eq([[7, 6], [5, 4]])
-      end
-    end
-  end
-
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
@@ -101,9 +67,7 @@ RSpec.describe Game do
         expect(space).to eq(:w_rook)
       end
     end
-  end
 
-  describe '#move_piece' do
     context 'when a white rook attempts to move from a1 to a4 illegally' do
       it 'returns :invalid' do
         allow(game).to receive(:valid_move?).and_return(false)
@@ -111,9 +75,7 @@ RSpec.describe Game do
         expect(move).to eq(:invalid)
       end
     end
-  end
 
-  describe '#move_piece' do
     context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
       before do
         allow(game).to receive(:valid_move?).and_return(true)
@@ -258,36 +220,6 @@ RSpec.describe Game do
     end
   end
 
-  describe 'path_method_from_piece' do
-    context 'when a white pawn is passed in' do
-      it 'returns :white_pawn_path?' do
-        method = game.path_method_from_piece(:w_pawn)
-        expect(method).to eq('white_pawn_path?')
-      end
-    end
-
-    context 'when a black pawn is passed in' do
-      it 'returns :black_pawn_path?' do
-        method = game.path_method_from_piece(:b_pawn)
-        expect(method).to eq('black_pawn_path?')
-      end
-    end
-
-    context 'when a white rook is passed in' do
-      it 'returns :rook_path?' do
-        method = game.path_method_from_piece(:w_rook)
-        expect(method).to eq('rook_path?')
-      end
-    end
-
-    context 'when a black king is passed in' do
-      it 'returns :king_path?' do
-        method = game.path_method_from_piece(:b_king)
-        expect(method).to eq('king_path?')
-      end
-    end
-  end
-
   describe '#on_playing_field?' do
     context 'when [-1, -1] is passed' do
       it 'returns false' do
@@ -318,24 +250,6 @@ RSpec.describe Game do
     end
   end
 
-  describe 'capture' do
-    context 'when the finish square is empty' do
-      it 'returns nil' do
-        game.instance_variable_get(:@playing_field)[7][5] = nil
-        capture_or_none = game.capture([7, 5])
-        expect(capture_or_none).to eq(nil)
-      end
-    end
-
-    context 'when the finish square has a white rook on it' do
-      it 'returns :w_rook' do
-        game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-        capture_or_none = game.capture([7, 5])
-        expect(capture_or_none).to eq(:w_rook)
-      end
-    end
-  end
-
   describe '#finish_space_valid?' do
     context 'when the finish space is nil' do
       it 'returns true' do
@@ -355,6 +269,89 @@ RSpec.describe Game do
       it 'returns true' do
         finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :w_rook)
         expect(finish_space_valid_or_not).to eq(true)
+      end
+    end
+  end
+
+  describe 'path_method_from_piece' do
+    context 'when a white pawn is passed in' do
+      it 'returns :white_pawn_path?' do
+        method = game.path_method_from_piece(:w_pawn)
+        expect(method).to eq('white_pawn_path?')
+      end
+    end
+
+    context 'when a black pawn is passed in' do
+      it 'returns :black_pawn_path?' do
+        method = game.path_method_from_piece(:b_pawn)
+        expect(method).to eq('black_pawn_path?')
+      end
+    end
+
+    context 'when a white rook is passed in' do
+      it 'returns :rook_path?' do
+        method = game.path_method_from_piece(:w_rook)
+        expect(method).to eq('rook_path?')
+      end
+    end
+
+    context 'when a black king is passed in' do
+      it 'returns :king_path?' do
+        method = game.path_method_from_piece(:b_king)
+        expect(method).to eq('king_path?')
+      end
+    end
+  end
+
+  describe 'capture' do
+    context 'when the finish square is empty' do
+      it 'returns nil' do
+        game.instance_variable_get(:@playing_field)[7][5] = nil
+        capture_or_none = game.capture([7, 5])
+        expect(capture_or_none).to eq(nil)
+      end
+    end
+
+    context 'when the finish square has a white rook on it' do
+      it 'returns :w_rook' do
+        game.instance_variable_get(:@playing_field)[7][5] = :w_rook
+        capture_or_none = game.capture([7, 5])
+        expect(capture_or_none).to eq(:w_rook)
+      end
+    end
+  end
+
+  describe '#player_move_to_start_finish' do
+    context 'when "a1a3" is passed in' do
+      it 'returns [[0, 0], [0, 2]]' do
+        start_finish = game.player_move_to_start_finish('a1a3')
+        expect(start_finish).to eq([[0, 0], [0, 2]])
+      end
+    end
+
+    context 'when "h7f5" is passed in' do
+      it 'returns [[7, 6], [5, 4]]' do
+        start_finish = game.player_move_to_start_finish('h7f5')
+        expect(start_finish).to eq([[7, 6], [5, 4]])
+      end
+    end
+  end
+
+  describe '#playing_field_to_board' do
+    let(:board_field) { instance_double(Board) }
+    context 'when a playing field is passed in' do
+      it 'calls Board#overwrite_playing_field with the playing field' do
+        game.instance_variable_set(:@board, board_field)
+        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
+        game.playing_field_to_board(playing_field)
       end
     end
   end
