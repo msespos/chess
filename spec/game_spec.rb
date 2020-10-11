@@ -329,28 +329,28 @@ RSpec.describe Game do
 
   describe 'path_method_from_piece' do
     context 'when a white pawn is passed in' do
-      it 'returns :white_pawn_path?' do
+      it 'returns "white_pawn_path?"' do
         method = game.path_method_from_piece(:w_pawn)
         expect(method).to eq('white_pawn_path?')
       end
     end
 
     context 'when a black pawn is passed in' do
-      it 'returns :black_pawn_path?' do
+      it 'returns "black_pawn_path?"' do
         method = game.path_method_from_piece(:b_pawn)
         expect(method).to eq('black_pawn_path?')
       end
     end
 
     context 'when a white rook is passed in' do
-      it 'returns :rook_path?' do
+      it 'returns "rook_path?"' do
         method = game.path_method_from_piece(:w_rook)
         expect(method).to eq('rook_path?')
       end
     end
 
     context 'when a black king is passed in' do
-      it 'returns :king_path?' do
+      it 'returns "king_path?"' do
         method = game.path_method_from_piece(:b_king)
         expect(method).to eq('king_path?')
       end
