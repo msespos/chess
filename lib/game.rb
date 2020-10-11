@@ -22,20 +22,20 @@ class Game
     @playing_field = @playing_field.transpose
   end
 
-  # play the whole game
+  # play the whole game - not tested
   def play
     puts 'Intro text and Intro board'
     puts @board
     play_turn until game_over?
   end
 
-  # will contain end conditions for the game eventually
+  # will contain end conditions for the game eventually - not tested
   # currently set to loop #play_turn infinitely within #play
   def game_over?
     false
   end
 
-  # used by #play to implement a full turn
+  # used by #play to implement a full turn - not tested
   def play_turn
     start, finish = call_player_move_and_convert_it
     while move_piece(start, finish) == :invalid
