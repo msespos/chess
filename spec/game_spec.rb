@@ -278,8 +278,34 @@ RSpec.describe Game do
     end
   end
 
+  describe '#start_and_finish_spaces_valid?' do
+    context 'when the start piece is nil and the finish space is valid' do
+      it 'returns false' do
+        allow(game).to receive(:finish_space_valid?).and_return(true)
+        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 2], [0, 3])
+        expect(start_and_finish_spaces_valid_or_not).to eq(false)
+      end
+    end
+
+    context 'when the start piece is not nil and the finish space is valid' do
+      it 'returns true' do
+        allow(game).to receive(:finish_space_valid?).and_return(true)
+        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 1], [0, 3])
+        expect(start_and_finish_spaces_valid_or_not).to eq(true)
+      end
+    end
+
+    context 'when the start piece is not nil and the finish space is not valid' do
+      it 'returns false' do
+        allow(game).to receive(:finish_space_valid?).and_return(false)
+        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 1], [0, 3])
+        expect(start_and_finish_spaces_valid_or_not).to eq(false)
+      end
+    end
+  end
+
   describe '#finish_space_valid?' do
-    context 'when the finish space is nil' do
+    context 'when the finish piece is nil' do
       it 'returns true' do
         finish_space_valid_or_not = game.finish_space_valid?(:b_rook, nil)
         expect(finish_space_valid_or_not).to eq(true)
