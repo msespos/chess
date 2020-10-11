@@ -20,6 +20,18 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
+      it 'creates an instance of Player' do
+        player = game.instance_variable_get(:@player)
+        expect(player).to be_a(Player)
+        game.send(:initialize)
+      end
+
+      it 'sets @current_player to :white' do
+        current_player = game.instance_variable_get(:@current_player)
+        expect(current_player).to eq(:white)
+        game.send(:initialize)
+      end
+
       it 'calls #initial_playing_field' do
         expect(game).to receive(:initial_playing_field)
         game.send(:initialize)
@@ -115,7 +127,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #on_playing_field as well
+    # integration test - tests #on_playing_field? as well
     context 'when the start coordinates are not on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, -1], [0, 5])
@@ -123,7 +135,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #on_playing_field as well
+    # integration test - tests #on_playing_field? as well
     context 'when the end coordinates are not on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, 1], [0, 8])
@@ -131,7 +143,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #on_playing_field as well
+    # integration test - tests #on_playing_field? as well
     context 'when neither the start nor the end coordinates are on the playing field' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, -1], [0, 8])
@@ -139,80 +151,96 @@ RSpec.describe Game do
       end
     end
 
+    # integration test - tests #start_and_finish_spaces_valid? as well
     context 'when the pieces are the same color' do
       it 'returns false' do
-        allow(game).to receive(:finish_space_valid?).and_return(false)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(false)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
-    context 'when the pieces are not the same color and #rook_path? is false' do
+    # integration test - tests #start_and_finish_spaces_valid? as well
+    context 'when the start piece is nil' do
+      it 'returns false' do
+        valid_or_not = game.valid_move?([0, 2], [0, 1])
+        expect(valid_or_not).to eq(false)
+      end
+    end
+
+    # integration test - tests #start_and_finish_spaces_valid? as well
+    context 'when the finish piece is nil' do
+      it 'returns false' do
+        valid_or_not = game.valid_move?([0, 0], [0, 2])
+        expect(valid_or_not).to eq(false)
+      end
+    end
+
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
+    context 'when the start and finish spaces are valid and #rook_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(false)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(false)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#rook_path exists
-    context 'when the pieces are not the same color and #rook_path? is true' do
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
+    context 'when the start and finish spaces are valid and #rook_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(true)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#knight_path exists
-    context 'when the pieces are not the same color and #knight_path? is true' do
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#knight_path exists
+    context 'when the start and finish spaces are valid and #knight_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
         valid_or_not = game.valid_move?([1, 0], [2, 2])
         expect(valid_or_not).to eq(true)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
-    context 'when the pieces are not the same color and #queen_path? is true' do
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
+    context 'when the start and finish spaces are valid and #queen_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 0], [4, 0])
         expect(valid_or_not).to eq(true)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
-    context 'when the pieces are not the same color and #w_pawn_path? is false' do
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
+    context 'when the start and finish spaces are valid and #w_pawn_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2])
         expect(valid_or_not).to eq(true)
       end
     end
 
-    # integration test - tests SYMBOL_TO_METHOD hash and tests that Piece#queen_path exists
-    context 'when the pieces are not the same color and #king_path? is false' do
+    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
+    context 'when the start and finish spaces are valid and #king_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:finish_space_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0])
         expect(valid_or_not).to eq(false)
