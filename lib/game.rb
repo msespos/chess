@@ -22,12 +22,20 @@ class Game
     @playing_field = @playing_field.transpose
   end
 
+  # play the whole game
   def play
     puts 'Intro text and Intro board'
     puts @board
     play_turn until game_over?
   end
 
+  # will contain end conditions for the game eventually
+  # currently set to loop #play_turn infinitely within #play
+  def game_over?
+    false
+  end
+
+  # used by #play to implement a full turn
   def play_turn
     start, finish = call_player_move_and_convert_it
     while move_piece(start, finish) == :invalid
@@ -37,26 +45,6 @@ class Game
     @current_player = @current_player == :white ? :black : :white
     playing_field_to_board(@playing_field)
     puts @board
-  end
-
-  def call_player_move_and_convert_it
-    move = @player.player_move
-    player_move_to_start_finish(move)
-  end
-
-  def game_over?
-    false
-  end
-
-  # transfer a playing field to the board by calling Board#overwrite_playing_field
-  def playing_field_to_board(playing_field)
-    @board.overwrite_playing_field(playing_field)
-  end
-
-  def player_move_to_start_finish(move)
-    start = [move[0].ord - 97, move[1].to_i - 1]
-    finish = [move[2].ord - 97, move[3].to_i - 1]
-    [start, finish]
   end
 
   # move a piece or a pawn (capturing or not) given start and finish coordinates
@@ -136,5 +124,26 @@ class Game
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
+  end
+
+  # used by #play_turn
+  # call Player#player_move and convert the resulting move to [start, finish] format
+  def call_player_move_and_convert_it
+    move = @player.player_move
+    player_move_to_start_finish(move)
+  end
+
+  # used by #call_player_move_and_convert_it
+  # convert an algebraic notation move to [start, finish] format
+  def player_move_to_start_finish(move)
+    start = [move[0].ord - 97, move[1].to_i - 1]
+    finish = [move[2].ord - 97, move[3].to_i - 1]
+    [start, finish]
+  end
+
+  # used by #play_turn
+  # transfer a playing field to the board by calling Board#overwrite_playing_field
+  def playing_field_to_board(playing_field)
+    @board.overwrite_playing_field(playing_field)
   end
 end
