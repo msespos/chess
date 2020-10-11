@@ -126,7 +126,7 @@ class Game
     nil
   end
 
-  # used by #play_turn
+  # used by #play_turn - not tested
   # call Player#player_move and convert the resulting move to [start, finish] format
   def call_player_move_and_convert_it
     move = @player.player_move
