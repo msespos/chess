@@ -192,7 +192,7 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
-    context 'when the start and finish spaces are valid and #rook_path? is false' do
+    context 'when both spaces are valid and the color is correct and #rook_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
@@ -204,11 +204,12 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
-    context 'when the start and finish spaces are valid and #rook_path? is true' do
+    context 'when both spaces are valid and the color is correct and #rook_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1])
         expect(valid_or_not).to eq(true)
@@ -216,11 +217,12 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#knight_path exists
-    context 'when the start and finish spaces are valid and #knight_path? is true' do
+    context 'when both spaces are valid and the color is correct and #knight_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
         valid_or_not = game.valid_move?([1, 0], [2, 2])
         expect(valid_or_not).to eq(true)
@@ -228,11 +230,12 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
-    context 'when the start and finish spaces are valid and #queen_path? is true' do
+    context 'when both spaces are valid and the color is correct and #queen_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 0], [4, 0])
         expect(valid_or_not).to eq(true)
@@ -240,11 +243,12 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
-    context 'when the start and finish spaces are valid and #w_pawn_path? is false' do
+    context 'when both spaces are valid and the color is correct and #white_pawn_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2])
         expect(valid_or_not).to eq(true)
@@ -252,14 +256,31 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
-    context 'when the start and finish spaces are valid and #king_path? is false' do
+    context 'when both spaces are valid and the color is correct and #king_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0])
         expect(valid_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#correct_color?' do
+    context 'when the start piece is white and the current player is set to white' do
+      it 'returns true' do
+        correct_color_or_not = game.correct_color?(:white, [0, 1])
+        expect(correct_color_or_not).to eq(true)
+      end
+    end
+
+    context 'when the start piece is white and the current player is set to black' do
+      it 'returns false' do
+        correct_color_or_not = game.correct_color?(:black, [0, 1])
+        expect(correct_color_or_not).to eq(false)
       end
     end
   end
