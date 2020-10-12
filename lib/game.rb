@@ -68,6 +68,18 @@ class Game
     [start, finish]
   end
 
+# def in_check?(color)
+#   find king of correct color’s square
+#   call the king’s square finish
+#   for each square on the board
+#     call it start
+#     if valid_move?(start, finish)
+#       return true (king is in check)
+#     end
+#   end
+#   false (king is not in check)
+# end
+
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
