@@ -25,9 +25,14 @@ class Game
   # play the whole game - not tested
   def play
     puts 'Intro text and Intro board'
+    display_board
+    play_turn until game_over?
+  end
+
+  # send the current playing field to the board and print the board - not tested
+  def display_board
     playing_field_to_board(@playing_field)
     puts @board
-    play_turn until game_over?
   end
 
   # will contain end conditions for the game eventually - not tested
@@ -45,8 +50,7 @@ class Game
       start, finish = call_player_move_and_convert_it
     end
     @current_player = @current_player == :white ? :black : :white
-    playing_field_to_board(@playing_field)
-    puts @board
+    display_board
   end
 
   # used by #play_turn - not tested
