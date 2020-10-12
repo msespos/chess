@@ -56,6 +56,22 @@ RSpec.describe Game do
     end
   end
 
+  describe '#player_move_to_start_finish' do
+    context 'when "a1a3" is passed in' do
+      it 'returns [[0, 0], [0, 2]]' do
+        start_finish = game.player_move_to_start_finish('a1a3')
+        expect(start_finish).to eq([[0, 0], [0, 2]])
+      end
+    end
+
+    context 'when "h7f5" is passed in' do
+      it 'returns [[7, 6], [5, 4]]' do
+        start_finish = game.player_move_to_start_finish('h7f5')
+        expect(start_finish).to eq([[7, 6], [5, 4]])
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
@@ -371,22 +387,6 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
         capture_or_none = game.capture([7, 5])
         expect(capture_or_none).to eq(:w_rook)
-      end
-    end
-  end
-
-  describe '#player_move_to_start_finish' do
-    context 'when "a1a3" is passed in' do
-      it 'returns [[0, 0], [0, 2]]' do
-        start_finish = game.player_move_to_start_finish('a1a3')
-        expect(start_finish).to eq([[0, 0], [0, 2]])
-      end
-    end
-
-    context 'when "h7f5" is passed in' do
-      it 'returns [[7, 6], [5, 4]]' do
-        start_finish = game.player_move_to_start_finish('h7f5')
-        expect(start_finish).to eq([[7, 6], [5, 4]])
       end
     end
   end
