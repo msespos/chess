@@ -38,6 +38,7 @@ class Game
 
   # used by #play to implement a full turn - not tested
   def play_turn
+    puts @player.current_player_announcement(@current_player)
     start, finish = call_player_move_and_convert_it
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
