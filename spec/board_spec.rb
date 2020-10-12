@@ -26,54 +26,24 @@ RSpec.describe Board do
         board_size = board.instance_variable_get(:@board)[0].size
         expect(board_size).to eq(10)
       end
-
-      it 'generates a board with a white rook in a1' do
-        white_rook = board.instance_variable_get(:@board)[3][1]
-        expect(white_rook).to eq(" \u2656".encode('utf-8'))
-      end
-
-      it 'generates a board with a black rook in h8' do
-        black_rook = board.instance_variable_get(:@board)[10][8]
-        expect(black_rook).to eq(" \u265C".encode('utf-8'))
-      end
-
-      it 'generates a board with a white knight in c1' do
-        white_knight = board.instance_variable_get(:@board)[3][2]
-        expect(white_knight).to eq(" \u2658".encode('utf-8'))
-      end
-
-      it 'generates a board with a black pawn in g7' do
-        black_pawn = board.instance_variable_get(:@board)[9][7]
-        expect(black_pawn).to eq(" \u265F".encode('utf-8'))
-      end
-
-      it 'generates a board with " -" in a4' do
-        blank_space = board.instance_variable_get(:@board)[6][1]
-        expect(blank_space).to eq(' -')
-      end
-
-      it 'generates a board with " -" in c5' do
-        blank_space = board.instance_variable_get(:@board)[7][5]
-        expect(blank_space).to eq(' -')
-      end
     end
   end
 
   describe '#to_s' do
     context 'at the beginning of the game' do
-      it 'displays the initial board setup correctly' do
+      it 'contains the board setup without pieces' do
         expect { puts(board) }.to output(<<-BOARD).to_stdout
 
      a b c d e f g h
 
- 8   ♜ ♞ ♝ ♛ ♚ ♝ ♞ ♜   8
- 7   ♟ ♟ ♟ ♟ ♟ ♟ ♟ ♟   7
+ 8     8
+ 7     7
  6   - - - - - - - -   6
  5   - - - - - - - -   5
  4   - - - - - - - -   4
  3   - - - - - - - -   3
- 2   ♙ ♙ ♙ ♙ ♙ ♙ ♙ ♙   2
- 1   ♖ ♘ ♗ ♕ ♔ ♗ ♘ ♖   1
+ 2     2
+ 1     1
 
      a b c d e f g h
 
