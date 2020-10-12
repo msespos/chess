@@ -25,6 +25,7 @@ class Game
   # play the whole game - not tested
   def play
     puts 'Intro text and Intro board'
+    playing_field_to_board(@playing_field)
     puts @board
     play_turn until game_over?
   end
