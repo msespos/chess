@@ -12,9 +12,13 @@ class Player
     move
   end
 
+  def current_player_announcement(current_player)
+    "It is #{current_player.capitalize}\'s turn."
+  end
+
   # used by #player_move to get the player's move before checking it
   def obtain_move_from_player
-    puts 'Please enter your move'
+    puts 'Please enter your move.'
     gets.chomp
   end
 
@@ -27,6 +31,6 @@ class Player
 
   # used by #player_move as the message for an invalid move
   def invalid_move_message
-    'That is not a valid move! Please enter a valid move'
+    'That is not a valid move! Please enter a valid move.'
   end
 end
