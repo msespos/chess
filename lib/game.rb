@@ -48,6 +48,21 @@ class Game
     puts @board
   end
 
+  # used by #play_turn - not tested
+  # call Player#player_move and convert the resulting move to [start, finish] format
+  def call_player_move_and_convert_it
+    move = @player.player_move
+    player_move_to_start_finish(move)
+  end
+
+  # used by #call_player_move_and_convert_it
+  # convert an algebraic notation move to [start, finish] format
+  def player_move_to_start_finish(move)
+    start = [move[0].ord - 97, move[1].to_i - 1]
+    finish = [move[2].ord - 97, move[3].to_i - 1]
+    [start, finish]
+  end
+
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
@@ -125,21 +140,6 @@ class Game
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
-  end
-
-  # used by #play_turn - not tested
-  # call Player#player_move and convert the resulting move to [start, finish] format
-  def call_player_move_and_convert_it
-    move = @player.player_move
-    player_move_to_start_finish(move)
-  end
-
-  # used by #call_player_move_and_convert_it
-  # convert an algebraic notation move to [start, finish] format
-  def player_move_to_start_finish(move)
-    start = [move[0].ord - 97, move[1].to_i - 1]
-    finish = [move[2].ord - 97, move[3].to_i - 1]
-    [start, finish]
   end
 
   # used by #play_turn
