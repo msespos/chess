@@ -93,9 +93,17 @@ class Game
 
     return false unless start_and_finish_spaces_valid?(start, finish)
 
+    return false unless correct_color?(@current_player, start)
+
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
     @piece.send(path_method, start, finish, @playing_field)
+  end
+
+  # used by #valid_move? to check if the starting piece is the same color as the current player
+  def correct_color?(current_player, start)
+    start_piece = @playing_field[start[0]][start[1]]
+    start_piece[0] == current_player[0]
   end
 
   # used by #valid_move? to check if a set of coordinates is on the board
