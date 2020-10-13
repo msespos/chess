@@ -72,6 +72,30 @@ RSpec.describe Game do
     end
   end
 
+  describe 'find_king' do
+    before do
+      blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+      game.instance_variable_set(:@playing_field, blank_playing_field)
+    end
+    context 'when the white king is on e1 (initial) and it is white\'s turn' do
+      it 'returns [4, 0]' do
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_set(:@current_player, :white)
+        current_square = game.find_king
+        expect(current_square).to eq([4, 0])
+      end
+    end
+
+    context 'when the black king is on b7 and it is black\'s turn' do
+      it 'returns [1, 6]' do
+        game.instance_variable_get(:@playing_field)[1][6] = :b_king
+        game.instance_variable_set(:@current_player, :black)
+        current_square = game.find_king
+        expect(current_square).to eq([1, 6])
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
