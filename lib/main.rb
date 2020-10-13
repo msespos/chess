@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative 'game.rb'
-require_relative 'player.rb'
-require_relative 'board.rb'
-require_relative 'piece.rb'
-require_relative 'pawn.rb'
-require_relative 'knight.rb'
-require_relative 'rook.rb'
-require_relative 'bishop.rb'
-require_relative 'queen.rb'
-require_relative 'king.rb'
+require_relative 'game'
+require_relative 'player'
+require_relative 'board'
+require_relative 'piece'
+require_relative 'pawn'
+require_relative 'knight'
+require_relative 'rook'
+require_relative 'bishop'
+require_relative 'queen'
+require_relative 'king'
 
 Game.new.play
