@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 require 'pry'
+require_relative 'check_and_mate_tests'
 
 # game class
 class Game
+  include CheckAndMateTests
+
   def initialize
     @board = Board.new
     @piece = Piece.new
@@ -25,7 +28,7 @@ class Game
   # play the whole game - not tested
   def play
     puts 'Intro text and Intro board'
-    find_king
+    p find_king
     display_board
     play_turn until game_over?
   end
@@ -68,29 +71,6 @@ class Game
     finish = [move[2].ord - 97, move[3].to_i - 1]
     [start, finish]
   end
-
-  def find_king
-    current_king = @current_player[0] + '_king'
-    current_king_square = []
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        if @playing_field[row_index][column_index] == current_king.to_sym
-          current_king_square = [row_index, column_index]
-        end
-      end
-    end
-    current_king_square
-  end
-
-  #   call the king square finish
-  #   for each square on the board
-  #     call it start
-  #     if valid_move?(start, finish)
-  #       return true (king is in check)
-  #     end
-  #   end
-  #   false (king is not in check)
-  # end
 
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
