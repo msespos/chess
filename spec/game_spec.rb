@@ -101,22 +101,22 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
-    context 'when the white king is on e1 and under attack and it is white\'s turn' do
+    context 'when the white king is on e1 and under attack and it is black\'s turn' do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
         game.instance_variable_set(:@current_player, :black)
-        under_attack_or_not = game.is_under_attack?([4, 0])
+        under_attack_or_not = game.under_attack?([4, 0])
         expect(under_attack_or_not).to eq(true)
       end
     end
 
-    context 'when a black bishop is under attack and it is black\'s turn' do
+    context 'when a black bishop is under attack and it is white\'s turn' do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[3][0] = :w_rook
         game.instance_variable_set(:@current_player, :white)
-        under_attack_or_not = game.is_under_attack?([3, 3])
+        under_attack_or_not = game.under_attack?([3, 3])
         expect(under_attack_or_not).to eq(true)
       end
     end
