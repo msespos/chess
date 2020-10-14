@@ -15,7 +15,7 @@ module CheckAndMateTests
     current_king_square
   end
 
-  def is_under_attack?(position)
+  def under_attack?(position)
     finish = [position[0], position[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
