@@ -30,7 +30,6 @@ class Game
   # play the whole game - not tested
   def play
     puts 'Intro text and Intro board'
-    p find_king
     display_board
     play_turn until game_over?
   end
