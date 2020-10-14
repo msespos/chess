@@ -15,13 +15,14 @@ module CheckAndMateTests
     current_king_square
   end
 
-  #   call the king square finish
-  #   for each square on the board
-  #     call it start
-  #     if valid_move?(start, finish)
-  #       return true (king is in check)
-  #     end
-  #   end
-  #   false (king is not in check)
-  # end
+  def is_under_attack?(position)
+    finish = [position[0], position[1]]
+    @playing_field.each_with_index do |row, row_index|
+      row.each_index do |column_index|
+        start = [row_index, column_index]
+        return true if valid_move?(start, finish)
+      end
+    end
+    false
+  end
 end
