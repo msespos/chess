@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # methods for testing for check and checkmate
-module CheckAndMateTests
+module CheckAndMateValidation
   def in_check?
     current_king_square = find_king
     under_attack?(current_king_square)

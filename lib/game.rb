@@ -7,7 +7,7 @@ require_relative 'check_and_mate_validation'
 # game class
 class Game
   include MoveValidation
-  include CheckAndMateTests
+  include CheckAndMateValidation
 
   def initialize
     @board = Board.new
