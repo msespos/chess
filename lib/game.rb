@@ -77,7 +77,7 @@ class Game
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish)
-    return :invalid unless valid_move?(start, finish)
+    return :invalid unless valid_move?(start, finish, @current_player)
 
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
