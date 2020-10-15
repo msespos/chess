@@ -21,11 +21,12 @@ module CheckAndMateValidation
   end
 
   def under_attack?(position)
+    attacking_color = @current_player == :white ? :black : :white
     finish = [position[0], position[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
         start = [row_index, column_index]
-        return true if valid_move?(start, finish)
+        return true if valid_move?(start, finish, attacking_color)
       end
     end
     false
