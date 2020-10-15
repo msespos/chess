@@ -22,12 +22,6 @@ module MoveValidation
     @piece.send(path_method, start, finish, @playing_field)
   end
 
-  # used by #valid_move? to check if the starting piece is the same color as the current player
-  def correct_color?(current_player, start)
-    start_piece = @playing_field[start[0]][start[1]]
-    start_piece[0] == current_player[0]
-  end
-
   # used by #valid_move? to check if a set of coordinates is on the board
   def on_playing_field?(coordinates)
     coordinates[0] >= 0 && coordinates[0] <= 7 && coordinates[1] >= 0 && coordinates[1] <= 7
@@ -55,6 +49,12 @@ module MoveValidation
     else
       start_piece[0] != finish_piece[0]
     end
+  end
+
+  # used by #valid_move? to check if the starting piece is the same color as the current player
+  def correct_color?(current_player, start)
+    start_piece = @playing_field[start[0]][start[1]]
+    start_piece[0] == current_player[0]
   end
 
   # used by #valid_move to get the path method to be used from the piece symbol passed in
