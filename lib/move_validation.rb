@@ -8,14 +8,14 @@ module MoveValidation
   # and checking if the start and finish spaces are valid (same color, not nil)
   # and looking up the appropriate Piece path method using path_method_from_piece
   # and calling it on @piece
-  def valid_move?(start, finish)
+  def valid_move?(start, finish, color)
     return false if start == finish
 
     return false unless on_playing_field?(start) && on_playing_field?(finish)
 
     return false unless start_and_finish_spaces_valid?(start, finish)
 
-    return false unless correct_color?(@current_player, start)
+    return false unless correct_color?(color, start)
 
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
@@ -52,9 +52,9 @@ module MoveValidation
   end
 
   # used by #valid_move? to check if the starting piece is the same color as the current player
-  def correct_color?(current_player, start)
+  def correct_color?(color, start)
     start_piece = @playing_field[start[0]][start[1]]
-    start_piece[0] == current_player[0]
+    start_piece[0] == color[0]
   end
 
   # used by #valid_move to get the path method to be used from the piece symbol passed in
