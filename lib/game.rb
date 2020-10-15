@@ -32,6 +32,7 @@ class Game
     puts 'Intro text and Intro board'
     display_board
     play_turn until game_over?
+    puts 'Game Over'
   end
 
   # send the current playing field to the board and print the board - not tested
