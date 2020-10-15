@@ -2,6 +2,11 @@
 
 # methods for testing for check and checkmate
 module CheckAndMateTests
+  def in_check?
+    current_king_square = find_king
+    under_attack?(current_king_square)
+  end
+
   def find_king
     current_king = @current_player[0] + '_king'
     current_king_square = []
