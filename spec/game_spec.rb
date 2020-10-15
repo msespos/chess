@@ -72,6 +72,36 @@ RSpec.describe Game do
     end
   end
 
+  # integration test that also tests #find_king and #under_attack and #valid_move?
+  describe 'in_check?' do
+    before do
+      blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+      game.instance_variable_set(:@playing_field, blank_playing_field)
+    end
+    context 'when the white king is in check and it is white\'s turn' do
+      it 'returns true' do
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[1][3] = :b_bishop
+        game.instance_variable_set(:@current_player, :white)
+        check_or_not = game.in_check?
+        expect(check_or_not).to eq(true)
+      end
+    end
+  end
+
+  describe 'in_check?' do
+    before do
+      allow(game).to receive(:under_attack?).and_return(true)
+    end
+    context 'when the white king is in check' do
+      it 'returns true' do
+        game.instance_variable_set(:@current_player, :white)
+        check_or_not = game.in_check?
+        expect(check_or_not).to eq(true)
+      end
+    end
+  end
+
   describe 'find_king' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -96,26 +126,27 @@ RSpec.describe Game do
     end
   end
 
-  describe 'is_under_attack?' do
+  # integration tests that also test #valid_move?
+  describe 'under_attack?' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
-    context 'when the white king is on e1 and under attack and it is black\'s turn' do
-      it 'returns [4, 0]' do
+    context 'when the white king is on e1 and under attack and it is white\'s turn' do
+      it 'returns true' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_set(:@current_player, :white)
         under_attack_or_not = game.under_attack?([4, 0])
         expect(under_attack_or_not).to eq(true)
       end
     end
 
-    context 'when a black bishop is under attack and it is white\'s turn' do
-      it 'returns [4, 0]' do
+    context 'when a black bishop is under attack and it is black\'s turn' do
+      it 'returns true' do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[3][0] = :w_rook
-        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_set(:@current_player, :black)
         under_attack_or_not = game.under_attack?([3, 3])
         expect(under_attack_or_not).to eq(true)
       end
@@ -183,12 +214,12 @@ RSpec.describe Game do
   describe '#valid_move?' do
     context 'when the start and finish square are the same' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 0])
+        valid_or_not = game.valid_move?([0, 0], [0, 0], 'color')
         expect(valid_or_not).to eq(false)
       end
 
       it 'returns false' do
-        valid_or_not = game.valid_move?([4, 5], [4, 5])
+        valid_or_not = game.valid_move?([4, 5], [4, 5], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -196,7 +227,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when the start coordinates are not on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, -1], [0, 5])
+        valid_or_not = game.valid_move?([0, -1], [0, 5], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -204,7 +235,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when the end coordinates are not on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 1], [0, 8])
+        valid_or_not = game.valid_move?([0, 1], [0, 8], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -212,7 +243,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when neither the start nor the end coordinates are on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, -1], [0, 8])
+        valid_or_not = game.valid_move?([0, -1], [0, 8], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -220,7 +251,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_spaces_valid? as well
     context 'when the pieces are the same color' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -228,7 +259,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_spaces_valid? as well
     context 'when the start piece is nil' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 2], [0, 1])
+        valid_or_not = game.valid_move?([0, 2], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -236,7 +267,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_spaces_valid? as well
     context 'when the finish piece is nil' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 2])
+        valid_or_not = game.valid_move?([0, 0], [0, 2], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -248,7 +279,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
-        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -261,7 +292,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
-        valid_or_not = game.valid_move?([0, 0], [0, 1])
+        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -274,7 +305,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
-        valid_or_not = game.valid_move?([1, 0], [2, 2])
+        valid_or_not = game.valid_move?([1, 0], [2, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -287,7 +318,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
-        valid_or_not = game.valid_move?([3, 0], [4, 0])
+        valid_or_not = game.valid_move?([3, 0], [4, 0], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -300,7 +331,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
-        valid_or_not = game.valid_move?([3, 1], [3, 2])
+        valid_or_not = game.valid_move?([3, 1], [3, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -313,7 +344,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
-        valid_or_not = game.valid_move?([4, 0], [1, 0])
+        valid_or_not = game.valid_move?([4, 0], [1, 0], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
