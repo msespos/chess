@@ -2,7 +2,7 @@
 
 require 'pry'
 require_relative 'move_validation'
-require_relative 'check_and_mate_tests'
+require_relative 'check_and_mate_validation'
 
 # game class
 class Game
