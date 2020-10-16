@@ -80,17 +80,24 @@ class Game
   def move_piece(start, finish)
     return :invalid unless valid_move?(start, finish, @current_player)
 
+    captured = reassign_squares(start, finish)
     # make a copy of the playing field in case the player is moving into check
     playing_field_before_move = @playing_field.clone.map(&:clone)
-    temp = @playing_field[start[0]][start[1]]
-    @playing_field[start[0]][start[1]] = nil
-    captured = capture(finish)
-    @playing_field[finish[0]][finish[1]] = temp
     if in_check?
       # revert to the copy of the playing field made before the move into check
       @playing_field = playing_field_before_move
       return :invalid
     end
+    captured
+  end
+
+  # used by #move_piece
+  # reassign the squares necessary to make the move and capture, if also a capture
+  def reassign_squares(start, finish)
+    temp = @playing_field[start[0]][start[1]]
+    @playing_field[start[0]][start[1]] = nil
+    captured = capture(finish)
+    @playing_field[finish[0]][finish[1]] = temp
     captured
   end
 
