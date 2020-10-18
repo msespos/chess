@@ -157,23 +157,13 @@ RSpec.describe Game do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
         allow(game).to receive(:valid_move?).and_return(true)
-        allow(game).to receive(:capture).and_return(nil)
+        allow(game).to receive(:reassign_squares).and_return(nil)
+        allow(game).to receive(:in_check?).and_return(false)
       end
 
       it 'returns nil' do
         move = game.move_piece([0, 0], [0, 3])
         expect(move).to eq(nil)
-      end
-
-      it 'leaves a1 empty' do
-        game.move_piece([0, 0], [0, 3])
-        space = game.instance_variable_get(:@playing_field)[0][0]
-        expect(space).to eq(nil)
-      end
-      it 'puts a white rook in a4' do
-        game.move_piece([0, 0], [0, 3])
-        space = game.instance_variable_get(:@playing_field)[0][3]
-        expect(space).to eq(:w_rook)
       end
     end
 
@@ -185,10 +175,11 @@ RSpec.describe Game do
       end
     end
 
+    # integration tests - test #reassign_squares as well
     context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
       before do
         allow(game).to receive(:valid_move?).and_return(true)
-        allow(game).to receive(:capture).and_return(:w_rook)
+        allow(game).to receive(:in_check?).and_return(false)
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
       end
 
@@ -208,6 +199,67 @@ RSpec.describe Game do
         space = game.instance_variable_get(:@playing_field)[7][5]
         expect(space).to eq(:b_pawn)
       end
+    end
+
+    context 'when the black king is moved from g7 to h6 legally and moves into check' do
+      before do
+        allow(game).to receive(:valid_move?).and_return(true)
+        allow(game).to receive(:reassign_squares).and_return(:w_rook)
+        allow(game).to receive(:in_check?).and_return(true)
+        game.instance_variable_get(:@playing_field)[6][6] = :b_king
+      end
+
+      it 'returns :invalid' do
+        move = game.move_piece([6, 6], [7, 5])
+        expect(move).to eq(:invalid)
+      end
+
+      it 'resets the board' do
+        game.move_piece([6, 6], [7, 5])
+        original_king_spot = game.instance_variable_get(:@playing_field)[6][6]
+        expect(original_king_spot).to eq(:b_king)
+      end
+    end
+  end
+
+  describe '#reassign_squares' do
+    context 'when a white rook is moved from a1 to a4 legally and does not capture' do
+      it 'returns nil' do
+        reassign = game.reassign_squares([0, 0], [0, 3])
+        expect(reassign).to eq(nil)
+      end
+
+      it 'leaves a1 empty' do
+        game.reassign_squares([0, 0], [0, 3])
+        space = game.instance_variable_get(:@playing_field)[0][0]
+        expect(space).to eq(nil)
+      end
+
+      it 'puts a white rook in a4' do
+        game.reassign_squares([0, 0], [0, 3])
+        space = game.instance_variable_get(:@playing_field)[0][3]
+        expect(space).to eq(:w_rook)
+      end
+    end
+  end
+
+  context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
+    it 'returns :w_rook' do
+      game.instance_variable_get(:@playing_field)[7][5] = :w_rook
+      reassign = game.reassign_squares([6, 6], [7, 5])
+      expect(reassign).to eq(:w_rook)
+    end
+
+    it 'leaves g7 empty' do
+      game.reassign_squares([6, 6], [7, 5])
+      space = game.instance_variable_get(:@playing_field)[6][6]
+      expect(space).to eq(nil)
+    end
+
+    it 'puts a black pawn in h6' do
+      game.reassign_squares([6, 6], [7, 5])
+      space = game.instance_variable_get(:@playing_field)[7][5]
+      expect(space).to eq(:b_pawn)
     end
   end
 
