@@ -49,7 +49,33 @@ module CheckAndMateValidation
   # a) check if he can move out of check
   #   i) check which spots he can move to at all
   #  ii) check if those spots are under attack
-  def can_move_out_of_check?; end
+  def can_move_out_of_check?
+    squares = accessible_squares
+    under_attack?(squares)
+  end
+
+  # find the king
+  # create an array of all the squares surrounding the king
+  # check each square for if it passes valid_move?
+  # return the array of squares that pass valid_move?
+  def accessible_squares
+    attacking_color = @current_player == :white ? :black : :white
+    valid_squares = []
+    current_king_square = find_king
+    squares = surrounding_eight(current_king_square)
+    squares.each do |square|
+      valid_squares.push(square) if valid_move?(current_king_square, square, attacking_color)
+    end
+    valid_squares
+  end
+
+  def surrounding_eight(current_king_square)
+    surrounding_squares = []
+    [-1, 0, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1] - 1]) }
+    [-1, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1]]) }
+    [-1, 0, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1] + 1]) }
+    surrounding_squares
+  end
 
   # b) check if the attacking pieces can be captured
   #   i) ID attacking piece or pieces using a version of under attack method
