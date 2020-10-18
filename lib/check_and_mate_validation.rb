@@ -36,31 +36,31 @@ module CheckAndMateValidation
     # If the King is in Check:
     return false unless in_check?
 
-    # a) check if he can move out of check
-    #   i) check which spots he can move to at all
-    #   ii) check if those spots are under attack
     return false if can_move_out_of_check?
 
-    # b) check if the attacking pieces can be captured
-    #   i) ID attacking piece or pieces using a version of under attack method
-    #   ii) call under_attack on those pieces to see if they can be captured
     return false if attacker_can_be_captured?
 
-    # c) check if a piece can be put in the way
-    #   i) if double check, this is not an option
-    #   ii) otherwise, use the same version of under attack method as in b)
-    #   iii) if under attack by a rook, bishop, or queen
-	  #     A) look at all of the spaces on the rank, file and/or diagonal, depending
-	  #     B) call under_attack on those spaces
     return false if piece_can_be_put_in_the_way?
 
     # If any of a), b), or c) is true, carry on - otherwise king is in checkmate and game is over
     true
   end
 
+  # a) check if he can move out of check
+  #   i) check which spots he can move to at all
+  #  ii) check if those spots are under attack
   def can_move_out_of_check?; end
 
+  # b) check if the attacking pieces can be captured
+  #   i) ID attacking piece or pieces using a version of under attack method
+  #  ii) call under_attack on those pieces to see if they can be captured
   def attacker_can_be_captured?; end
 
+  # c) check if a piece can be put in the way
+  #   i) if double check, this is not an option
+  #  ii) otherwise, use the same version of under attack method as in b)
+  # iii) if under attack by a rook, bishop, or queen
+	#     A) look at all of the spaces on the rank, file and/or diagonal, depending
+	#     B) call under_attack on those spaces
   def piece_can_be_put_in_the_way?; end
 end
