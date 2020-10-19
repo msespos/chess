@@ -160,7 +160,7 @@ RSpec.describe Game do
     end
   end
 
-  # integration test - also tests #accessible_squares and #surrounding_squares
+  # integration tests - also test #accessible_squares and #surrounding_squares
   # and #find_king and #valid_move?
   describe '#can_move_out_of_check?' do
     context 'when the white king can move out of check' do
@@ -189,6 +189,33 @@ RSpec.describe Game do
       end
     end
 
+    context 'when the white king can move out of check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+      end
+      it 'returns true' do
+        can_move_or_not = game.can_move_out_of_check?
+        expect(can_move_or_not).to eq(true)
+      end
+    end
+
+    context 'when the white king cannot move out of check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[0][2] = :b_rook
+      end
+      it 'returns false' do
+        can_move_or_not = game.can_move_out_of_check?
+        expect(can_move_or_not).to eq(false)
+      end
+    end
+
     context 'when the white king cannot move out of check' do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -210,6 +237,21 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :b_king
         game.instance_variable_get(:@playing_field)[6][1] = :w_rook
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
+        game.instance_variable_set(:@current_player, :black)
+      end
+      it 'returns false' do
+        can_move_or_not = game.can_move_out_of_check?
+        expect(can_move_or_not).to eq(false)
+      end
+    end
+
+    context 'when the black king cannot move out of check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :b_king
+        game.instance_variable_get(:@playing_field)[4][6] = :w_queen
+        game.instance_variable_get(:@playing_field)[4][5] = :w_rook
         game.instance_variable_set(:@current_player, :black)
       end
       it 'returns false' do
