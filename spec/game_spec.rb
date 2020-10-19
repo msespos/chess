@@ -177,7 +177,7 @@ RSpec.describe Game do
   describe 'surrounding_squares' do
     context 'when the king is at a5' do
       it 'returns the eight squares around a5 and a5 (valid or not)' do
-        around_a5 = [[3, -1], [3, 0], [3, 1], [4, -1], [5, -1], [4, 0], [5, 0], [4, 1], [5, 1]]
+        around_a5 = [[3, -1], [4, -1], [5, -1], [3, 0], [4, 0], [5, 0], [3, 1], [4, 1], [5, 1]]
         surrounding = game.surrounding_squares([4, 0])
         expect(surrounding).to eq(around_a5)
       end
