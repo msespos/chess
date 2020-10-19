@@ -55,7 +55,7 @@ module CheckAndMateValidation
   end
 
   # used by #can_move_out_of_check? to determine the squares accessible to the king
-  # (under attack or not)
+  # (under attack or not; will be checked in #can_move_out_of_check?)
   def accessible_squares
     attacking_color = @current_player == :white ? :black : :white
     valid_squares = []
@@ -67,13 +67,15 @@ module CheckAndMateValidation
     valid_squares
   end
 
-  # used by #can_move_out_of_check? to determine the squares surrounding the king
-  # (valid or not)
-  def surrounding_eight(current_king_square)
+  # used by #accessible_squares to determine the squares surrounding the king
+  # (valid or not; includes king; will be validated in #accessible_squares)
+  def surrounding_squares(current_king_square)
     surrounding_squares = []
-    [-1, 0, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1] - 1]) }
-    [-1, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1]]) }
-    [-1, 0, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1] + 1]) }
+    [-1, 0, 1].each do |row_shift|
+      [-1, 0, 1].each do |column_shift|
+        surrounding_squares.push([current_king_square[0] + column_shift, current_king_square[1] + row_shift])
+      end
+    end
     surrounding_squares
   end
 
