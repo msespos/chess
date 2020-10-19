@@ -153,6 +153,30 @@ RSpec.describe Game do
     end
   end
 
+  describe '#in_checkmate?' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe '#accessible_squares' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe 'surrounding_eight' do
+    context 'when the king is at a5' do
+      it 'returns the eight squares around a5 (valid or not)' do
+        around_a5 = [[3, -1], [4, -1], [5, -1], [3, 0], [5, 0], [3, 1], [4, 1], [5, 1]]
+        surrounding = game.surrounding_eight([4, 0])
+        expect(surrounding).to eq(around_a5)
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
