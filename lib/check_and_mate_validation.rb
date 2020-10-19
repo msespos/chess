@@ -50,7 +50,6 @@ module CheckAndMateValidation
 
   # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
-    playing_field_before_move = @playing_field.clone.map(&:clone)
     squares = accessible_squares
     current_king_square = find_king
     squares.each do |square| 
