@@ -73,7 +73,8 @@ module CheckAndMateValidation
     surrounding_squares = []
     [-1, 0, 1].each do |row_shift|
       [-1, 0, 1].each do |column_shift|
-        surrounding_squares.push([current_king_square[0] + column_shift, current_king_square[1] + row_shift])
+        surrounding_squares.push([current_king_square[0] +
+          column_shift, current_king_square[1] + row_shift])
       end
     end
     surrounding_squares
