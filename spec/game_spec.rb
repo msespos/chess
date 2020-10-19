@@ -153,6 +153,13 @@ RSpec.describe Game do
     end
   end
 
+  describe '#can_move_out_of_check?' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
   describe '#in_checkmate?' do
     context '' do
       it '' do
