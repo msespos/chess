@@ -5,7 +5,8 @@ module MoveValidation
   # used by #move_piece
   # check if the move is valid by checking if the start and finish squares are different
   # and checking if the start and finish squares are on the playing field
-  # and checking if the start and finish spaces are valid (same color, not nil)
+  # and checking if the start and finish spaces are valid (different color pieces, start not nil)
+  # and checking if the piece is the correct color for the player
   # and looking up the appropriate Piece path method using path_method_from_piece
   # and calling it on @piece
   def valid_move?(start, finish, color)
