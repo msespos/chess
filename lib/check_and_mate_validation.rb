@@ -24,7 +24,7 @@ module CheckAndMateValidation
 
   # used by #in_check? and other methods to check if a square is under attack
   def under_attack?(position)
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = current_player_opposite
     finish = [position[0], position[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
@@ -33,6 +33,10 @@ module CheckAndMateValidation
       end
     end
     false
+  end
+
+  def current_player_opposite
+    @current_player == :white ? :black : :white
   end
 
   # check if the king is in checkmate using helper methods
@@ -57,7 +61,7 @@ module CheckAndMateValidation
   # used by #can_move_out_of_check? to determine the squares accessible to the king
   # (under attack or not; will be checked in #can_move_out_of_check?)
   def accessible_squares
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = current_player_opposite
     valid_squares = []
     current_king_square = find_king
     squares = surrounding_eight(current_king_square)
