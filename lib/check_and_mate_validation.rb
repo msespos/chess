@@ -24,7 +24,7 @@ module CheckAndMateValidation
 
   # used by #in_check? and other methods to check if a square is under attack
   def under_attack?(position)
-    attacking_color = current_player_opposite
+    attacking_color = @current_player == :white ? :black : :white
     finish = [position[0], position[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
@@ -33,10 +33,6 @@ module CheckAndMateValidation
       end
     end
     false
-  end
-
-  def current_player_opposite
-    @current_player == :white ? :black : :white
   end
 
   # check if the king is in checkmate using helper methods
@@ -55,33 +51,32 @@ module CheckAndMateValidation
   # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
     squares = accessible_squares
-    under_attack?(squares)
+    squares.each { |square| return true unless under_attack?(square) }
+    false
   end
 
   # used by #can_move_out_of_check? to determine the squares accessible to the king
   # (under attack or not; will be checked in #can_move_out_of_check?)
   def accessible_squares
-    attacking_color = current_player_opposite
-    valid_squares = []
+    final_squares = []
     current_king_square = find_king
-    squares = surrounding_eight(current_king_square)
-    squares.each do |square|
-      valid_squares.push(square) if valid_move?(current_king_square, square, attacking_color)
+    possible_squares = surrounding_squares(current_king_square)
+    possible_squares.each do |square|
+      final_squares.push(square) if valid_move?(current_king_square, square, @current_player)
     end
-    valid_squares
+    final_squares
   end
 
   # used by #accessible_squares to determine the squares surrounding the king
   # (valid or not; includes king; will be validated in #accessible_squares)
   def surrounding_squares(current_king_square)
-    surrounding_squares = []
+    squares = []
     [-1, 0, 1].each do |row_shift|
       [-1, 0, 1].each do |column_shift|
-        surrounding_squares.push([current_king_square[0] +
-          column_shift, current_king_square[1] + row_shift])
+        squares.push([current_king_square[0] + column_shift, current_king_square[1] + row_shift])
       end
     end
-    surrounding_squares
+    squares
   end
 
   # b) check if the attacking pieces can be captured
