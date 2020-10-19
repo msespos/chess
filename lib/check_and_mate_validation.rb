@@ -2,11 +2,13 @@
 
 # methods for testing for check and checkmate
 module CheckAndMateValidation
+  # check if the king is in check
   def in_check?
     current_king_square = find_king
     under_attack?(current_king_square)
   end
 
+  # used by #in_check? to find the square that the king is currently on
   def find_king
     current_king = @current_player[0] + '_king'
     current_king_square = []
@@ -20,6 +22,7 @@ module CheckAndMateValidation
     current_king_square
   end
 
+  # used by #in_check? and other methods to check if a square is under attack
   def under_attack?(position)
     attacking_color = @current_player == :white ? :black : :white
     finish = [position[0], position[1]]
@@ -32,8 +35,8 @@ module CheckAndMateValidation
     false
   end
 
+  # check if the king is in checkmate using helper methods
   def in_checkmate?
-    # If the King is in Check:
     return false unless in_check?
 
     return false if can_move_out_of_check?
@@ -42,22 +45,17 @@ module CheckAndMateValidation
 
     return false if piece_can_be_put_in_the_way?
 
-    # If any of a), b), or c) is true, carry on - otherwise king is in checkmate and game is over
     true
   end
 
-  # a) check if he can move out of check
-  #   i) check which spots he can move to at all
-  #  ii) check if those spots are under attack
+  # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
     squares = accessible_squares
     under_attack?(squares)
   end
 
-  # find the king
-  # create an array of all the squares surrounding the king
-  # check each square for if it passes valid_move?
-  # return the array of squares that pass valid_move?
+  # used by #can_move_out_of_check? to determine the squares accessible to the king
+  # (under attack or not)
   def accessible_squares
     attacking_color = @current_player == :white ? :black : :white
     valid_squares = []
@@ -69,6 +67,8 @@ module CheckAndMateValidation
     valid_squares
   end
 
+  # used by #can_move_out_of_check? to determine the squares surrounding the king
+  # (valid or not)
   def surrounding_eight(current_king_square)
     surrounding_squares = []
     [-1, 0, 1].each { |i| surrounding_squares.push([current_king_square[0] + i, current_king_square[1] - 1]) }
