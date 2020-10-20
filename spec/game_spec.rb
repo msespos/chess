@@ -136,8 +136,7 @@ RSpec.describe Game do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        game.instance_variable_set(:@current_player, :white)
-        under_attack_or_not = game.under_attack?([4, 0])
+        under_attack_or_not = game.under_attack?([4, 0], :black)
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -146,8 +145,7 @@ RSpec.describe Game do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[3][0] = :w_rook
-        game.instance_variable_set(:@current_player, :black)
-        under_attack_or_not = game.under_attack?([3, 3])
+        under_attack_or_not = game.under_attack?([3, 3], :white)
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -333,6 +331,95 @@ RSpec.describe Game do
         around_a5 = [[3, -1], [4, -1], [5, -1], [3, 0], [4, 0], [5, 0], [3, 1], [4, 1], [5, 1]]
         surrounding = game.surrounding_squares([4, 0])
         expect(surrounding).to eq(around_a5)
+      end
+    end
+  end
+
+  # integration tests - also test #attacker_squares and #under_attack
+  # and #find_king and #valid_move?
+  describe '#attacker_can_be_captured?' do
+    context 'when the white king is in check by a black queen that can be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+      end
+      it 'returns true' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(true)
+      end
+    end
+
+    context 'when the white king is in check by a black queen that cannot be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+      end
+      it 'returns false' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(false)
+      end
+    end
+
+    context 'when the white king is in check by a black queen that can be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[0][4] = :w_rook
+      end
+      it 'returns true' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(true)
+      end
+    end
+
+    context 'when the white king is in check by a black knight that can be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[1][2] = :b_knight
+        game.instance_variable_get(:@playing_field)[2][4] = :w_knight
+      end
+      it 'returns true' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(true)
+      end
+    end
+
+    context 'when the white king is in double check and one attacker can be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[2][0] = :b_rook
+        game.instance_variable_get(:@playing_field)[4][0] = :w_rook
+      end
+      it 'returns false' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(false)
+      end
+    end
+
+    context 'when the white king is in double check and both attackers can be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[0][4] = :w_rook
+        game.instance_variable_get(:@playing_field)[2][0] = :b_rook
+        game.instance_variable_get(:@playing_field)[4][0] = :w_rook
+      end
+      it 'returns false' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(false)
       end
     end
   end
