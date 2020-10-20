@@ -23,9 +23,9 @@ module CheckAndMateValidation
   end
 
   # used by #in_check? and other methods to check if a square is under attack
-  def under_attack?(position)
+  def under_attack?(square)
     attacking_color = @current_player == :white ? :black : :white
-    finish = [position[0], position[1]]
+    finish = [square[0], square[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
         start = [row_index, column_index]
@@ -33,6 +33,21 @@ module CheckAndMateValidation
       end
     end
     false
+  end
+
+  # used by #attacker_can_be_captured? and other methods to find
+  # the location(s) of the piece(s) attacking a square
+  def attacker_squares(square)
+    attacking_color = @current_player == :white ? :black : :white
+    finish = [square[0], square[1]]
+    squares = []
+    @playing_field.each_with_index do |row, row_index|
+      row.each_index do |column_index|
+        start = [row_index, column_index]
+        squares.push([row_index, column_index]) if valid_move?(start, finish, attacking_color)
+      end
+    end
+    squares
   end
 
   # check if the king is in checkmate using helper methods
@@ -52,17 +67,18 @@ module CheckAndMateValidation
   def can_move_out_of_check?
     squares = accessible_squares
     current_king_square = find_king
-    squares.each do |square| 
+    squares.each do |square|
       playing_field_before_move = @playing_field.clone.map(&:clone)
       move_piece(current_king_square, square)
-      return true unless under_attack?(square) 
+      return true unless under_attack?(square)
+
       @playing_field = playing_field_before_move
     end
     false
   end
 
   # used by #can_move_out_of_check? to determine the squares accessible to the king
-  # (under attack or not; will be checked in #can_move_out_of_check?)
+  # (under attack or not; that will be checked in #can_move_out_of_check?)
   def accessible_squares
     final_squares = []
     current_king_square = find_king
@@ -85,9 +101,6 @@ module CheckAndMateValidation
     squares
   end
 
-  # b) check if the attacking pieces can be captured
-  #   i) ID attacking piece or pieces using a version of under attack method
-  #  ii) call under_attack on those pieces to see if they can be captured
   def attacker_can_be_captured?; end
 
   # c) check if a piece can be put in the way
