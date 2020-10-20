@@ -153,6 +153,54 @@ RSpec.describe Game do
     end
   end
 
+  describe '#attacker_squares' do
+    before do
+      blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+      game.instance_variable_set(:@playing_field, blank_playing_field)
+    end
+    context 'when no one is attacking the white king on a5' do
+      it 'returns []' do
+        game.instance_variable_get(:@playing_field)[0][4] = :w_king
+        game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
+        game.instance_variable_set(:@current_player, :white)
+        squares = game.attacker_squares([0, 4])
+        expect(squares).to eq([])
+      end
+    end
+
+    context 'when a black bishop on e5 is attacking the white king on a0' do
+      it 'returns [4, 4]' do
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
+        game.instance_variable_set(:@current_player, :white)
+        squares = game.attacker_squares([0, 0])
+        expect(squares).to eq([[4, 4]])
+      end
+    end
+
+    context 'when a black bishop on e5 and a black rook on a3 are attacking the white king on a0' do
+      it 'returns [4, 4]' do
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
+        game.instance_variable_get(:@playing_field)[0][2] = :b_rook
+        game.instance_variable_set(:@current_player, :white)
+        squares = game.attacker_squares([0, 0])
+        expect(squares).to eq([[0, 2], [4, 4]])
+      end
+    end
+
+    context 'when a white bishop on e5 and a white rook on a3 are attacking the black king on a0' do
+      it 'returns [4, 4]' do
+        game.instance_variable_get(:@playing_field)[0][0] = :b_king
+        game.instance_variable_get(:@playing_field)[4][4] = :w_bishop
+        game.instance_variable_get(:@playing_field)[0][2] = :w_rook
+        game.instance_variable_set(:@current_player, :black)
+        squares = game.attacker_squares([0, 0])
+        expect(squares).to eq([[0, 2], [4, 4]])
+      end
+    end
+  end
+
   describe '#in_checkmate?' do
     context '' do
       it '' do
