@@ -49,7 +49,7 @@ class Game
 
   # used by #play to implement a full turn - not tested
   def play_turn
-    p in_check?
+    puts "#{@current_player.capitalize} is in check!" if in_check?
     puts @player.current_player_announcement(@current_player)
     start, finish = call_player_move_and_convert_it
     while move_piece(start, finish) == :invalid
@@ -80,9 +80,9 @@ class Game
   def move_piece(start, finish)
     return :invalid unless valid_move?(start, finish, @current_player)
 
-    captured = reassign_squares(start, finish)
     # make a copy of the playing field in case the player is moving into check
     playing_field_before_move = @playing_field.clone.map(&:clone)
+    captured = reassign_squares(start, finish)
     if in_check?
       # revert to the copy of the playing field made before the move into check
       @playing_field = playing_field_before_move
