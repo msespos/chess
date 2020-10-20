@@ -4,13 +4,13 @@
 module CheckAndMateValidation
   # check if the king is in check
   def in_check?
-    current_king_square = find_king
+    current_king_square = king_location
     attacking_color = @current_player == :white ? :black : :white
     under_attack?(current_king_square, attacking_color)
   end
 
   # used by #in_check? to find the square that the king is currently on
-  def find_king
+  def king_location
     current_king = @current_player[0] + '_king'
     current_king_square = []
     @playing_field.each_with_index do |row, row_index|
@@ -66,7 +66,7 @@ module CheckAndMateValidation
   # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
     squares = accessible_squares
-    current_king_square = find_king
+    current_king_square = king_location
     attacking_color = @current_player == :white ? :black : :white
     squares.each do |square|
       playing_field_before_move = @playing_field.clone.map(&:clone)
@@ -82,21 +82,20 @@ module CheckAndMateValidation
   # (under attack or not; that will be checked in #can_move_out_of_check?)
   def accessible_squares
     final_squares = []
-    current_king_square = find_king
-    possible_squares = surrounding_squares(current_king_square)
+    possible_squares = surrounding_squares(king_location)
     possible_squares.each do |square|
-      final_squares.push(square) if valid_move?(current_king_square, square, @current_player)
+      final_squares.push(square) if valid_move?(king_location, square, @current_player)
     end
     final_squares
   end
 
   # used by #accessible_squares to determine the squares surrounding the king
   # (valid or not; includes king; will be validated in #accessible_squares)
-  def surrounding_squares(current_king_square)
+  def surrounding_squares(current_square)
     squares = []
     [-1, 0, 1].each do |row_shift|
       [-1, 0, 1].each do |column_shift|
-        squares.push([current_king_square[0] + column_shift, current_king_square[1] + row_shift])
+        squares.push([current_square[0] + column_shift, current_square[1] + row_shift])
       end
     end
     squares
@@ -104,20 +103,11 @@ module CheckAndMateValidation
 
   # check if a piece attacking the king can be captured (including the case of double check)
   def attacker_can_be_captured?
-    current_king_square = find_king
-    squares = attacker_squares(current_king_square)
+    squares = attacker_squares(king_location)
     return false if squares.length > 1
 
     return false unless under_attack?(squares[0], @current_player)
 
     true
   end
-
-  # c) check if a piece can be put in the way
-  #   i) if double check, this is not an option
-  #  ii) otherwise, use the same version of under attack method as in b)
-  # iii) if under attack by a rook, bishop, or queen
-	#     A) look at all of the spaces on the rank, file and/or diagonal, depending
-	#     B) call under_attack on those spaces
-  def piece_can_be_put_in_the_way?; end
 end
