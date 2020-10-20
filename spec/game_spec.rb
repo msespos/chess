@@ -72,7 +72,7 @@ RSpec.describe Game do
     end
   end
 
-  # integration test that also tests #find_king and #under_attack and #valid_move?
+  # integration test that also tests #king_location and #under_attack and #valid_move?
   describe 'in_check?' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -102,7 +102,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'find_king' do
+  describe 'king_location' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
@@ -111,7 +111,7 @@ RSpec.describe Game do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_set(:@current_player, :white)
-        current_square = game.find_king
+        current_square = game.king_location
         expect(current_square).to eq([4, 0])
       end
     end
@@ -120,7 +120,7 @@ RSpec.describe Game do
       it 'returns [1, 6]' do
         game.instance_variable_get(:@playing_field)[1][6] = :b_king
         game.instance_variable_set(:@current_player, :black)
-        current_square = game.find_king
+        current_square = game.king_location
         expect(current_square).to eq([1, 6])
       end
     end
@@ -207,7 +207,7 @@ RSpec.describe Game do
   end
 
   # integration tests - also test #accessible_squares and #surrounding_squares
-  # and #find_king and #valid_move?
+  # and #king_location and #valid_move?
   describe '#can_move_out_of_check?' do
     context 'when the white king can move out of check' do
       before do
@@ -312,7 +312,7 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
       game.instance_variable_set(:@current_player, :white)
-      allow(game).to receive(:find_king).and_return([4, 0])
+      allow(game).to receive(:king_location).and_return([4, 0])
     end
     context 'when the white king is at a5 with free squares on b4, b5, and b6' do
       it 'returns those three squares' do
@@ -336,7 +336,7 @@ RSpec.describe Game do
   end
 
   # integration tests - also test #attacker_squares and #under_attack
-  # and #find_king and #valid_move?
+  # and #king_location and #valid_move?
   describe '#attacker_can_be_captured?' do
     context 'when the white king is in check by a black queen that can be captured' do
       before do
