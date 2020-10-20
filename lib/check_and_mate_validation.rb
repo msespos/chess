@@ -5,7 +5,8 @@ module CheckAndMateValidation
   # check if the king is in check
   def in_check?
     current_king_square = find_king
-    under_attack?(current_king_square)
+    attacking_color = @current_player == :white ? :black : :white
+    under_attack?(current_king_square, attacking_color)
   end
 
   # used by #in_check? to find the square that the king is currently on
@@ -23,8 +24,7 @@ module CheckAndMateValidation
   end
 
   # used by #in_check? and other methods to check if a square is under attack
-  def under_attack?(square)
-    attacking_color = @current_player == :white ? :black : :white
+  def under_attack?(square, attacking_color)
     finish = [square[0], square[1]]
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
@@ -67,10 +67,11 @@ module CheckAndMateValidation
   def can_move_out_of_check?
     squares = accessible_squares
     current_king_square = find_king
+    attacking_color = @current_player == :white ? :black : :white
     squares.each do |square|
       playing_field_before_move = @playing_field.clone.map(&:clone)
       move_piece(current_king_square, square)
-      return true unless under_attack?(square)
+      return true unless under_attack?(square, attacking_color)
 
       @playing_field = playing_field_before_move
     end
@@ -101,7 +102,16 @@ module CheckAndMateValidation
     squares
   end
 
-  def attacker_can_be_captured?; end
+  # check if a piece attacking the king can be captured (including the case of double check)
+  def attacker_can_be_captured?
+    current_king_square = find_king
+    squares = attacker_squares(current_king_square)
+    return false if squares.length > 1
+
+    return false unless under_attack?(squares[0], @current_player)
+
+    true
+  end
 
   # c) check if a piece can be put in the way
   #   i) if double check, this is not an option
