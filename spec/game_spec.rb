@@ -579,14 +579,6 @@ RSpec.describe Game do
       end
     end
 
-    context 'the first piece is on a2 and the second is on d2' do
-      it 'returns an empty array' do
-        squares_between = []
-        end_squares = game.squares_between_on_diagonal([0, 1], [3, 1])
-        expect(end_squares).to eq(squares_between)
-      end
-    end
-
     context 'the first piece is on a7 and the second is on g1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]]
@@ -615,14 +607,6 @@ RSpec.describe Game do
       it 'returns an empty array' do
         squares_between = []
         end_squares = game.squares_between_on_diagonal([1, 1], [0, 0])
-        expect(end_squares).to eq(squares_between)
-      end
-    end
-
-    context 'the first piece is on a2 and the second is on a4' do
-      it 'returns an empty array' do
-        squares_between = []
-        end_squares = game.squares_between_on_diagonal([0, 1], [0, 3])
         expect(end_squares).to eq(squares_between)
       end
     end
