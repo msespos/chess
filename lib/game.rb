@@ -77,7 +77,7 @@ class Game
 
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
-  def move_piece(start, finish)
+  def move_piece(start, finish, checking_move_out_of_check = false)
     return :invalid unless valid_move?(start, finish, @current_player)
 
     # make a copy of the playing field in case the player is moving into check
@@ -85,7 +85,7 @@ class Game
     captured = reassign_squares(start, finish)
     if in_check?
       # revert to the copy of the playing field made before the move into check
-      @playing_field = playing_field_before_move
+      @playing_field = playing_field_before_move unless checking_move_out_of_check
       return :invalid
     end
     captured
