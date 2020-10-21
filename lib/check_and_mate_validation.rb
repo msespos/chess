@@ -160,7 +160,7 @@ module CheckAndMateValidation
     squares = []
     if square_one[0] < square_two[0] && square_one[1] < square_two[1]
       (square_one[0] + 1..square_two[0] - 1).each_with_index do |column, column_index|
-          squares.push([column, square_one[1] + column_index + 1])
+        squares.push([column, square_one[1] + column_index + 1])
       end
     elsif square_one[0] < square_two[0] && square_one[1] > square_two[1]
       (square_one[0] + 1..square_two[0] - 1).each_with_index do |column, column_index|
