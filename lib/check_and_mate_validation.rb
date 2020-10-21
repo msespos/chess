@@ -157,10 +157,15 @@ module CheckAndMateValidation
   end
 
   def squares_between_on_diagonal(square_one, square_two)
-    squares = []
     square_left = square_one[0] < square_two[0] ? square_one : square_two
     square_right = square_left == square_one ? square_two : square_one
     square_below = square_one[1] < square_two[1] ? square_one : square_two
+    squares = find_diagonal_squares(square_left, square_right, square_below)
+    squares
+  end
+
+  def find_diagonal_squares(square_left, square_right, square_below)
+    squares = []
     (square_left[0] + 1..square_right[0] - 1).each_with_index do |column, column_index|
       squares.push([column, square_left[1] + column_index + 1]) if square_left == square_below
 
