@@ -158,22 +158,13 @@ module CheckAndMateValidation
 
   def squares_between_on_diagonal(square_one, square_two)
     squares = []
-    if square_one[0] < square_two[0] && square_one[1] < square_two[1]
-      (square_one[0] + 1..square_two[0] - 1).each_with_index do |column, column_index|
-        squares.push([column, square_one[1] + column_index + 1])
-      end
-    elsif square_one[0] < square_two[0] && square_one[1] > square_two[1]
-      (square_one[0] + 1..square_two[0] - 1).each_with_index do |column, column_index|
-        squares.push([column, square_one[1] - column_index - 1])
-      end
-    elsif square_one[0] > square_two[0] && square_one[1] < square_two[1]
-      (square_two[0] + 1..square_one[0] - 1).each_with_index do |column, column_index|
-        squares.push([column, square_two[1] - column_index - 1])
-      end
-    elsif square_one[0] > square_two[0] && square_one[1] > square_two[1]
-      (square_two[0] + 1..square_one[0] - 1).each_with_index do |column, column_index|
-        squares.push([column, square_two[1] + column_index + 1])
-      end
+    square_left = square_one[0] < square_two[0] ? square_one : square_two
+    square_right = square_left == square_one ? square_two : square_one
+    square_below = square_one[1] < square_two[1] ? square_one : square_two
+    (square_left[0] + 1..square_right[0] - 1).each_with_index do |column, column_index|
+      squares.push([column, square_left[1] + column_index + 1]) if square_left == square_below
+
+      squares.push([column, square_left[1] - column_index - 1]) if square_right == square_below
     end
     squares
   end
