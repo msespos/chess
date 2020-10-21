@@ -448,6 +448,41 @@ RSpec.describe Game do
     end
   end
 
+  describe '#attacker_can_be_blocked?'
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe '#squares_between' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe '#squares_between_on_file' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe '#squares_between_on_rank' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
+  describe '#squares_between_on_diagonal' do
+    context '' do
+      it '' do
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
