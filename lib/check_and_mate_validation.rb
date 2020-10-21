@@ -108,4 +108,35 @@ module CheckAndMateValidation
 
     true
   end
+
+  # check if a piece can be put in the way of a piece attacking the king
+  # if in double check, returns false
+  # if not, examine the piece attacking - only rooks, bishops, and queens can be blocked
+  # if under attack by a rook, bishop, or queen:
+  # look at all of the spaces on the rank, file or diagonal of attack
+  # check if any of those spaces are under attack by the current player
+  def attacker_can_be_blocked?
+    squares = attacker_squares(king_location)
+    return false if squares.length > 1
+
+    piece_type = @playing_field[squares[0][0]][squares[0][1]]
+    piece_type_without_color = piece_type[2..-1].to_sym
+    possible_attackers = %i[rook bishop queen]
+    return false unless possible_attackers.include(piece_type_without_color)
+
+    possible_blocks = squares_between(squares[0], current_king_square)
+    possible_blocks.each { |possibility| return true if under_attack(possibility, @current_player) }
+    false
+  end
+
+  def squares_between(square_one, square_two)
+    squares = if square_one[0] == square_two[0]
+                squares_between_on_file(square_one, square_two)
+              elsif square_one[1] == square_two[1]
+                squares_between_on_rank(square_one, square_two)
+              else
+                squares_between_on_diagonal(square_one, square_two)
+              end
+    squares
+  end
 end
