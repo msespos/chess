@@ -448,7 +448,7 @@ RSpec.describe Game do
     end
   end
 
-  describe '#attacker_can_be_blocked?'
+  describe '#attacker_can_be_blocked?' do
     context '' do
       it '' do
       end
@@ -463,8 +463,43 @@ RSpec.describe Game do
   end
 
   describe '#squares_between_on_file' do
-    context '' do
-      it '' do
+    context 'the first piece is on a1 and the second is on a7' do
+      it 'returns all the squares in between' do
+        squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
+        end_squares = game.squares_between_on_file([0, 0], [0, 6])
+        expect(end_squares).to eq(squares_between)
+      end
+    end
+
+    context 'the first piece is on a7 and the second is on a1' do
+      it 'returns all the squares in between' do
+        squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
+        end_squares = game.squares_between_on_file([0, 6], [0, 0])
+        expect(end_squares).to eq(squares_between)
+      end
+    end
+
+    context 'the first piece is on b5 and the second is on b7' do
+      it 'returns the square in between' do
+        squares_between = [[1, 5]]
+        end_squares = game.squares_between_on_file([1, 4], [1, 6])
+        expect(end_squares).to eq(squares_between)
+      end
+    end
+
+    context 'the first piece is on a2 and the second is on a1' do
+      it 'returns an empty array' do
+        squares_between = []
+        end_squares = game.squares_between_on_file([0, 1], [0, 0])
+        expect(end_squares).to eq(squares_between)
+      end
+    end
+
+    context 'the first piece is on a2 and the second is on d2' do
+      it 'returns an empty array' do
+        squares_between = []
+        end_squares = game.squares_between_on_file([0, 1], [3, 1])
+        expect(end_squares).to eq(squares_between)
       end
     end
   end
