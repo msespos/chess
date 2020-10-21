@@ -116,6 +116,15 @@ RSpec.describe Game do
       end
     end
 
+    context 'when the white king is on a1 and it is white\'s turn' do
+      it 'returns [4, 0]' do
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_set(:@current_player, :white)
+        current_square = game.king_location
+        expect(current_square).to eq([0, 0])
+      end
+    end
+
     context 'when the black king is on b7 and it is black\'s turn' do
       it 'returns [1, 6]' do
         game.instance_variable_get(:@playing_field)[1][6] = :b_king
@@ -215,6 +224,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+        game.instance_variable_set(:@current_player, :white)
       end
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
@@ -228,6 +238,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :b_bishop
+        game.instance_variable_set(:@current_player, :white)
       end
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
@@ -241,6 +252,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+        game.instance_variable_set(:@current_player, :white)
       end
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
@@ -255,6 +267,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
         game.instance_variable_get(:@playing_field)[0][2] = :b_rook
+        game.instance_variable_set(:@current_player, :white)
       end
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
@@ -269,6 +282,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[1][3] = :b_rook
+        game.instance_variable_set(:@current_player, :white)
       end
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
@@ -312,15 +326,25 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
       game.instance_variable_set(:@current_player, :white)
-      allow(game).to receive(:king_location).and_return([4, 0])
     end
     context 'when the white king is at a5 with free squares on b4, b5, and b6' do
       it 'returns those three squares' do
+        allow(game).to receive(:king_location).and_return([4, 0])
         game.instance_variable_get(:@playing_field)[3][0] = :w_queen
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[5][0] = :w_rook
         accessible = game.accessible_squares
         expect(accessible).to eq([[3, 1], [4, 1], [5, 1]])
+      end
+    end
+
+    context 'when the white king is at a0 with free squares on a1, a2, and b1' do
+      it 'returns those three squares' do
+        allow(game).to receive(:king_location).and_return([0, 0])
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+        accessible = game.accessible_squares
+        expect(accessible).to eq([[1, 0], [0, 1], [1, 1]])
       end
     end
   end
