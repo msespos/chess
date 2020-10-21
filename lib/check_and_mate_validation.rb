@@ -150,11 +150,9 @@ module CheckAndMateValidation
 
   def squares_between_on_rank(square_one, square_two)
     squares = []
-    if square_one[0] < square_two[0]
-      (square_one[0] + 1..square_two[0] - 1).each { |column| squares.push([column, square_one[1]]) }
-    else
-      (square_two[0] + 1..square_one[0] - 1).each { |column| squares.push([column, square_one[1]]) }
-    end
+    square_left = square_one[0] < square_two[0] ? square_one : square_two
+    square_right = square_one[0] > square_two[0] ? square_one : square_two
+    (square_left[0] + 1..square_right[0] - 1).each { |column| squares.push([column, square_one[1]]) }
     squares
   end
 
