@@ -142,11 +142,9 @@ module CheckAndMateValidation
 
   def squares_between_on_file(square_one, square_two)
     squares = []
-    if square_one[1] < square_two[1]
-      (square_one[1] + 1..square_two[1] - 1).each { |row| squares.push([square_one[0], row]) }
-    else
-      (square_two[1] + 1..square_one[1] - 1).each { |row| squares.push([square_one[0], row]) }
-    end
+    square_below = square_one[1] < square_two[1] ? square_one : square_two
+    square_above = square_one[1] > square_two[1] ? square_one : square_two
+    (square_below[1] + 1..square_above[1] - 1).each { |row| squares.push([square_one[0], row]) }
     squares
   end
 
