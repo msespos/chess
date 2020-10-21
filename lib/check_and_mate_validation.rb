@@ -65,13 +65,11 @@ module CheckAndMateValidation
 
   # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
-    squares = accessible_squares
-    current_king_square = king_location
     attacking_color = @current_player == :white ? :black : :white
-    squares.each do |square|
+    accessible_squares.each do |accessible_square|
       playing_field_before_move = @playing_field.clone.map(&:clone)
-      move_piece(current_king_square, square)
-      return true unless under_attack?(square, attacking_color)
+      move_piece(king_location, accessible_square, true)
+      return true unless under_attack?(accessible_square, attacking_color)
 
       @playing_field = playing_field_before_move
     end
