@@ -35,8 +35,8 @@ module CheckValidation
     false
   end
 
-  # used by #attacker_can_be_captured? and other methods to find
-  # the location(s) of the piece(s) attacking a square
+  # used by #attacker_can_be_captured? and other methods in CheckmateValidation
+  # to find the location(s) of the piece(s) attacking a square
   def attacker_squares(square)
     attacking_color = @current_player == :white ? :black : :white
     finish = [square[0], square[1]]
