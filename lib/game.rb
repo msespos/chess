@@ -2,12 +2,14 @@
 
 require 'pry'
 require_relative 'move_validation'
-require_relative 'check_and_mate_validation'
+require_relative 'check_validation'
+require_relative 'checkmate_validation'
 
 # game class
 class Game
   include MoveValidation
-  include CheckAndMateValidation
+  include CheckValidation
+  include CheckmateValidation
 
   def initialize
     @board = Board.new
