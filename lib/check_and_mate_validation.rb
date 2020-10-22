@@ -122,10 +122,10 @@ module CheckAndMateValidation
     piece_type = @playing_field[squares[0][0]][squares[0][1]]
     piece_type_without_color = piece_type[2..-1].to_sym
     possible_attackers = %i[rook bishop queen]
-    return false unless possible_attackers.include(piece_type_without_color)
+    return false unless possible_attackers.include?(piece_type_without_color)
 
-    possible_blocks = squares_between(squares[0], current_king_square)
-    possible_blocks.each { |possibility| return true if under_attack(possibility, @current_player) }
+    possible_blocks = squares_between(squares[0], king_location)
+    possible_blocks.each { |possibility| return true if under_attack?(possibility, @current_player) }
     false
   end
 
