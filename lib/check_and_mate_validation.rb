@@ -117,14 +117,27 @@ module CheckAndMateValidation
   # check if any of those spaces are under attack by the current player
   def attacker_can_be_blocked?
     squares = attacker_squares(king_location)
-    return false if squares.length > 1
+    return false if squares.length != 1
 
-    piece_type = @playing_field[squares[0][0]][squares[0][1]]
+    attacker_square = squares[0]
+    return false unless blockable_piece_type?(attacker_square)
+
+    return true if possible_blocks_under_attack?(attacker_square)
+
+    false
+  end
+
+  def blockable_piece_type?(attacker_square)
+    piece_type = @playing_field[attacker_square[0]][attacker_square[1]]
     piece_type_without_color = piece_type[2..-1].to_sym
     possible_attackers = %i[rook bishop queen]
     return false unless possible_attackers.include?(piece_type_without_color)
 
-    possible_blocks = squares_between(squares[0], king_location)
+    true
+  end
+
+  def possible_blocks_under_attack?(attacker_square)
+    possible_blocks = squares_between(attacker_square, king_location)
     possible_blocks.each { |possibility| return true if under_attack?(possibility, @current_player) }
     false
   end
