@@ -90,7 +90,7 @@ module CheckmateValidation
 
   def possible_blocks_under_attack?(attacker_square)
     possible_blocks = squares_between(attacker_square, king_location)
-    possible_blocks.each { |possibility| return true if under_attack?(possibility, @current_player) }
+    possible_blocks.each { |possibility| return true if under_attack?(possibility, @current_player, true) }
     false
   end
 
