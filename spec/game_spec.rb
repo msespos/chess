@@ -449,17 +449,18 @@ RSpec.describe Game do
   end
 
   # integration tests that also test #attacker_squares and #king_location
-  # and #squares_between and helper methods
+  # and #possible_blocks_under_attack? and#squares_between and helper methods
   describe '#attacker_can_be_blocked?' do
     context 'when the white king is in check and can block the check' do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
-        game.instance_variable_get(:@playing_field)[2][2] = :w_rook
+        game.instance_variable_get(:@playing_field)[2][1] = :w_rook
       end
-      xit 'returns true' do
+      it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
       end
@@ -469,11 +470,12 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[4][2] = :w_rook
       end
-      xit 'returns true' do
+      it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
       end
@@ -483,13 +485,75 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[4][3] = :w_rook
       end
-      xit 'returns true' do
+      it 'returns false' do
+        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        expect(can_be_blocked_or_not).to eq(false)
+      end
+    end
+
+    context 'when the white king is in double check and can block each check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[4][4] = :w_king
+        game.instance_variable_get(:@playing_field)[4][7] = :b_rook
+        game.instance_variable_get(:@playing_field)[7][7] = :b_bishop
+        game.instance_variable_get(:@playing_field)[6][5] = :w_rook
+        game.instance_variable_get(:@playing_field)[7][6] = :w_rook
+      end
+      it 'returns false' do
+        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        expect(can_be_blocked_or_not).to eq(false)
+      end
+    end
+
+    context 'when the black king is in check and can block the check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[4][4] = :b_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_queen
+        game.instance_variable_get(:@playing_field)[5][0] = :b_rook
+      end
+      it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
+      end
+    end
+
+    context 'when the black king is in check and cannot block the check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[4][4] = :b_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_bishop
+        game.instance_variable_get(:@playing_field)[0][0] = :b_rook
+      end
+      it 'returns false' do
+        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        expect(can_be_blocked_or_not).to eq(false)
+      end
+    end
+
+    context 'when the black king is in check and cannot block the check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[4][4] = :b_king
+        game.instance_variable_get(:@playing_field)[5][6] = :w_knight
+      end
+      it 'returns false' do
+        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        expect(can_be_blocked_or_not).to eq(false)
       end
     end
   end
@@ -518,27 +582,107 @@ RSpec.describe Game do
     end
   end
 
+  # integration tests that also test #attacker_squares and #king_location
+  # and #squares_between and helper methods
   describe '#possible_blocks_under_attack?' do
-    context 'when a block between the white king and an attacker is under attack' do
+    context 'when a square between the white king and an attacker is under attack' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][4] = :b_rook
         game.instance_variable_get(:@playing_field)[2][2] = :w_rook
-        blockable_or_not = game.blockable_piece_type?([0, 4])
-        expect(blockable_or_not).to eq(true)
+        under_attack_or_not = game.possible_blocks_under_attack?([0, 4])
+        expect(under_attack_or_not).to eq(true)
       end
     end
 
-    context 'when no block between the white king and an attacker is under attack' do
+    context 'when no square between the white king and an attacker is under attack' do
       it 'returns false' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][4] = :b_rook
-        blockable_or_not = game.blockable_piece_type?([0, 4])
-        expect(blockable_or_not).to eq(false)
+        under_attack_or_not = game.possible_blocks_under_attack?([0, 4])
+        expect(under_attack_or_not).to eq(false)
+      end
+    end
+
+    context 'when a square between the white king and an attacker is under attack' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[6][4] = :w_king
+        game.instance_variable_get(:@playing_field)[3][4] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][2] = :w_rook
+        under_attack_or_not = game.possible_blocks_under_attack?([3, 4])
+        expect(under_attack_or_not).to eq(true)
+      end
+    end
+
+    context 'when no square between the white king and an attacker is under attack' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[6][4] = :w_king
+        game.instance_variable_get(:@playing_field)[3][4] = :b_queen
+        under_attack_or_not = game.possible_blocks_under_attack?([3, 4])
+        expect(under_attack_or_not).to eq(false)
+      end
+    end
+
+    context 'when a square between the black king and an attacker is under attack' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[6][4] = :b_king
+        game.instance_variable_get(:@playing_field)[4][2] = :w_bishop
+        game.instance_variable_get(:@playing_field)[5][2] = :b_rook
+        under_attack_or_not = game.possible_blocks_under_attack?([4, 2])
+        expect(under_attack_or_not).to eq(true)
+      end
+    end
+
+    context 'when no square between the white king and an attacker is under attack' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[6][4] = :b_king
+        game.instance_variable_get(:@playing_field)[4][2] = :w_bishop
+        under_attack_or_not = game.possible_blocks_under_attack?([4, 2])
+        expect(under_attack_or_not).to eq(false)
+      end
+    end
+
+    context 'when two squares between the black king and an attacker are under attack' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[2][6] = :b_king
+        game.instance_variable_get(:@playing_field)[6][6] = :w_rook
+        game.instance_variable_get(:@playing_field)[2][4] = :b_bishop
+        game.instance_variable_get(:@playing_field)[5][2] = :b_rook
+        under_attack_or_not = game.possible_blocks_under_attack?([6, 6])
+        expect(under_attack_or_not).to eq(true)
+      end
+    end
+
+    context 'when no square between the black king and an attacker is under attack' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[2][6] = :b_king
+        game.instance_variable_get(:@playing_field)[3][5] = :w_pawn
+        under_attack_or_not = game.possible_blocks_under_attack?([3, 5])
+        expect(under_attack_or_not).to eq(false)
       end
     end
   end
