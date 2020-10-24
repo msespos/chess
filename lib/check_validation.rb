@@ -50,7 +50,7 @@ module CheckValidation
     false
   end
 
-  # used by under_attack_with_or_without_king to creat the current king from @current_player
+  # used by under_attack_with_or_without_king? to creat the current king from @current_player
   def current_king
     current_king_string = @current_player[0] + '_king'
     current_king_string.to_sym
