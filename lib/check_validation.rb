@@ -24,15 +24,36 @@ module CheckValidation
   end
 
   # used by #in_check? and other methods to check if a square is under attack
-  def under_attack?(square, attacking_color)
-    finish = [square[0], square[1]]
+  # if under_attack_by_all_but_king is true, does not check attacks by king
+  def under_attack?(square, attacking_color, check_all_but_king = false)
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
-        start = [row_index, column_index]
-        return true if valid_move?(start, finish, attacking_color)
+        return true if under_attack_with_or_without_king?(square, row_index, column_index,
+                                                          attacking_color, check_all_but_king)
       end
     end
     false
+  end
+
+  # used by under_attack? to determine if the king will be counted among the potential attackers
+  def under_attack_with_or_without_king?(square, row_index, column_index,
+                                         attacking_color, check_all_but_king)
+    start = [row_index, column_index]
+    finish = [square[0], square[1]]
+    if check_all_but_king
+      unless @playing_field[row_index][column_index] == current_king
+        return true if valid_move?(start, finish, attacking_color)
+      end
+    elsif valid_move?(start, finish, attacking_color)
+      return true
+    end
+    false
+  end
+
+  # used by under_attack_with_or_without_king to creat the current king from @current_player
+  def current_king
+    current_king_string = @current_player[0] + '_king'
+    current_king_string.to_sym
   end
 
   # used by #attacker_can_be_captured? and other methods in CheckmateValidation
