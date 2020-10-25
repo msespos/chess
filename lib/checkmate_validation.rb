@@ -10,7 +10,7 @@ module CheckmateValidation
 
     return false if attacker_can_be_captured?
 
-    return false if piece_can_be_put_in_the_way?
+    return false if attacker_can_be_blocked?
 
     true
   end
