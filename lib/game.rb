@@ -88,7 +88,7 @@ class Game
     if in_check?
       # revert to the copy of the playing field made before the move into check
       @playing_field = playing_field_before_move unless checking_move_out_of_check
-      return :invalid
+      return :in_check
     end
     captured
   end
