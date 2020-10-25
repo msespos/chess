@@ -24,7 +24,8 @@ module CheckValidation
   end
 
   # used by #in_check? and other methods to check if a square is under attack
-  # if under_attack_by_all_but_king is true, does not check attacks by king
+  # if check_all_but_king is true, does not check attacks by king
+  # check_all_but_king is only used by #possible_blocks_under_attack
   def under_attack?(square, attacking_color, check_all_but_king = false)
     @playing_field.each_with_index do |row, row_index|
       row.each_index do |column_index|
@@ -35,7 +36,8 @@ module CheckValidation
     false
   end
 
-  # used by under_attack? to determine if the king will be counted among the potential attackers
+  # used by #under_attack? to determine if the king will be counted among the potential
+  # attackers, in most cases, or not, in #possible_blocks_under_attack?
   def under_attack_with_or_without_king?(square, row_index, column_index,
                                          attacking_color, check_all_but_king)
     start = [row_index, column_index]
@@ -46,6 +48,24 @@ module CheckValidation
       end
     elsif valid_move?(start, finish, attacking_color)
       return true
+    end
+    false
+  end
+
+  # alternate version of #under_attack? used when checking if an attack
+  # can be used to get the king out of check in #attacker_can_be_captured?
+  def under_attack_but_does_not_move_into_check?(square, attacking_color)
+    finish = [square[0], square[1]]
+    @playing_field.each_with_index do |row, row_index|
+      row.each_index do |column_index|
+        start = [row_index, column_index]
+        playing_field_before_move = @playing_field.clone.map(&:clone)
+        unless move_piece(start, finish) == :in_check
+          @playing_field = playing_field_before_move
+          return true if valid_move?(start, finish, attacking_color)
+        end
+        @playing_field = playing_field_before_move
+      end
     end
     false
   end
