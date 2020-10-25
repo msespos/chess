@@ -505,6 +505,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
       end
@@ -518,6 +519,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
       end
@@ -531,6 +533,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[0][4] = :w_rook
@@ -545,6 +548,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][2] = :b_knight
         game.instance_variable_get(:@playing_field)[2][4] = :w_knight
@@ -559,6 +563,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[2][0] = :b_rook
@@ -574,6 +579,7 @@ RSpec.describe Game do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[0][4] = :w_rook
