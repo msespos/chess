@@ -9,14 +9,14 @@ module MoveValidation
   # and checking if the piece is the correct color for the player
   # and looking up the appropriate Piece path method using path_method_from_piece
   # and calling it on @piece
-  def valid_move?(start, finish, color)
+  def valid_move?(start, finish, color, checking_current_player = true)
     return false if start == finish
 
     return false unless on_playing_field?(start) && on_playing_field?(finish)
 
-    return false unless start_and_finish_spaces_valid?(start, finish)
+    return false unless start_and_finish_squares_valid?(start, finish, checking_current_player)
 
-    return false unless correct_color?(color, start)
+    return false unless correct_color?(start, color)
 
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
@@ -31,29 +31,29 @@ module MoveValidation
   # used by valid_move? to check that the start and finish spaces are valid
   # check if start space is occupied
   # and call #finish_space_valid? on the start and finish pieces
-  def start_and_finish_spaces_valid?(start, finish)
+  def start_and_finish_squares_valid?(start, finish, checking_current_player = true)
     start_piece = @playing_field[start[0]][start[1]]
     finish_piece = @playing_field[finish[0]][finish[1]]
     return false if start_piece.nil?
 
-    return false unless finish_space_valid?(start_piece, finish_piece)
+    return false unless finish_square_valid?(start_piece, finish_piece, checking_current_player)
 
     true
   end
 
-  # used by start_and_finish_spaces_valid?
+  # used by start_and_finish_squares_valid?
   # check if the piece in the finish square is nil or not
   # or if the pieces in the start and finish square are the same color or not
-  def finish_space_valid?(start_piece, finish_piece)
+  def finish_square_valid?(start_piece, finish_piece, checking_current_player = true)
     if finish_piece.nil?
       true
     else
-      start_piece[0] != finish_piece[0]
+      checking_current_player ? start_piece[0] != finish_piece[0] : start_piece[0] == finish_piece[0]
     end
   end
 
-  # used by #valid_move? to check if the starting piece is the same color as the current player
-  def correct_color?(color, start)
+  # used by #valid_move? to check if the starting piece is the same color as the color passed in
+  def correct_color?(start, color)
     start_piece = @playing_field[start[0]][start[1]]
     start_piece[0] == color[0]
   end
