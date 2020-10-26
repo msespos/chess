@@ -412,6 +412,187 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(false)
       end
     end
+
+    context 'when a black piece can block the attacker' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[0][7] = :b_king
+        game.instance_variable_get(:@playing_field)[0][5] = :w_rook
+        game.instance_variable_get(:@playing_field)[1][6] = :b_rook
+      end
+      it 'returns false' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when a black piece can block the attacker' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[7][7] = :b_king
+        game.instance_variable_get(:@playing_field)[0][0] = :w_queen
+        game.instance_variable_get(:@playing_field)[5][3] = :b_bishop
+      end
+      it 'returns false' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when black is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[7][7] = :b_king
+        game.instance_variable_get(:@playing_field)[0][7] = :w_queen
+        game.instance_variable_get(:@playing_field)[3][6] = :w_rook
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black can capture the attacker' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[1][7] = :b_king
+        game.instance_variable_get(:@playing_field)[2][6] = :w_queen
+        game.instance_variable_get(:@playing_field)[1][5] = :w_knight
+      end
+      it 'returns false' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when black is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :black)
+        game.instance_variable_get(:@playing_field)[1][7] = :b_king
+        game.instance_variable_get(:@playing_field)[2][6] = :w_queen
+        game.instance_variable_get(:@playing_field)[1][5] = :w_knight
+        game.instance_variable_get(:@playing_field)[3][5] = :w_pawn
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][3] = :b_rook
+        game.instance_variable_get(:@playing_field)[1][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[1][0] = :w_rook
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white can block the attacker' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][3] = :b_rook
+        game.instance_variable_get(:@playing_field)[1][1] = :w_bishop
+        game.instance_variable_get(:@playing_field)[1][0] = :w_rook
+      end
+      it 'returns false' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when white is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[6][0] = :w_king
+        game.instance_variable_get(:@playing_field)[5][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[6][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[7][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[0][0] = :b_rook
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white is in fool\'s mate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[3][0] = :w_queen
+        game.instance_variable_get(:@playing_field)[3][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[4][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
+        game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
+        game.instance_variable_get(:@playing_field)[7][3] = :b_queen
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[3][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[3][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[4][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
+        game.instance_variable_get(:@playing_field)[3][3] = :b_knight
+      end
+      it 'returns true' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white can capture the attacker' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[3][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[3][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[4][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
+      end
+      it 'returns false' do
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
   end
 
   # integration tests - also test #accessible_squares and #surrounding_squares
