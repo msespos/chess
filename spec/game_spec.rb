@@ -208,6 +208,66 @@ RSpec.describe Game do
     end
   end
 
+  describe '#attacking_piece_protected?' do
+    context 'when the attacking piece is protected' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[1][2] = :b_bishop
+      end
+      it 'returns true' do
+        protected_or_not = game.attacking_piece_protected?([0, 1])
+        expect(protected_or_not).to eq(true)
+      end
+    end
+
+    context 'when the attacking piece is protected' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[1][3] = :b_bishop
+      end
+      it 'returns true' do
+        protected_or_not = game.attacking_piece_protected?([0, 2])
+        expect(protected_or_not).to eq(true)
+      end
+    end
+
+    context 'when the attacking piece is not protected' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+      end
+      it 'returns false' do
+        protected_or_not = game.attacking_piece_protected?([0, 1])
+        expect(protected_or_not).to eq(false)
+      end
+    end
+
+    context 'when the attacking piece is not protected' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][2] = :b_queen
+      end
+      it 'returns false' do
+        protected_or_not = game.attacking_piece_protected?([0, 2])
+        expect(protected_or_not).to eq(false)
+      end
+    end
+  end
+
   describe '#in_checkmate?' do
     context 'when not in check' do
       it 'returns false' do
@@ -506,12 +566,28 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:attacking_piece_protected?).and_return(false)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
       end
       it 'returns true' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(true)
+      end
+    end
+
+    context 'when the white king is in check by a black queen that cannot be captured' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[0][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[1][2] = :b_bishop
+      end
+      it 'returns false' do
+        can_be_captured_or_not = game.attacker_can_be_captured?
+        expect(can_be_captured_or_not).to eq(false)
       end
     end
 
@@ -534,6 +610,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:attacking_piece_protected?).and_return(false)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[0][4] = :w_rook
@@ -549,6 +626,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:attacking_piece_protected?).and_return(false)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][2] = :b_knight
         game.instance_variable_get(:@playing_field)[2][4] = :w_knight
@@ -1277,7 +1355,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #start_and_finish_spaces_valid? as well
+    # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the pieces are the same color' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
@@ -1285,7 +1363,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #start_and_finish_spaces_valid? as well
+    # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the start piece is nil' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, 2], [0, 1], 'color')
@@ -1293,7 +1371,7 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests #start_and_finish_spaces_valid? as well
+    # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the finish piece is nil' do
       it 'returns false' do
         valid_or_not = game.valid_move?([0, 0], [0, 2], 'color')
@@ -1306,7 +1384,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
         valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
@@ -1318,7 +1396,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
         valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
@@ -1331,7 +1409,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
         valid_or_not = game.valid_move?([1, 0], [2, 2], 'color')
@@ -1344,7 +1422,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 0], [4, 0], 'color')
@@ -1357,7 +1435,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2], 'color')
@@ -1370,7 +1448,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
         game.instance_variable_set(:@piece, piece_valid)
-        allow(game).to receive(:start_and_finish_spaces_valid?).and_return(true)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0], 'color')
@@ -1380,16 +1458,16 @@ RSpec.describe Game do
   end
 
   describe '#correct_color?' do
-    context 'when the start piece is white and the current player is set to white' do
+    context 'when the start piece is white and white is passed in' do
       it 'returns true' do
-        correct_color_or_not = game.correct_color?(:white, [0, 1])
+        correct_color_or_not = game.correct_color?([0, 1], :white)
         expect(correct_color_or_not).to eq(true)
       end
     end
 
-    context 'when the start piece is white and the current player is set to black' do
+    context 'when the start piece is white and black is passed in' do
       it 'returns false' do
-        correct_color_or_not = game.correct_color?(:black, [0, 1])
+        correct_color_or_not = game.correct_color?([0, 1], :black)
         expect(correct_color_or_not).to eq(false)
       end
     end
@@ -1425,51 +1503,51 @@ RSpec.describe Game do
     end
   end
 
-  describe '#start_and_finish_spaces_valid?' do
+  describe '#start_and_finish_squares_valid?' do
     context 'when the start piece is nil and the finish space is valid' do
       it 'returns false' do
-        allow(game).to receive(:finish_space_valid?).and_return(true)
-        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 2], [0, 3])
-        expect(start_and_finish_spaces_valid_or_not).to eq(false)
+        allow(game).to receive(:finish_square_valid?).and_return(true)
+        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 2], [0, 3])
+        expect(start_and_finish_squares_valid_or_not).to eq(false)
       end
     end
 
     context 'when the start piece is not nil and the finish space is valid' do
       it 'returns true' do
-        allow(game).to receive(:finish_space_valid?).and_return(true)
-        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 1], [0, 3])
-        expect(start_and_finish_spaces_valid_or_not).to eq(true)
+        allow(game).to receive(:finish_square_valid?).and_return(true)
+        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 1], [0, 3])
+        expect(start_and_finish_squares_valid_or_not).to eq(true)
       end
     end
 
     context 'when the start piece is not nil and the finish space is not valid' do
       it 'returns false' do
-        allow(game).to receive(:finish_space_valid?).and_return(false)
-        start_and_finish_spaces_valid_or_not = game.start_and_finish_spaces_valid?([0, 1], [0, 3])
-        expect(start_and_finish_spaces_valid_or_not).to eq(false)
+        allow(game).to receive(:finish_square_valid?).and_return(false)
+        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 1], [0, 3])
+        expect(start_and_finish_squares_valid_or_not).to eq(false)
       end
     end
   end
 
-  describe '#finish_space_valid?' do
+  describe '#finish_square_valid?' do
     context 'when the finish piece is nil' do
       it 'returns true' do
-        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, nil)
-        expect(finish_space_valid_or_not).to eq(true)
+        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, nil)
+        expect(finish_square_valid_or_not).to eq(true)
       end
     end
 
     context 'when the pieces are the same color' do
       it 'returns false' do
-        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :b_rook)
-        expect(finish_space_valid_or_not).to eq(false)
+        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, :b_rook)
+        expect(finish_square_valid_or_not).to eq(false)
       end
     end
 
     context 'when the pieces are different colors' do
       it 'returns true' do
-        finish_space_valid_or_not = game.finish_space_valid?(:b_rook, :w_rook)
-        expect(finish_space_valid_or_not).to eq(true)
+        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, :w_rook)
+        expect(finish_square_valid_or_not).to eq(true)
       end
     end
   end
