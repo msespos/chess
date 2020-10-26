@@ -73,8 +73,10 @@ module CheckValidation
     squares
   end
 
-  # used by #attacker_can_be_captured? to check if a piece is protecting the attacking piece
-  # and thus the attacking piece cannot be attacked by the king
+  # used by #attacker_can_be_captured? in CheckmateValidation to check if a piece is 
+  # protecting the attacking piece and thus the attacking piece cannot be attacked by the king
+  # uses fourth #valid_move? argument to tell it to use the color of the attacking piece
+  # not of the current player
   def attacking_piece_protected?(attacking_piece_square)
     attacking_color = @current_player == :white ? :black : :white
     @playing_field.each_with_index do |row, row_index|
