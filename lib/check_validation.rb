@@ -52,25 +52,7 @@ module CheckValidation
     false
   end
 
-  # alternate version of #under_attack? used when checking if an attack
-  # can be used to get the king out of check in #attacker_can_be_captured?
-  def under_attack_but_does_not_move_into_check?(square, attacking_color)
-    finish = [square[0], square[1]]
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        start = [row_index, column_index]
-        playing_field_before_move = @playing_field.clone.map(&:clone)
-        unless move_piece(start, finish) == :in_check
-          @playing_field = playing_field_before_move
-          return true if valid_move?(start, finish, attacking_color)
-        end
-        @playing_field = playing_field_before_move
-      end
-    end
-    false
-  end
-
-  # used by under_attack_with_or_without_king? to creat the current king from @current_player
+  # used by under_attack_with_or_without_king? to create the current king symbol from @current_player
   def current_king
     current_king_string = @current_player[0] + '_king'
     current_king_string.to_sym
@@ -89,5 +71,18 @@ module CheckValidation
       end
     end
     squares
+  end
+
+  # used by #attacker_can_be_captured? to check if a piece is protecting the attacking piece
+  # and thus the attacking piece cannot be attacked by the king
+  def attacking_piece_protected?(attacking_piece_square)
+    attacking_color = @current_player == :white ? :black : :white
+    @playing_field.each_with_index do |row, row_index|
+      row.each_index do |column_index|
+        start = [row_index, column_index]
+        return true if valid_move?(start, attacking_piece_square, attacking_color, false)
+      end
+    end
+    false
   end
 end
