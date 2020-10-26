@@ -73,7 +73,7 @@ module CheckValidation
     squares
   end
 
-  # used by #attacker_can_be_captured? in CheckmateValidation to check if a piece is 
+  # used by #attacker_can_be_captured? in CheckmateValidation to check if a piece is
   # protecting the attacking piece and thus the attacking piece cannot be attacked by the king
   # uses fourth #valid_move? argument to tell it to use the color of the attacking piece
   # not of the current player
