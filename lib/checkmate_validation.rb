@@ -21,9 +21,10 @@ module CheckmateValidation
     accessible_squares.each do |accessible_square|
       playing_field_before_move = @playing_field.clone.map(&:clone)
       move_piece(king_location, accessible_square, true)
-      return true unless under_attack?(accessible_square, attacking_color)
-
-      @playing_field = playing_field_before_move
+      unless under_attack?(accessible_square, attacking_color)
+        @playing_field = playing_field_before_move
+        return true
+      end
     end
     false
   end
