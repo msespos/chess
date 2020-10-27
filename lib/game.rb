@@ -48,12 +48,16 @@ class Game
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
     start, finish = call_player_move_and_convert_it
+    redo_player_move_if_invalid(start, finish)
+    @current_player = @current_player == :white ? :black : :white
+    display_board
+  end
+
+  def redo_player_move_if_invalid(start, finish)
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
       start, finish = call_player_move_and_convert_it
     end
-    @current_player = @current_player == :white ? :black : :white
-    display_board
   end
 
   # used by #play_turn - not tested
@@ -82,7 +86,7 @@ class Game
     if in_check?
       # revert to the copy of the playing field made before the move into check
       @playing_field = playing_field_before_move unless checking_move_out_of_check
-      return :in_check
+      return :invalid
     end
     captured
   end
