@@ -127,8 +127,7 @@ module CheckmateValidation
     square_left = square_one[0] < square_two[0] ? square_one : square_two
     square_right = square_left == square_one ? square_two : square_one
     square_below = square_one[1] < square_two[1] ? square_one : square_two
-    squares = find_diagonal_squares(square_left, square_right, square_below)
-    squares
+    find_diagonal_squares(square_left, square_right, square_below)
   end
 
   def find_diagonal_squares(square_left, square_right, square_below)
