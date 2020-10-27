@@ -33,20 +33,19 @@ class Game
   def play
     puts 'Intro text and Intro board'
     display_board
-    play_turn until game_over?
-    puts 'Game Over'
+    play_turn until in_checkmate?
+    puts end_of_game_announcement
+  end
+
+  def end_of_game_announcement
+    winner = @current_player == :white ? :black : :white
+    "Checkmate! #{winner.capitalize} wins!"
   end
 
   # send the current playing field to the board and print the board - not tested
   def display_board
     playing_field_to_board(@playing_field)
     puts @board
-  end
-
-  # will contain end conditions for the game eventually - not tested
-  # currently set to loop #play_turn infinitely within #play
-  def game_over?
-    false
   end
 
   # used by #play to implement a full turn - not tested
