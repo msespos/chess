@@ -1445,9 +1445,9 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][6] = :b_king
       end
 
-      it 'returns :in_check' do
+      it 'returns :invalid' do
         move = game.move_piece([6, 6], [7, 5])
-        expect(move).to eq(:in_check)
+        expect(move).to eq(:invalid)
       end
 
       it 'resets the board' do
