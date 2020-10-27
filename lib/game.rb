@@ -31,15 +31,10 @@ class Game
 
   # play the whole game - not tested
   def play
-    puts 'Intro text and Intro board'
+    puts @player.intro_text
     display_board
     play_turn until in_checkmate?
-    puts end_of_game_announcement
-  end
-
-  def end_of_game_announcement
-    winner = @current_player == :white ? :black : :white
-    "Checkmate! #{winner.capitalize} wins!"
+    puts @player.end_of_game_announcement(@current_player)
   end
 
   # send the current playing field to the board and print the board - not tested
@@ -50,7 +45,7 @@ class Game
 
   # used by #play to implement a full turn - not tested
   def play_turn
-    puts "#{@current_player.capitalize} is in check!" if in_check?
+    puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
     start, finish = call_player_move_and_convert_it
     while move_piece(start, finish) == :invalid

@@ -30,6 +30,22 @@ class Player
     'That is not a valid move! Please enter a valid move.'
   end
 
+  # used by Game#play
+  def intro_text
+    'Intro text and Intro board'
+  end
+
+  # used by Game#play
+  def end_of_game_announcement(current_player)
+    winner = current_player == :white ? :black : :white
+    "Checkmate! #{winner.capitalize} wins!"
+  end
+
+  # used by Game#play_turn
+  def in_check_announcement(current_player)
+    "#{current_player.capitalize} is in check!"
+  end
+
   # used by Game#play_turn
   def current_player_announcement(current_player)
     "It is #{current_player.capitalize}\'s turn."
