@@ -25,6 +25,7 @@ module CheckmateValidation
         @playing_field = playing_field_before_move
         return true
       end
+      @playing_field = playing_field_before_move
     end
     false
   end
