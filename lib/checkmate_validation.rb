@@ -81,6 +81,7 @@ module CheckmateValidation
     false
   end
 
+  # used by #attacker_can_be_blocked? to determine if the piece is a blockable type
   def blockable_piece_type?(attacker_square)
     piece_type = @playing_field[attacker_square[0]][attacker_square[1]]
     piece_type_without_color = piece_type[2..-1].to_sym
@@ -90,12 +91,14 @@ module CheckmateValidation
     true
   end
 
+  # used by #attacker_can_be_blocked? to determine if the possible blocks are under attack
   def possible_blocks_under_attack?(attacker_square)
     possible_blocks = squares_between(attacker_square, king_location)
     possible_blocks.each { |possibility| return true if under_attack?(possibility, @current_player, true) }
     false
   end
 
+  # used by possible_blocks_under_attack? to find the squares between two pieces
   def squares_between(square_one, square_two)
     squares = if square_one[0] == square_two[0]
                 squares_between_on_file(square_one, square_two)
@@ -107,6 +110,7 @@ module CheckmateValidation
     squares
   end
 
+  # used by #squares_between to find the squares between two pieces on the same file
   def squares_between_on_file(square_one, square_two)
     squares = []
     square_below = square_one[1] < square_two[1] ? square_one : square_two
@@ -115,6 +119,7 @@ module CheckmateValidation
     squares
   end
 
+  # used by #squares_between to find the squares between two pieces on the same rank
   def squares_between_on_rank(square_one, square_two)
     squares = []
     square_left = square_one[0] < square_two[0] ? square_one : square_two
@@ -123,6 +128,7 @@ module CheckmateValidation
     squares
   end
 
+  # used by #squares_between to find the squares between two pieces on the same diagonal
   def squares_between_on_diagonal(square_one, square_two)
     square_left = square_one[0] < square_two[0] ? square_one : square_two
     square_right = square_left == square_one ? square_two : square_one
@@ -130,6 +136,7 @@ module CheckmateValidation
     find_diagonal_squares(square_left, square_right, square_below)
   end
 
+  # used by squares_between_on_diagonal to find the squares on the diagonal
   def find_diagonal_squares(square_left, square_right, square_below)
     squares = []
     (square_left[0] + 1..square_right[0] - 1).each_with_index do |column, column_index|
