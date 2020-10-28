@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ModuleLength
+
 # methods for testing for checkmate
 module CheckmateValidation
   # check if the king is in checkmate using helper methods
@@ -157,3 +159,5 @@ module CheckmateValidation
     squares
   end
 end
+
+# rubocop:enable Metrics/ModuleLength
