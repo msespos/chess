@@ -47,7 +47,7 @@ class Game
   def play_turn
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
-    start, finish = call_player_move_and_convert_it
+    start, finish = obtain_player_move_and_convert_it
     redo_player_move_if_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
     display_board
@@ -56,18 +56,18 @@ class Game
   def redo_player_move_if_invalid(start, finish)
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
-      start, finish = call_player_move_and_convert_it
+      start, finish = obtain_player_move_and_convert_it
     end
   end
 
   # used by #play_turn - not tested
   # call Player#player_move and convert the resulting move to [start, finish] format
-  def call_player_move_and_convert_it
+  def obtain_player_move_and_convert_it
     move = @player.player_move
     player_move_to_start_finish(move)
   end
 
-  # used by #call_player_move_and_convert_it
+  # used by #obtain_player_move_and_convert_it
   # convert an algebraic notation move to [start, finish] format
   def player_move_to_start_finish(move)
     start = [move[0].ord - 97, move[1].to_i - 1]
