@@ -19,15 +19,23 @@ module CheckmateValidation
   def can_move_out_of_check?
     attacking_color = @current_player == :white ? :black : :white
     accessible_squares.each do |accessible_square|
-      playing_field_before_move = @playing_field.clone.map(&:clone)
-      move_piece(king_location, accessible_square, true)
-      unless under_attack?(accessible_square, attacking_color)
-        @playing_field = playing_field_before_move
-        return true
-      end
-      @playing_field = playing_field_before_move
+      return true if escape_squares_available?(accessible_square, attacking_color) == true
     end
     false
+  end
+
+  # used by #can_move_out_of_check? to check if the king can escape to any squares
+  def escape_squares_available?(accessible_square, attacking_color)
+    # make a copy of the playing field to revert to after testing king moves
+    playing_field_before_move = @playing_field.clone.map(&:clone)
+    move_piece(king_location, accessible_square, true)
+    unless under_attack?(accessible_square, attacking_color)
+      # revert to pre-test-move copy of playing field
+      @playing_field = playing_field_before_move
+      return true
+    end
+    # revert to pre-test-move copy of playing field
+    @playing_field = playing_field_before_move
   end
 
   # used by #can_move_out_of_check? to determine the squares accessible to the king
