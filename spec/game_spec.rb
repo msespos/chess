@@ -325,7 +325,8 @@ RSpec.describe Game do
     end
   end
 
-  # integration tests - test all other methods involved in checkmate validation
+  # integration tests - test other methods involved in checkmate validation
+  # use a static playing field for the tests
   describe '#in_checkmate?' do
     context 'when the white king is not in check' do
       before do
@@ -538,7 +539,7 @@ RSpec.describe Game do
       end
     end
 
-    context 'when white is in fool\'s mate' do
+    context 'when white is in Fool\'s Mate' do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
@@ -591,6 +592,24 @@ RSpec.describe Game do
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+  end
+
+  # integration tests - test other methods involved in gameplay and checkmate validation
+  # use a sequence of moves for the tests
+  describe '#in_checkmate?' do
+    context 'when white is put in Fool\'s Mate' do
+      before do
+        allow(game).to receive(:obtain_player_move_and_convert_it).and_return([[5, 1], [5, 2]],
+                                                                              [[4, 6], [4, 5]],
+                                                                              [[6, 1], [6, 3]],
+                                                                              [[3, 7], [7, 3]])
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
       end
     end
   end
