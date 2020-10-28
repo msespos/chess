@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# methods for testing for check and checkmate
+# methods for validating moves
 module MoveValidation
   # used by #move_piece
   # check if the move is valid by checking if the start and finish squares are different
