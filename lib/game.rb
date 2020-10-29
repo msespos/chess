@@ -39,10 +39,16 @@ class Game
     puts @player.end_of_game_announcement(@current_player)
   end
 
-  # send the current playing field to the board and print the board
+  # used by #play to send the current playing field to the board and print the board
   def display_board
     playing_field_to_board(@playing_field)
     puts @board
+  end
+
+  # used by #display_board
+  # transfer a playing field to the board by calling Board#overwrite_playing_field
+  def playing_field_to_board(playing_field)
+    @board.overwrite_playing_field(playing_field)
   end
 
   # used by #play to implement a full turn
@@ -51,18 +57,9 @@ class Game
     puts @player.current_player_announcement(@current_player)
     move = obtain_player_move
     start, finish = player_move_to_start_finish(move)
-    redo_player_move_if_invalid(start, finish)
+    make_move_when_not_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
     display_board
-  end
-
-  # used by #play_turn to check validity of move and redo it until it is valid
-  def redo_player_move_if_invalid(start, finish)
-    while move_piece(start, finish) == :invalid
-      puts @player.invalid_move_message
-      move = obtain_player_move
-      start, finish = player_move_to_start_finish(move)
-    end
   end
 
   # used by #play_turn
@@ -79,6 +76,16 @@ class Game
     [start, finish]
   end
 
+  # used by #play_turn to check validity of move and redo it until it is valid
+  def make_move_when_not_invalid(start, finish)
+    while move_piece(start, finish) == :invalid
+      puts @player.invalid_move_message
+      move = obtain_player_move
+      start, finish = player_move_to_start_finish(move)
+    end
+  end
+
+  # used by #make_move_when_not_invalid
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
   def move_piece(start, finish, checking_move_out_of_check = false)
@@ -112,11 +119,5 @@ class Game
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
-  end
-
-  # used by #play_turn
-  # transfer a playing field to the board by calling Board#overwrite_playing_field
-  def playing_field_to_board(playing_field)
-    @board.overwrite_playing_field(playing_field)
   end
 end
