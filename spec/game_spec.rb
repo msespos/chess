@@ -664,7 +664,7 @@ RSpec.describe Game do
       end
     end
   end
-  
+
   # integration tests - also test #escape_squares_available? and
   # accessible_squares and #surrounding_squares and #king_location and #valid_move?
   describe '#can_move_out_of_check?' do
