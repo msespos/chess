@@ -13,10 +13,10 @@ module CheckValidation
   def king_location
     current_king = @current_player[0] + '_king'
     current_king_square = []
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        if @playing_field[row_index][column_index] == current_king.to_sym
-          current_king_square = [row_index, column_index]
+    @playing_field.each_with_index do |column, column_index|
+      column.each_index do |row_index|
+        if @playing_field[column_index][row_index] == current_king.to_sym
+          current_king_square = [column_index, row_index]
         end
       end
     end
@@ -27,9 +27,9 @@ module CheckValidation
   # if check_all_but_king is true, does not check attacks by king
   # check_all_but_king is only used by #possible_blocks_under_attack
   def under_attack?(square, attacking_color, check_all_but_king = false)
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        return true if under_attack_with_or_without_king?(square, row_index, column_index,
+    @playing_field.each_with_index do |column, column_index|
+      column.each_index do |row_index|
+        return true if under_attack_with_or_without_king?(square, column_index, row_index,
                                                           attacking_color, check_all_but_king)
       end
     end
@@ -64,10 +64,10 @@ module CheckValidation
     attacking_color = @current_player == :white ? :black : :white
     finish = [square[0], square[1]]
     squares = []
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        start = [row_index, column_index]
-        squares.push([row_index, column_index]) if valid_move?(start, finish, attacking_color)
+    @playing_field.each_with_index do |column, column_index|
+      column.each_index do |row_index|
+        start = [column_index, row_index]
+        squares.push([column_index, row_index]) if valid_move?(start, finish, attacking_color)
       end
     end
     squares
@@ -79,9 +79,9 @@ module CheckValidation
   # not of the current player
   def attacking_piece_protected?(attacking_piece_square)
     attacking_color = @current_player == :white ? :black : :white
-    @playing_field.each_with_index do |row, row_index|
-      row.each_index do |column_index|
-        start = [row_index, column_index]
+    @playing_field.each_with_index do |column, column_index|
+      column.each_index do |row_index|
+        start = [column_index, row_index]
         return true if valid_move?(start, attacking_piece_square, attacking_color, false)
       end
     end
