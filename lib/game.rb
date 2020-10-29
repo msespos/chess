@@ -29,7 +29,7 @@ class Game
     @playing_field = @playing_field.transpose
   end
 
-  # play the whole game - not tested
+  # play the whole game
   def play
     puts @player.intro_text
     display_board
@@ -37,13 +37,13 @@ class Game
     puts @player.end_of_game_announcement(@current_player)
   end
 
-  # send the current playing field to the board and print the board - not tested
+  # send the current playing field to the board and print the board
   def display_board
     playing_field_to_board(@playing_field)
     puts @board
   end
 
-  # used by #play to implement a full turn - not tested
+  # used by #play to implement a full turn
   def play_turn
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
@@ -62,7 +62,7 @@ class Game
     end
   end
 
-  # used by #play_turn - not tested
+  # used by #play_turn
   # get the player's move using Player#player_move
   def obtain_player_move
     @player.player_move
