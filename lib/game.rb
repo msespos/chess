@@ -4,6 +4,7 @@ require 'pry'
 require_relative 'move_validation'
 require_relative 'check_validation'
 require_relative 'checkmate_validation'
+require_relative 'stalemate_validation'
 
 # game class
 class Game
