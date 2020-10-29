@@ -54,6 +54,7 @@ class Game
     display_board
   end
 
+  # used by #play_turn to check validity of move and redo it until it is valid
   def redo_player_move_if_invalid(start, finish)
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
