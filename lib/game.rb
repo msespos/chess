@@ -10,6 +10,7 @@ class Game
   include MoveValidation
   include CheckValidation
   include CheckmateValidation
+  include StalemateValidation
 
   def initialize
     @board = Board.new
