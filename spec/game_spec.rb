@@ -621,7 +621,7 @@ RSpec.describe Game do
       end
     end
 
-    context 'when black is checkmated in Mike\'s Mate I (with plenty of incorrect moves)' do
+    context 'when black is checkmated in Mike\'s Mate I (with plenty of invalid moves)' do
       before do
         allow(game).to receive(:obtain_player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
                                                                'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
@@ -629,6 +629,33 @@ RSpec.describe Game do
                                                                'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
                                                                'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
                                                                'd8d7', 'd8e8', 'd8c8', 'f7e8')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black is checkmated in Scholar\'s Mate' do
+      before do
+        allow(game).to receive(:obtain_player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
+                                                               'g8f6', 'h5f7')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white makes a bunch of invalid moves and then is checkmated in back rank mate' do
+      before do
+        allow(game).to receive(:obtain_player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
+                                                               'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
+                                                               'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
+                                                               'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
+                                                               'e5e1')
       end
       it 'returns true' do
         game.play
