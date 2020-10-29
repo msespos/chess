@@ -57,7 +57,8 @@ class Game
   def redo_player_move_if_invalid(start, finish)
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
-      start, finish = obtain_player_move
+      move = obtain_player_move
+      start, finish = player_move_to_start_finish(move)
     end
   end
 
