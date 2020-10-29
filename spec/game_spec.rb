@@ -601,10 +601,34 @@ RSpec.describe Game do
   describe '#in_checkmate?' do
     context 'when white is put in Fool\'s Mate' do
       before do
-        allow(game).to receive(:obtain_player_move_and_convert_it).and_return([[5, 1], [5, 2]],
-                                                                              [[4, 6], [4, 5]],
-                                                                              [[6, 1], [6, 3]],
-                                                                              [[3, 7], [7, 3]])
+        allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black is put in Reversed Fool\'s Mate' do
+      before do
+        allow(game).to receive(:obtain_player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black is checkmated in Mike\'s Mate I (with plenty of incorrect moves)' do
+      before do
+        allow(game).to receive(:obtain_player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
+                                                               'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
+                                                               'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
+                                                               'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
+                                                               'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
+                                                               'd8d7', 'd8e8', 'd8c8', 'f7e8')
       end
       it 'returns true' do
         game.play
