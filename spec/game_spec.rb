@@ -663,7 +663,6 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(true)
       end
     end
-  end
 
   # integration tests - also test #escape_squares_available? and
   # accessible_squares and #surrounding_squares and #king_location and #valid_move?
@@ -1455,6 +1454,89 @@ RSpec.describe Game do
         squares_between = []
         end_squares = game.squares_between_on_diagonal([1, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
+      end
+    end
+  end
+
+  describe '#in_stalemate?' do
+    context 'when no white piece can move but white is not in check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[7][0] = :w_king
+        game.instance_variable_get(:@playing_field)[5][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[7][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[5][2] = :b_king
+        game.instance_variable_get(:@playing_field)[6][3] = :b_rook
+        game.instance_variable_get(:@playing_field)[7][2] = :b_queen
+      end
+      it 'returns true' do
+        stalemate_or_not = game.in_stalemate?
+        expect(stalemate_or_not).to eq(true)
+      end
+    end
+
+    context 'when two white pawns can capture and white is not in check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[7][0] = :w_king
+        game.instance_variable_get(:@playing_field)[5][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[7][1] = :w_pawn
+        game.instance_variable_get(:@playing_field)[5][2] = :b_king
+        game.instance_variable_get(:@playing_field)[6][2] = :b_rook
+        game.instance_variable_get(:@playing_field)[7][2] = :b_queen
+      end
+      it 'returns false' do
+        stalemate_or_not = game.in_stalemate?
+        expect(stalemate_or_not).to eq(false)
+      end
+    end
+
+    context 'when a white king is the only white piece and cannot move but is not in check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[7][0] = :w_king
+        game.instance_variable_get(:@playing_field)[5][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[4][2] = :b_king
+      end
+      it 'returns true' do
+        stalemate_or_not = game.in_stalemate?
+        expect(stalemate_or_not).to eq(true)
+      end
+    end
+
+    context 'when a white king is the only white piece and is in checkmate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[7][0] = :w_king
+        game.instance_variable_get(:@playing_field)[6][1] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][2] = :b_king
+      end
+      it 'returns false' do
+        stalemate_or_not = game.in_stalemate?
+        expect(stalemate_or_not).to eq(false)
+      end
+    end
+
+    context 'when a white king is the only white piece and can move and is in check' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        game.instance_variable_get(:@playing_field)[7][0] = :w_king
+        game.instance_variable_get(:@playing_field)[7][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][2] = :b_king
+      end
+      it 'returns true' do
+        stalemate_or_not = game.in_stalemate?
+        expect(stalemate_or_not).to eq(false)
       end
     end
   end
