@@ -20,6 +20,7 @@ class Player
 
   # used by #player_move to check if the move is in algebraic notation (e.g. a1a3)
   def move_in_right_format?(move)
+    return true if move.downcase == 'q'
     return false if move.length != 4
 
     move =~ /[a-h][1-8][a-h][1-8]/ ? true : false
