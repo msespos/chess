@@ -1579,6 +1579,42 @@ RSpec.describe Game do
         expect(in_stalemate_or_not).to eq(true)
       end
     end
+
+    context 'when black is put into stalemate by a black queen and king in endgame' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[3][2] = :b_king
+        game.instance_variable_get(:@playing_field)[7][0] = :w_queen
+        game.instance_variable_get(:@playing_field)[5][2] = :w_king
+        game.instance_variable_get(:@playing_field)[5][3] = :w_rook
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
+      end
+      it 'returns true' do
+        game.play
+        in_stalemate_or_not = game.in_stalemate?
+        expect(in_stalemate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black is put into checkmate by a black queen and king in endgame' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[2][1] = :b_king
+        game.instance_variable_get(:@playing_field)[6][2] = :w_queen
+        game.instance_variable_get(:@playing_field)[5][2] = :w_king
+        game.instance_variable_get(:@playing_field)[4][2] = :w_rook
+        game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:obtain_player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
+      end
+      it 'returns false' do
+        game.play
+        in_stalemate_or_not = game.in_stalemate?
+        expect(in_stalemate_or_not).to eq(false)
+      end
+    end
   end
 
   describe '#move_piece' do
