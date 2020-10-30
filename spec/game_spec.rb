@@ -663,6 +663,25 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(true)
       end
     end
+
+    context 'when white is checkmated by a black queen and king in endgame' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[2][3] = :b_queen
+        game.instance_variable_get(:@playing_field)[4][4] = :b_king
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
+                                                               'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
+                                                               'c2e2')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
   end
 
   # integration tests - also test #escape_squares_available? and
