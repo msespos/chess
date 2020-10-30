@@ -1561,6 +1561,26 @@ RSpec.describe Game do
     end
   end
 
+  # integration tests - test other methods involved in gameplay and stalemate validation
+  describe '#in_stalemate?' do
+    context 'when white is put into stalemate by a black queen and king in endgame' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[6][1] = :w_king
+        game.instance_variable_get(:@playing_field)[4][2] = :b_queen
+        game.instance_variable_get(:@playing_field)[5][3] = :b_king
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
+      end
+      it 'returns true' do
+        game.play
+        in_stalemate_or_not = game.in_stalemate?
+        expect(in_stalemate_or_not).to eq(true)
+      end
+    end
+  end
+
   describe '#move_piece' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       before do
