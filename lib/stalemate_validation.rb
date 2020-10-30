@@ -5,6 +5,8 @@ module StalemateValidation
   def in_stalemate?
     return false if in_checkmate?
 
+    # make a copy of the playing field to revert to after testing king moves
+    playing_field_before_move = @playing_field.clone.map(&:clone)
     @playing_field.each_with_index do |column, column_index|
       column.each_index do |row_index|
         piece = @playing_field[column_index][row_index]
@@ -12,12 +14,17 @@ module StalemateValidation
 
         @playing_field.each_with_index do |inner_column, inner_column_index|
           inner_column.each_index do |inner_row_index|
-            return false unless move_piece([column_index, row_index],
-                                           [inner_column_index, inner_row_index]) == :invalid
+            next if move_piece([column_index, row_index], [inner_column_index, inner_row_index]) == :invalid
+
+            # revert to pre-test-move copy of playing field
+            @playing_field = playing_field_before_move
+            return false
           end
         end
       end
     end
+    # revert to pre-test-move copy of playing field
+    @playing_field = playing_field_before_move
     true
   end
 end
