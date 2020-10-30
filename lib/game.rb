@@ -18,6 +18,7 @@ class Game
     @piece = Piece.new
     @player = Player.new
     @current_player = :white
+    @resignation = false
     initial_playing_field
   end
 
@@ -56,6 +57,7 @@ class Game
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
     move = obtain_player_move
+    return if resignation?(move)
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
@@ -66,6 +68,12 @@ class Game
   # get the player's move using Player#player_move
   def obtain_player_move
     @player.player_move
+  end
+
+  # used by #play_turn and make_move_when_not_invalid
+  # check if the player has resigned
+  def resignation?(move)
+    @resignation = true if move.downcase == 'q'
   end
 
   # used by #play_turn
@@ -81,6 +89,7 @@ class Game
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
       move = obtain_player_move
+      check_resignation
       start, finish = player_move_to_start_finish(move)
     end
   end
@@ -123,10 +132,8 @@ class Game
 
   # used by #play to assess if the game is over
   def game_over?
-    in_checkmate? || in_stalemate? || resignation?
+    in_checkmate? || in_stalemate? || @resignation
   end
-
-  def resignation?; end
 
   # used by #play at the end of the game
   def end_of_game_announcement
