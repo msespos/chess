@@ -4,16 +4,16 @@
 class Player
   # get the player's move and checking it, prompting if invalid moves are entered
   def player_move
-    move = obtain_move_from_player
+    move = obtain_player_move
     until move_in_right_format?(move)
       puts invalid_move_message
-      move = obtain_move_from_player
+      move = obtain_player_move
     end
     move
   end
 
   # used by #player_move to get the player's move before checking it
-  def obtain_move_from_player
+  def obtain_player_move
     puts 'Please enter your move.'
     gets.chomp
   end
