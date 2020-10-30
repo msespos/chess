@@ -682,6 +682,24 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(true)
       end
     end
+
+    context 'when black is checkmated by a white queen and king and rook in Katie\'s Mate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[1][0] = :b_king
+        game.instance_variable_get(:@playing_field)[5][2] = :w_rook
+        game.instance_variable_get(:@playing_field)[1][2] = :w_king
+        game.instance_variable_get(:@playing_field)[3][1] = :w_queen
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1')
+      end
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
   end
 
   # integration tests - also test #escape_squares_available? and
@@ -1613,6 +1631,24 @@ RSpec.describe Game do
         game.play
         in_stalemate_or_not = game.in_stalemate?
         expect(in_stalemate_or_not).to eq(false)
+      end
+    end
+
+    context 'when black is stalemated by a white queen and king and rook in Katie\'s Stalemate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[1][0] = :b_king
+        game.instance_variable_get(:@playing_field)[5][2] = :w_rook
+        game.instance_variable_get(:@playing_field)[1][2] = :w_king
+        game.instance_variable_get(:@playing_field)[3][1] = :w_queen
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return('b1a1', 'd2c2')
+      end
+      it 'returns true' do
+        game.play
+        in_stalemate_or_not = game.in_stalemate?
+        expect(in_stalemate_or_not).to eq(true)
       end
     end
   end
