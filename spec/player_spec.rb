@@ -9,7 +9,7 @@ RSpec.describe Player do
   describe '#player_move' do
     context 'when a1a3 is input' do
       before do
-        allow(player).to receive(:obtain_move_from_player).and_return('a1a3')
+        allow(player).to receive(:obtain_player_move).and_return('a1a3')
       end
       it 'returns a1a3' do
         player_move_return = player.player_move
@@ -19,7 +19,7 @@ RSpec.describe Player do
 
     context 'when input is invalid twice, then a1a3 is input' do
       before do
-        allow(player).to receive(:obtain_move_from_player).and_return('invalid', 'invalid', 'a1a3')
+        allow(player).to receive(:obtain_player_move).and_return('invalid', 'invalid', 'a1a3')
         allow(player).to receive(:puts)
       end
       it 'returns a1a3' do
