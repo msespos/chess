@@ -35,8 +35,8 @@ class Game
   def play
     puts @player.intro_text
     display_board
-    play_turn until in_checkmate?
-    puts @player.end_of_game_announcement(@current_player)
+    play_turn until game_over?
+    end_of_game_announcement
   end
 
   # used by #play to send the current playing field to the board and print the board
@@ -119,5 +119,16 @@ class Game
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
+  end
+
+  # used by #play to assess if the game is over
+  def game_over?
+    in_checkmate? || in_stalemate?
+  end
+
+  # used by #play at the end of the game
+  def end_of_game_announcement
+    type_of_end = in_checkmate? ? :checkmate : :stalemate
+    puts @player.end_of_game_announcement(@current_player, type_of_end)
   end
 end
