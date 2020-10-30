@@ -123,12 +123,20 @@ class Game
 
   # used by #play to assess if the game is over
   def game_over?
-    in_checkmate? || in_stalemate?
+    in_checkmate? || in_stalemate? || resignation?
   end
+
+  def resignation?; end
 
   # used by #play at the end of the game
   def end_of_game_announcement
-    type_of_end = in_checkmate? ? :checkmate : :stalemate
-    puts @player.end_of_game_announcement(@current_player, type_of_end)
+    type_of_ending = if in_checkmate?
+                       :checkmate
+                     elsif in_stalemate?
+                       :stalemate
+                     else
+                       :resignation
+                     end
+    puts @player.end_of_game_announcement(@current_player, type_of_ending)
   end
 end
