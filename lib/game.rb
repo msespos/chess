@@ -58,6 +58,7 @@ class Game
     puts @player.current_player_announcement(@current_player)
     move = obtain_player_move
     return if resignation?(move)
+
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
@@ -89,7 +90,8 @@ class Game
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
       move = obtain_player_move
-      check_resignation
+      return if resignation?(move)
+
       start, finish = player_move_to_start_finish(move)
     end
   end
