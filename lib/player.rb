@@ -36,12 +36,14 @@ class Player
   end
 
   # used by Game#play
-  def end_of_game_announcement(current_player, type_of_end)
-    if type_of_end == :checkmate
-      winner = current_player == :white ? :black : :white
+  def end_of_game_announcement(current_player, type_of_ending)
+    winner = current_player == :white ? :black : :white
+    if type_of_ending == :checkmate
       "Checkmate! #{winner.capitalize} wins!"
-    else
+    elsif type_of_ending == :stalemate
       "#{current_player.capitalize} is in stalemate! It's a draw!"
+    else
+      "#{current_player.capitalize} resigns! #{winner.capitalize} wins!"
     end
   end
 
