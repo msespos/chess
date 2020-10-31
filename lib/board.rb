@@ -33,8 +33,7 @@ class Board
   # used by #initial_board to generate the rows of letters
   # at the top and bottom of the board
   def initial_board_letter_rows
-    rows_to_use = [1, 12]
-    rows_to_use.each do |row|
+    [1, 12].each do |row|
       @board[row][0] = BLANK_SPOT
       (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr }
     end
