@@ -56,7 +56,7 @@ RSpec.describe Game do
     end
   end
 
-  describe '#playing_field_to_board' do
+  describe '#display_board' do
     let(:board_field) { instance_double(Board) }
     context 'when a playing field is passed in' do
       it 'calls Board#overwrite_playing_field with the playing field' do
@@ -70,7 +70,7 @@ RSpec.describe Game do
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
         expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
-        game.playing_field_to_board(playing_field)
+        game.display_board
       end
     end
   end
@@ -121,9 +121,9 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
       end
 
-      it 'returns :w_rook' do
+      it 'returns nil' do
         move = game.move_piece([6, 6], [7, 5])
-        expect(move).to eq(:w_rook)
+        expect(move).to eq(nil)
       end
 
       it 'leaves g7 empty' do
