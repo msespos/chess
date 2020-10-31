@@ -73,7 +73,7 @@ RSpec.describe Game do
   end
 
   # integration test that also tests #king_location and #under_attack and #valid_move?
-  describe 'in_check?' do
+  describe '#in_check?' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
@@ -89,7 +89,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'in_check?' do
+  describe '#in_check?' do
     before do
       allow(game).to receive(:under_attack?).and_return(true)
     end
@@ -102,7 +102,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'king_location' do
+  describe '#king_location' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
@@ -136,7 +136,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test #valid_move?
-  describe 'under_attack?' do
+  describe '#under_attack?' do
     before do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
@@ -1580,6 +1580,7 @@ RSpec.describe Game do
   end
 
   # integration tests - test other methods involved in gameplay and stalemate validation
+  # use a sequence of moves for the tests
   describe '#in_stalemate?' do
     context 'when white is put into stalemate by a black queen and king in endgame' do
       before do
@@ -1649,6 +1650,62 @@ RSpec.describe Game do
         game.play
         in_stalemate_or_not = game.in_stalemate?
         expect(in_stalemate_or_not).to eq(true)
+      end
+    end
+  end
+
+  # integration tests - test other methods involved in gameplay and resignation validation
+  # use a sequence of moves for the tests
+  describe '#resignation?' do
+    context 'when white resigns before being put in Fool\'s Mate' do
+      before do
+        allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
+      end
+      it 'returns true' do
+        game.play
+        resigned_or_not = game.instance_variable_get(:@resignation)
+        expect(resigned_or_not).to eq(true)
+      end
+    end
+
+    context 'when black resigns before being put in Katie\'s Stalemate' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[1][0] = :b_king
+        game.instance_variable_get(:@playing_field)[5][2] = :w_rook
+        game.instance_variable_get(:@playing_field)[1][2] = :w_king
+        game.instance_variable_get(:@playing_field)[3][1] = :w_queen
+        game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_player_move).and_return('katie', 'b1a1', 'q')
+      end
+      it 'returns true' do
+        game.play
+        resigned_or_not = game.instance_variable_get(:@resignation)
+        expect(resigned_or_not).to eq(true)
+      end
+    end
+
+    context 'when black resigns in Mike\'s Middle Game' do
+      before do
+        mikes_playing_field = [[nil, :w_pawn, nil, nil, nil, :b_knight, :b_pawn, nil],
+                               [nil, :w_pawn, nil, nil, nil, :b_pawn, nil, nil],
+                               [:w_rook, :w_pawn, nil, nil, nil, :b_queen, nil, nil],
+                               [nil, nil, nil, :b_pawn, nil, nil, nil, nil],
+                               [:w_king, nil, nil, :w_pawn, nil, :b_pawn, :b_king, nil],
+                               [nil, nil, :w_queen, :w_bishop, nil, :w_rook, nil, :b_rook],
+                               [nil, nil, nil, nil, :w_pawn, nil, nil, nil],
+                               [nil, nil, nil, :w_pawn, :b_pawn, :b_bishop, nil, nil]]
+        game.instance_variable_set(:@playing_field, mikes_playing_field)
+        game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:obtain_player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
+                                                               'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
+                                                               'c2c3', 'g6g1', 'q')
+      end
+      it 'returns true' do
+        game.play
+        resigned_or_not = game.instance_variable_get(:@resignation)
+        expect(resigned_or_not).to eq(true)
       end
     end
   end
