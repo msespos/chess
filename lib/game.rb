@@ -19,6 +19,7 @@ class Game
     @player = Player.new
     @current_player = :white
     @resignation = false
+    @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     initial_playing_field
   end
 
@@ -42,14 +43,9 @@ class Game
 
   # used by #play to send the current playing field to the board and print the board
   def display_board
-    playing_field_to_board(@playing_field)
+    @board.overwrite_playing_field(@playing_field)
+#    @board.add_captured_pieces(@captured_pieces)
     puts @board
-  end
-
-  # used by #display_board
-  # transfer a playing field to the board by calling Board#overwrite_playing_field
-  def playing_field_to_board(playing_field)
-    @board.overwrite_playing_field(playing_field)
   end
 
   # used by #play to implement a full turn
@@ -110,7 +106,7 @@ class Game
       @playing_field = playing_field_before_move unless checking_move_out_of_check
       return :invalid
     end
-    captured
+    add_to_captured_pieces(captured) unless captured.nil?
   end
 
   # used by #move_piece
@@ -123,13 +119,35 @@ class Game
     captured
   end
 
-  # used by #move_piece
+  # used by #reassign_squares
   # check if there is a capture in the move by checking if there is a piece in the finish square
   # make the capture and return the piece if there is - otherwise return nil
   def capture(finish)
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
+  end
+
+  # used by #move_piece to add any captured piece to the @captured_pieces array
+  def add_to_captured_pieces(piece)
+    binding.pry
+    if piece[0] == 'w'
+      if @captured_pieces[0].all?
+        @captured_pieces[1].unshift(piece)
+        @captured_pieces[1].pop
+      else
+        @captured_pieces[0].unshift(piece)
+        @captured_pieces[0].pop
+      end
+    else
+      if @captured_pieces[2].all?
+        @captured_pieces[3].unshift(piece)
+        @captured_pieces[3].pop
+      else
+        @captured_pieces[2].unshift(piece)
+        @captured_pieces[2].pop
+      end
+    end
   end
 
   # used by #play to assess if the game is over
