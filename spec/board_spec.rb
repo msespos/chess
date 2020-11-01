@@ -15,20 +15,6 @@ RSpec.describe Board do
     end
   end
 
-  describe '#initial_board' do
-    context 'when #initial_board is called' do
-      it 'generates a 14 row board' do
-        board_size = board.instance_variable_get(:@board).size
-        expect(board_size).to eq(14)
-      end
-
-      it 'generates a 10 column board' do
-        board_size = board.instance_variable_get(:@board)[0].size
-        expect(board_size).to eq(10)
-      end
-    end
-  end
-
   describe '#to_s' do
     context 'at the beginning of the game' do
       it 'contains the board setup without pieces' do
@@ -176,7 +162,7 @@ RSpec.describe Board do
     end
 
     context 'when it receives a set of captured pieces from Game in endgame' do
-      xit 'prints out the board and captured pieces' do
+      it 'prints out the board and captured pieces' do
         board.overwrite_playing_field([[nil, :w_pawn, nil, nil, nil, nil, :b_pawn, nil],
                                        [nil, nil, nil, :w_pawn, nil, nil, :b_bishop, nil],
                                        [:w_rook, nil, nil, :b_pawn, nil, nil, nil, nil],
