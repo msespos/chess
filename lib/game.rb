@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 require 'pry'
 require_relative 'move_validation'
 require_relative 'check_validation'
@@ -159,3 +161,5 @@ class Game
     puts @player.end_of_game_announcement(@current_player, type_of_ending)
   end
 end
+
+# rubocop:enable Metrics/ClassLength
