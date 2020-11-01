@@ -44,7 +44,7 @@ class Game
   # used by #play to send the current playing field to the board and print the board
   def display_board
     @board.overwrite_playing_field(@playing_field)
-#    @board.add_captured_pieces(@captured_pieces)
+    @board.add_captured_pieces(@captured_pieces)
     puts @board
   end
 
@@ -130,8 +130,7 @@ class Game
 
   # used by #move_piece to add any captured piece to the @captured_pieces array
   def add_to_captured_pieces(piece)
-    binding.pry
-    if piece[0] == 'w'
+    if piece[0] == 'b'
       if @captured_pieces[0].all?
         @captured_pieces[1].unshift(piece)
         @captured_pieces[1].pop
@@ -140,12 +139,12 @@ class Game
         @captured_pieces[0].pop
       end
     else
-      if @captured_pieces[2].all?
-        @captured_pieces[3].unshift(piece)
-        @captured_pieces[3].pop
-      else
+      if @captured_pieces[3].all?
         @captured_pieces[2].unshift(piece)
         @captured_pieces[2].pop
+      else
+        @captured_pieces[3].unshift(piece)
+        @captured_pieces[3].pop
       end
     end
   end
