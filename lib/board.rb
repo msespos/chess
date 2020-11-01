@@ -77,20 +77,20 @@ class Board
     end
   end
 
+  # add the pieces from the Game 4x8 array of captured pieces to the board
   def add_captured_pieces(captured_pieces)
-    (0..1).each do |row|
+    (0..3).each do |row|
       (0..7).each do |column|
-        unless captured_pieces[row][column].nil?
-          @board[row + 3][column + INITIAL_BOARD_WIDTH] = Board.const_get(captured_pieces[row][column].to_s.upcase)
-        end
+        next if captured_pieces[row][column].nil?
+
+        place_captured_pieces_on_board(captured_pieces, row, column)
       end
     end
-    (2..3).each do |row|
-      (0..7).each do |column|
-        unless captured_pieces[row][column].nil?
-          @board[12 - row][column + INITIAL_BOARD_WIDTH] = Board.const_get(captured_pieces[row][column].to_s.upcase)
-        end
-      end
-    end
+  end
+
+  # used by add_captured_pieces to place the pieces
+  def place_captured_pieces_on_board(captured_pieces, row, column)
+    piece = Board.const_get(captured_pieces[row][column].to_s.upcase)
+    [0, 1].include?(row) ? @board[row + 3][column + 10] = piece : @board[12 - row][column + 10] = piece
   end
 end
