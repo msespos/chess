@@ -17,7 +17,7 @@ class Board
   EMPTY_SQUARE = ' -'
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
-  INITIAL_BOARD_WIDTH = 10
+  BOARD_WIDTH = 18
 
   def initialize
     initial_board
@@ -25,7 +25,7 @@ class Board
 
   # build a board with initial setup
   def initial_board
-    @board = Array.new(BOARD_HEIGHT) { Array.new(INITIAL_BOARD_WIDTH) { nil } }
+    @board = Array.new(BOARD_HEIGHT) { Array.new(BOARD_WIDTH) { nil } }
     initial_board_letter_rows
     initial_board_empty_squares
     initial_board_number_columns
@@ -56,7 +56,7 @@ class Board
   def to_s
     string = ''
     (0..BOARD_HEIGHT - 1).each do |row|
-      (0..BOARD_HEIGHT - 1).each { |col| string += @board[BOARD_HEIGHT - 1 - row][col].to_s }
+      (0..BOARD_WIDTH - 1).each { |col| string += @board[BOARD_HEIGHT - 1 - row][col].to_s }
       string += "\n"
     end
     string
