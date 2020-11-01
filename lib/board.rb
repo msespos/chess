@@ -17,6 +17,7 @@ class Board
   EMPTY_SQUARE = ' -'
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
+  INITIAL_BOARD_WIDTH = 10
 
   def initialize
     initial_board
@@ -24,7 +25,7 @@ class Board
 
   # build a board with initial setup
   def initial_board
-    @board = Array.new(14) { Array.new(10) { nil } }
+    @board = Array.new(BOARD_HEIGHT) { Array.new(INITIAL_BOARD_WIDTH) { nil } }
     initial_board_letter_rows
     initial_board_empty_squares
     initial_board_number_columns
@@ -80,14 +81,14 @@ class Board
     (0..1).each do |row|
       (0..7).each do |column|
         unless captured_pieces[row][column].nil?
-          @board[row + 3][column + 10] = Board.const_get(captured_pieces[row][column].to_s.upcase)
+          @board[row + 3][column + INITIAL_BOARD_WIDTH] = Board.const_get(captured_pieces[row][column].to_s.upcase)
         end
       end
     end
     (2..3).each do |row|
       (0..7).each do |column|
         unless captured_pieces[row][column].nil?
-          @board[row + 7][column + 10] = Board.const_get(captured_pieces[row][column].to_s.upcase)
+          @board[12 - row][column + INITIAL_BOARD_WIDTH] = Board.const_get(captured_pieces[row][column].to_s.upcase)
         end
       end
     end
