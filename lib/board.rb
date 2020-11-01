@@ -56,7 +56,7 @@ class Board
   def to_s
     string = ''
     (0..BOARD_HEIGHT - 1).each do |row|
-      (0..BOARD_WIDTH - 1).each { |col| string += @board[BOARD_HEIGHT - 1 - row][col].to_s }
+      (0..BOARD_WIDTH - 1).each { |column| string += @board[BOARD_HEIGHT - 1 - row][column].to_s }
       string += "\n"
     end
     string
