@@ -129,23 +129,16 @@ class Game
   end
 
   # used by #move_piece to add any captured piece to the @captured_pieces array
+  # after checking the color of the piece, adds to the first row of the array
+  # until it is full, then adds to the second row of the array
   def add_to_captured_pieces(piece)
-    if piece[0] == 'b'
-      if @captured_pieces[0].all?
-        @captured_pieces[1].unshift(piece)
-        @captured_pieces[1].pop
-      else
-        @captured_pieces[0].unshift(piece)
-        @captured_pieces[0].pop
-      end
+    first_row = piece[0] == 'b' ? 0 : 2
+    if @captured_pieces[first_row].all?
+      @captured_pieces[first_row + 1].unshift(piece)
+      @captured_pieces[first_row + 1].pop
     else
-      if @captured_pieces[3].all?
-        @captured_pieces[2].unshift(piece)
-        @captured_pieces[2].pop
-      else
-        @captured_pieces[3].unshift(piece)
-        @captured_pieces[3].pop
-      end
+      @captured_pieces[first_row].unshift(piece)
+      @captured_pieces[first_row].pop
     end
   end
 
