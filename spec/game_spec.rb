@@ -95,9 +95,9 @@ RSpec.describe Game do
       it 'calls Board#add_captured_pieces with the playing field' do
         game.instance_variable_set(:@board, board_field)
         captured_pieces = [[nil, nil, nil, nil, nil, nil, nil, nil],
-                          [nil, nil, nil, nil, nil, nil, nil, nil],
-                          [nil, nil, nil, nil, nil, nil, nil, nil],
-                          [nil, nil, nil, nil, nil, nil, nil, nil]]
+                           [nil, nil, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil]]
         expect(board_field).to receive(:overwrite_playing_field)
         expect(board_field).to receive(:add_captured_pieces).with(captured_pieces)
         game.display_board
@@ -108,7 +108,7 @@ RSpec.describe Game do
   describe '#resignation?' do
     context 'when "q" is entered' do
       it 'sets @resignation to true' do
-        move = game.resignation?('q')
+        game.resignation?('q')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(true)
       end
@@ -116,7 +116,7 @@ RSpec.describe Game do
 
     context 'when "Q" is entered' do
       it 'sets @resignation to true' do
-        move = game.resignation?('Q')
+        game.resignation?('Q')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(true)
       end
@@ -124,7 +124,7 @@ RSpec.describe Game do
 
     context 'when "garbage" is entered' do
       it 'does not set resignation to true' do
-        move = game.resignation?('garbage')
+        game.resignation?('garbage')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(false)
       end
@@ -303,13 +303,13 @@ RSpec.describe Game do
       it 'adds the rook to the correct array' do
         previous_captures = [[nil, nil, nil, nil, nil, nil, nil, nil],
                              [nil, nil, nil, nil, nil, nil, nil, nil],
-                             [:w_pawn, :w_pawn, :w_pawn, :w_knight, :w_pawn, :w_pawn, :w_pawn, :w_knight],
+                             %i[w_pawn w_pawn w_pawn w_knight w_pawn w_pawn w_pawn w_knight],
                              [:w_rook, nil, nil, nil, nil, nil, nil]]
         game.instance_variable_set(:@captured_pieces, previous_captures)
         captured_pieces = game.instance_variable_get(:@captured_pieces)
         capture_update = [[nil, nil, nil, nil, nil, nil, nil, nil],
                           [nil, nil, nil, nil, nil, nil, nil, nil],
-                          [:w_pawn, :w_pawn, :w_pawn, :w_knight, :w_pawn, :w_pawn, :w_pawn, :w_knight],
+                          %i[w_pawn w_pawn w_pawn w_knight w_pawn w_pawn w_pawn w_knight],
                           [:w_bishop, :w_rook, nil, nil, nil, nil, nil]]
         game.add_to_captured_pieces(:w_bishop)
         expect(captured_pieces).to eq(capture_update)
