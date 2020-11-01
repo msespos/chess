@@ -70,6 +70,7 @@ RSpec.describe Game do
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
         expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
+        expect(board_field).to receive(:add_captured_pieces)
         game.display_board
       end
     end
