@@ -66,13 +66,13 @@ class Pawn
   end
 
   # used by one_square_ahead_free? to determine if the one square ahead
-  # of a white pawn are free
+  # of a white pawn is free
   def white_one_square?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == start[1] + 1 && playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by one_square_ahead_free? to determine if the one square ahead
-  # of a black pawn are free
+  # of a black pawn is free
   def black_one_square?(start, finish, playing_field)
     finish[0] == start[0] && finish[1] == start[1] - 1 && playing_field[finish[0]][finish[1]].nil?
   end
