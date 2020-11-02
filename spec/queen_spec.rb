@@ -59,7 +59,7 @@ RSpec.describe Queen do
         allow(queen).to receive(:along_positive_diagonal?).and_return(false)
         allow(queen).to receive(:along_negative_diagonal?).and_return(true)
       end
-      
+
       it 'calls #negative_diagonal_free?' do
         expect(queen).to receive(:negative_diagonal_free?)
         queen.path?([1, 5], [5, 1], ['playing field'])

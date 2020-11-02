@@ -36,7 +36,7 @@ RSpec.describe Rook do
         allow(rook).to receive(:along_rank?).and_return(false)
         allow(rook).to receive(:along_file?).and_return(true)
       end
-      
+
       it 'calls #file_free?' do
         expect(rook).to receive(:file_free?)
         rook.path?([0, 0], [5, 5], ['playing field'])

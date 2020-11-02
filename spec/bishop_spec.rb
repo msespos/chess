@@ -36,7 +36,7 @@ RSpec.describe Bishop do
         allow(bishop).to receive(:along_positive_diagonal?).and_return(false)
         allow(bishop).to receive(:along_negative_diagonal?).and_return(true)
       end
-      
+
       it 'calls #negative_diagonal_free?' do
         expect(bishop).to receive(:negative_diagonal_free?)
         bishop.path?([1, 5], [5, 1], ['playing field'])
