@@ -2286,7 +2286,7 @@ RSpec.describe Game do
     end
   end
 
-  describe '#pawn_to_promote?' do
+  describe '#pawn_to_promote' do
     context 'when there is a white pawn to promote on a8' do
       before do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -2295,8 +2295,8 @@ RSpec.describe Game do
       end
 
       it 'returns [:white, [0, 7]]' do
-        color_and_space = game.pawn_to_promote?
-        expect(color_and_space).to eq([:white, [0, 7]])
+        color_and_space = game.pawn_to_promote
+        expect(color_and_space).to eq([:white, 0])
       end
     end
 
@@ -2308,14 +2308,14 @@ RSpec.describe Game do
       end
 
       it 'returns [:black, [3, 0]]' do
-        color_and_space = game.pawn_to_promote?
-        expect(color_and_space).to eq([:black, [3, 0]])
+        color_and_space = game.pawn_to_promote
+        expect(color_and_space).to eq([:black, 3])
       end
     end
 
     context 'when there is no pawn to promote' do
       it 'returns false' do
-        color_and_space = game.pawn_to_promote?
+        color_and_space = game.pawn_to_promote
         expect(color_and_space).to eq(false)
       end
     end
