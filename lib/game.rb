@@ -136,11 +136,9 @@ class Game
   def add_to_captured_pieces(piece)
     first_row = piece[0] == 'b' ? 0 : 2
     if @captured_pieces[first_row].all?
-      @captured_pieces[first_row + 1].unshift(piece)
-      @captured_pieces[first_row + 1].pop
+      @captured_pieces[first_row + 1].unshift(piece).pop
     else
-      @captured_pieces[first_row].unshift(piece)
-      @captured_pieces[first_row].pop
+      @captured_pieces[first_row].unshift(piece).pop
     end
   end
 
