@@ -71,7 +71,7 @@ class Game
     @player.player_move
   end
 
-  # used by #play_turn and make_move_when_not_invalid
+  # used by #play_turn and #make_move_when_not_invalid
   # check if the player has resigned
   def resignation?(move)
     @resignation = true if move.downcase == 'q'
