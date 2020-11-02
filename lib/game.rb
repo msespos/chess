@@ -7,6 +7,7 @@ require_relative 'move_validation'
 require_relative 'check_validation'
 require_relative 'checkmate_validation'
 require_relative 'stalemate_validation'
+require_relative 'pawn_promotion'
 
 # game class
 class Game
@@ -14,6 +15,7 @@ class Game
   include CheckValidation
   include CheckmateValidation
   include StalemateValidation
+  include PawnPromotion
 
   def initialize
     @board = Board.new
