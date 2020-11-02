@@ -587,6 +587,7 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
+
     context 'when the white king is in check and it is white\'s turn' do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
@@ -602,6 +603,7 @@ RSpec.describe Game do
     before do
       allow(game).to receive(:under_attack?).and_return(true)
     end
+
     context 'when the white king is in check' do
       it 'returns true' do
         game.instance_variable_set(:@current_player, :white)
@@ -616,6 +618,7 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
+
     context 'when the white king is on e1 (initial) and it is white\'s turn' do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
@@ -650,6 +653,7 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
+
     context 'when the white king is on e1 and under attack and it is white\'s turn' do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
@@ -674,6 +678,7 @@ RSpec.describe Game do
       blank_playing_field = Array.new(8) { Array.new(8) { nil } }
       game.instance_variable_set(:@playing_field, blank_playing_field)
     end
+
     context 'when no one is attacking the white king on a5' do
       it 'returns []' do
         game.instance_variable_get(:@playing_field)[0][4] = :w_king
@@ -727,6 +732,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
         game.instance_variable_get(:@playing_field)[1][2] = :b_bishop
       end
+
       it 'returns true' do
         protected_or_not = game.attacking_piece_protected?([0, 1])
         expect(protected_or_not).to eq(true)
@@ -742,6 +748,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[1][3] = :b_bishop
       end
+
       it 'returns true' do
         protected_or_not = game.attacking_piece_protected?([0, 2])
         expect(protected_or_not).to eq(true)
@@ -756,6 +763,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
       end
+
       it 'returns false' do
         protected_or_not = game.attacking_piece_protected?([0, 1])
         expect(protected_or_not).to eq(false)
@@ -770,6 +778,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
       end
+
       it 'returns false' do
         protected_or_not = game.attacking_piece_protected?([0, 2])
         expect(protected_or_not).to eq(false)
@@ -845,6 +854,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][2] = :b_queen
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -859,6 +869,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][2] = :b_knight
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -873,6 +884,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -888,6 +900,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[1][3] = :b_rook
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -903,6 +916,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][6] = :w_queen
         game.instance_variable_get(:@playing_field)[1][5] = :w_bishop
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -917,6 +931,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][7] = :b_king
         game.instance_variable_get(:@playing_field)[0][6] = :w_queen
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -932,6 +947,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][5] = :w_rook
         game.instance_variable_get(:@playing_field)[1][6] = :b_rook
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -947,6 +963,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_queen
         game.instance_variable_get(:@playing_field)[5][3] = :b_bishop
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -962,6 +979,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][7] = :w_queen
         game.instance_variable_get(:@playing_field)[3][6] = :w_rook
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -977,6 +995,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[2][6] = :w_queen
         game.instance_variable_get(:@playing_field)[1][5] = :w_knight
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -993,6 +1012,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][5] = :w_knight
         game.instance_variable_get(:@playing_field)[3][5] = :w_pawn
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -1009,6 +1029,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][1] = :w_pawn
         game.instance_variable_get(:@playing_field)[1][0] = :w_rook
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -1025,6 +1046,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][1] = :w_bishop
         game.instance_variable_get(:@playing_field)[1][0] = :w_rook
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -1042,6 +1064,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][1] = :w_pawn
         game.instance_variable_get(:@playing_field)[0][0] = :b_rook
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -1061,6 +1084,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
         game.instance_variable_get(:@playing_field)[7][3] = :b_queen
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -1080,6 +1104,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
         game.instance_variable_get(:@playing_field)[3][3] = :b_knight
       end
+
       it 'returns true' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
@@ -1098,6 +1123,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][0] = :w_rook
         game.instance_variable_get(:@playing_field)[5][2] = :w_pawn
       end
+
       it 'returns false' do
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(false)
@@ -1112,6 +1138,7 @@ RSpec.describe Game do
       before do
         allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1123,6 +1150,7 @@ RSpec.describe Game do
       before do
         allow(game).to receive(:obtain_player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1139,6 +1167,7 @@ RSpec.describe Game do
                                                                'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
                                                                'd8d7', 'd8e8', 'd8c8', 'f7e8')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1151,6 +1180,7 @@ RSpec.describe Game do
         allow(game).to receive(:obtain_player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
                                                                'g8f6', 'h5f7')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1166,6 +1196,7 @@ RSpec.describe Game do
                                                                'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
                                                                'e5e1')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1185,6 +1216,7 @@ RSpec.describe Game do
                                                                'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
                                                                'c2e2')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1203,6 +1235,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:obtain_player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1')
       end
+
       it 'returns true' do
         game.play
         in_checkmate_or_not = game.in_checkmate?
@@ -1222,6 +1255,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_set(:@current_player, :white)
       end
+
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(true)
@@ -1236,6 +1270,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][7] = :b_bishop
         game.instance_variable_set(:@current_player, :white)
       end
+
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(true)
@@ -1250,6 +1285,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
         game.instance_variable_set(:@current_player, :white)
       end
+
       it 'returns true' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(true)
@@ -1265,6 +1301,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_rook
         game.instance_variable_set(:@current_player, :white)
       end
+
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(false)
@@ -1280,6 +1317,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][3] = :b_rook
         game.instance_variable_set(:@current_player, :white)
       end
+
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(false)
@@ -1295,6 +1333,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_set(:@current_player, :black)
       end
+
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(false)
@@ -1310,6 +1349,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][5] = :w_rook
         game.instance_variable_set(:@current_player, :black)
       end
+
       it 'returns false' do
         can_move_or_not = game.can_move_out_of_check?
         expect(can_move_or_not).to eq(false)
@@ -1323,6 +1363,7 @@ RSpec.describe Game do
       game.instance_variable_set(:@playing_field, blank_playing_field)
       game.instance_variable_set(:@current_player, :white)
     end
+
     context 'when the white king is at a5 with free squares on b4, b5, and b6' do
       it 'returns those three squares' do
         allow(game).to receive(:king_location).and_return([4, 0])
@@ -1367,6 +1408,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
       end
+
       it 'returns true' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(true)
@@ -1382,6 +1424,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
         game.instance_variable_get(:@playing_field)[1][2] = :b_bishop
       end
+
       it 'returns false' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(false)
@@ -1396,6 +1439,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
       end
+
       it 'returns false' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(false)
@@ -1412,6 +1456,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[0][4] = :w_rook
       end
+
       it 'returns true' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(true)
@@ -1428,6 +1473,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :b_knight
         game.instance_variable_get(:@playing_field)[2][4] = :w_knight
       end
+
       it 'returns true' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(true)
@@ -1444,6 +1490,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[2][0] = :b_rook
         game.instance_variable_get(:@playing_field)[4][0] = :w_rook
       end
+
       it 'returns false' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(false)
@@ -1461,6 +1508,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[2][0] = :b_rook
         game.instance_variable_get(:@playing_field)[4][0] = :w_rook
       end
+
       it 'returns false' do
         can_be_captured_or_not = game.attacker_can_be_captured?
         expect(can_be_captured_or_not).to eq(false)
@@ -1480,6 +1528,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][2] = :b_queen
         game.instance_variable_get(:@playing_field)[2][1] = :w_rook
       end
+
       it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
@@ -1495,6 +1544,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[4][2] = :w_rook
       end
+
       it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
@@ -1510,6 +1560,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[4][3] = :w_rook
       end
+
       it 'returns false' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(false)
@@ -1527,6 +1578,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
         game.instance_variable_get(:@playing_field)[7][6] = :w_rook
       end
+
       it 'returns false' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(false)
@@ -1542,6 +1594,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][7] = :w_queen
         game.instance_variable_get(:@playing_field)[5][0] = :b_rook
       end
+
       it 'returns true' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(true)
@@ -1557,6 +1610,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][7] = :w_bishop
         game.instance_variable_get(:@playing_field)[0][0] = :b_rook
       end
+
       it 'returns false' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(false)
@@ -1571,6 +1625,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][4] = :b_king
         game.instance_variable_get(:@playing_field)[5][6] = :w_knight
       end
+
       it 'returns false' do
         can_be_blocked_or_not = game.attacker_can_be_blocked?
         expect(can_be_blocked_or_not).to eq(false)
@@ -2018,6 +2073,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][3] = :b_rook
         game.instance_variable_get(:@playing_field)[7][2] = :b_queen
       end
+
       it 'returns true' do
         stalemate_or_not = game.in_stalemate?
         expect(stalemate_or_not).to eq(true)
@@ -2036,6 +2092,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][2] = :b_rook
         game.instance_variable_get(:@playing_field)[7][2] = :b_queen
       end
+
       it 'returns false' do
         stalemate_or_not = game.in_stalemate?
         expect(stalemate_or_not).to eq(false)
@@ -2051,6 +2108,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][1] = :b_queen
         game.instance_variable_get(:@playing_field)[4][2] = :b_king
       end
+
       it 'returns true' do
         stalemate_or_not = game.in_stalemate?
         expect(stalemate_or_not).to eq(true)
@@ -2066,6 +2124,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][1] = :b_queen
         game.instance_variable_get(:@playing_field)[5][2] = :b_king
       end
+
       it 'returns false' do
         stalemate_or_not = game.in_stalemate?
         expect(stalemate_or_not).to eq(false)
@@ -2081,6 +2140,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[7][2] = :b_queen
         game.instance_variable_get(:@playing_field)[5][2] = :b_king
       end
+
       it 'returns true' do
         stalemate_or_not = game.in_stalemate?
         expect(stalemate_or_not).to eq(false)
@@ -2101,6 +2161,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:obtain_player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
       end
+
       it 'returns true' do
         game.play
         in_stalemate_or_not = game.in_stalemate?
@@ -2119,6 +2180,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:obtain_player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
       end
+
       it 'returns true' do
         game.play
         in_stalemate_or_not = game.in_stalemate?
@@ -2137,6 +2199,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :white)
         allow(game).to receive(:obtain_player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
       end
+
       it 'returns false' do
         game.play
         in_stalemate_or_not = game.in_stalemate?
@@ -2155,6 +2218,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:obtain_player_move).and_return('b1a1', 'd2c2')
       end
+
       it 'returns true' do
         game.play
         in_stalemate_or_not = game.in_stalemate?
@@ -2170,6 +2234,7 @@ RSpec.describe Game do
       before do
         allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
       end
+
       it 'returns true' do
         game.play
         resigned_or_not = game.instance_variable_get(:@resignation)
@@ -2188,6 +2253,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:obtain_player_move).and_return('katie', 'b1a1', 'q')
       end
+
       it 'returns true' do
         game.play
         resigned_or_not = game.instance_variable_get(:@resignation)
@@ -2211,6 +2277,7 @@ RSpec.describe Game do
                                                                'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
                                                                'c2c3', 'g6g1', 'q')
       end
+
       it 'returns true' do
         game.play
         resigned_or_not = game.instance_variable_get(:@resignation)

@@ -11,6 +11,7 @@ RSpec.describe Queen do
       before do
         allow(queen).to receive(:along_rank_or_file_or_diagonal?).and_return(false)
       end
+
       it 'returns false' do
         path_or_not = queen.path?([0, 0], [5, 5], ['playing field'])
         expect(path_or_not).to eq(false)
@@ -22,6 +23,7 @@ RSpec.describe Queen do
         allow(queen).to receive(:along_rank?).and_return(true)
         allow(queen).to receive(:along_file?).and_return(false)
       end
+
       it 'calls #rank_free?' do
         expect(queen).to receive(:rank_free?)
         queen.path?([0, 0], [5, 5], ['playing field'])
@@ -33,6 +35,7 @@ RSpec.describe Queen do
         allow(queen).to receive(:along_rank?).and_return(false)
         allow(queen).to receive(:along_file?).and_return(true)
       end
+
       it 'calls #file_free?' do
         expect(queen).to receive(:file_free?)
         queen.path?([0, 0], [5, 5], ['playing field'])
@@ -44,6 +47,7 @@ RSpec.describe Queen do
         allow(queen).to receive(:along_positive_diagonal?).and_return(true)
         allow(queen).to receive(:along_negative_diagonal?).and_return(false)
       end
+
       it 'calls #positive_diagonal_free?' do
         expect(queen).to receive(:positive_diagonal_free?)
         queen.path?([1, 1], [5, 5], ['playing field'])
@@ -55,6 +59,7 @@ RSpec.describe Queen do
         allow(queen).to receive(:along_positive_diagonal?).and_return(false)
         allow(queen).to receive(:along_negative_diagonal?).and_return(true)
       end
+      
       it 'calls #negative_diagonal_free?' do
         expect(queen).to receive(:negative_diagonal_free?)
         queen.path?([1, 5], [5, 1], ['playing field'])

@@ -11,6 +11,7 @@ RSpec.describe Player do
       before do
         allow(player).to receive(:obtain_player_move).and_return('a1a3')
       end
+
       it 'returns a1a3' do
         player_move_return = player.player_move
         expect(player_move_return).to eq('a1a3')
@@ -22,6 +23,7 @@ RSpec.describe Player do
         allow(player).to receive(:obtain_player_move).and_return('invalid', 'invalid', 'a1a3')
         allow(player).to receive(:puts)
       end
+      
       it 'returns a1a3' do
         player_move_return = player.player_move
         expect(player_move_return).to eq('a1a3')
