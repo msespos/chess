@@ -2285,6 +2285,41 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#pawn_to_promote?' do
+    context 'when there is a white pawn to promote on a8' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[0][7] = :w_pawn
+      end
+
+      it 'returns [:white, [0, 7]]' do
+        color_and_space = game.pawn_to_promote?
+        expect(color_and_space).to eq([:white, [0, 7]])
+      end
+    end
+
+    context 'when there is a black pawn to promote on d1' do
+      before do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[3][0] = :b_pawn
+      end
+
+      it 'returns [:black, [3, 0]]' do
+        color_and_space = game.pawn_to_promote?
+        expect(color_and_space).to eq([:black, [3, 0]])
+      end
+    end
+
+    context 'when there is no pawn to promote' do
+      it 'returns false' do
+        color_and_space = game.pawn_to_promote?
+        expect(color_and_space).to eq(false)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
