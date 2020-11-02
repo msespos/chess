@@ -97,6 +97,12 @@ class Game
   # used by #make_move_when_not_invalid
   # move a piece or a pawn (capturing or not) given start and finish coordinates
   # castling, en passant and pawn promotion still need to be incorporated
+  # make a copy of the playing field in case the king is in check and revert
+  # to that copy if the king is in check as we do not want the king to actually move
+  # except that the third parameter used by #escape_squares_available? to indicate
+  # that the method is being used to check a king moving out of check,
+  # in which case we do want the king to actually move in this method
+  # (another copy is made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false)
     return :invalid unless valid_move?(start, finish, @current_player)
 
