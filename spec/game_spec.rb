@@ -2320,6 +2320,33 @@ RSpec.describe Game do
       end
     end
   end
+
+  # integration tests that also test #pawn_to_promote
+  describe '#promote_pawn' do
+    context 'when it receives a black pawn on d1 and promotes it to a queen' do
+      let(:player_pawn) { instance_double(Player) }
+      it 'sets the appropriate @playing_field square to a black queen' do
+        game.instance_variable_set(:@player, player_pawn)
+        game.instance_variable_get(:@playing_field)[3][0] = :b_pawn
+        allow(player_pawn).to receive(:obtain_promotion_piece_choice).and_return(:b_queen)
+        game.promote_pawn
+        new_piece = game.instance_variable_get(:@playing_field)[3][0]
+        expect(new_piece).to eq(:b_queen)
+      end
+    end
+
+    context 'when it receives a white pawn on c8 and promotes it to a queen' do
+      let(:player_pawn) { instance_double(Player) }
+      it 'sets the appropriate @playing_field square to a white queen' do
+        game.instance_variable_set(:@player, player_pawn)
+        game.instance_variable_get(:@playing_field)[2][7] = :w_pawn
+        allow(player_pawn).to receive(:obtain_promotion_piece_choice).and_return(:w_rook)
+        game.promote_pawn
+        new_piece = game.instance_variable_get(:@playing_field)[2][7]
+        expect(new_piece).to eq(:w_rook)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
