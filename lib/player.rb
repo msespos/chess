@@ -7,7 +7,7 @@ class Player
     'Intro text and Intro board'
   end
 
-# used by Game#play_turn
+  # used by Game#play_turn
   def in_check_announcement(current_player)
     "#{current_player.capitalize} is in check!"
   end
