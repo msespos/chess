@@ -17,32 +17,41 @@ class Player
     "It is #{current_player.capitalize}\'s turn."
   end
 
-  # used by Game#player_move to get the player's move and check it,
-  # prompting if invalid moves are entered
-  def player_move
-    move = obtain_player_move
-    until move_in_right_format?(move)
+  # used by Game#player_move and Game#promote_pawn to get the player's input
+  # and check it, prompting and re-obtaining if invalid input is entered
+  def user_input(type)
+    input = obtain_user_input(type)
+    until input_in_right_format?(input, type)
       puts invalid_move_message
-      move = obtain_player_move
+      input = obtain_user_input(type)
     end
-    move
+    input
   end
 
-  # used by #player_move to get the player's move before checking it
-  def obtain_player_move
-    puts 'Please enter your move.'
+  # used by #user_input to get the player's move before checking it
+  def obtain_user_input(type)
+    if type == :move
+      puts 'Please enter your move.'
+    else
+      puts "You can promote a pawn!\nPlease enter n, b, r or q to promote."
+    end
     gets.chomp
   end
 
-  # used by #player_move to check if the move is in algebraic notation (e.g. a1a3)
-  def move_in_right_format?(move)
-    return true if move.downcase == 'q'
-    return false if move.length != 4
+  # used by #user_input to check if the move is in algebraic notation (e.g. a1a3)
+  def input_in_right_format?(input, type)
+    return true if input.downcase == 'q'
 
-    move =~ /[a-h][1-8][a-h][1-8]/ ? true : false
+    if type == :move
+      return false if input.length != 4
+
+      input =~ /[a-h][1-8][a-h][1-8]/ ? true : false
+    else
+      %w[n b r q].include?(input.downcase)
+    end
   end
 
-  # used by #player_move as the message for an invalid move
+  # used by #user_input as the message for an invalid move
   def invalid_move_message
     'That is not a valid move! Please enter a valid move.'
   end
