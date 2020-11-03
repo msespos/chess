@@ -89,7 +89,7 @@ class Game
   # used by #play_turn to check validity of move and redo it until it is valid
   def make_move_when_not_invalid(start, finish)
     while move_piece(start, finish) == :invalid
-      puts @player.invalid_move_message
+      puts @player.invalid_move_message(:move)
       move = player_move
       return if resignation?(move)
 
