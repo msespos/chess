@@ -1161,11 +1161,11 @@ RSpec.describe Game do
     context 'when black is checkmated in Mike\'s Mate I (with plenty of invalid moves)' do
       before do
         allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
-                                                               'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
-                                                               'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
-                                                               'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
-                                                               'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
-                                                               'd8d7', 'd8e8', 'd8c8', 'f7e8')
+                                                        'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
+                                                        'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
+                                                        'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
+                                                        'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
+                                                        'd8d7', 'd8e8', 'd8c8', 'f7e8')
       end
 
       it 'returns true' do
@@ -1178,7 +1178,7 @@ RSpec.describe Game do
     context 'when black is checkmated in Scholar\'s Mate' do
       before do
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
-                                                               'g8f6', 'h5f7')
+                                                        'g8f6', 'h5f7')
       end
 
       it 'returns true' do
@@ -1191,10 +1191,10 @@ RSpec.describe Game do
     context 'when white makes a bunch of invalid moves and then is checkmated in back rank mate' do
       before do
         allow(game).to receive(:player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
-                                                               'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
-                                                               'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
-                                                               'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
-                                                               'e5e1')
+                                                        'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
+                                                        'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
+                                                        'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
+                                                        'e5e1')
       end
 
       it 'returns true' do
@@ -1213,8 +1213,8 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][4] = :b_king
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
-                                                               'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
-                                                               'c2e2')
+                                                        'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
+                                                        'c2e2')
       end
 
       it 'returns true' do
@@ -2274,8 +2274,8 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, mikes_playing_field)
         game.instance_variable_set(:@current_player, :white)
         allow(game).to receive(:player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
-                                                               'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
-                                                               'c2c3', 'g6g1', 'q')
+                                                        'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
+                                                        'c2c3', 'g6g1', 'q')
       end
 
       it 'returns true' do
