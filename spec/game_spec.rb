@@ -2349,6 +2349,22 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#input_to_piece' do
+    context 'when "n" and :black are passed in' do
+      it 'returns :b_knight' do
+        new_piece = game.input_to_piece('n', :black)
+        expect(new_piece).to eq(:b_knight)
+      end
+    end
+
+    context 'when "B" and :white are passed in' do
+      it 'returns :w_bishop' do
+        new_piece = game.input_to_piece('B', :white)
+        expect(new_piece).to eq(:w_bishop)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
