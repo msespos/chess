@@ -1136,7 +1136,7 @@ RSpec.describe Game do
   describe '#in_checkmate?' do
     context 'when white is put in Fool\'s Mate' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4')
+        allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4')
       end
 
       it 'returns true' do
@@ -1148,7 +1148,7 @@ RSpec.describe Game do
 
     context 'when black is put in Reversed Fool\'s Mate' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5')
+        allow(game).to receive(:player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5')
       end
 
       it 'returns true' do
@@ -1160,7 +1160,7 @@ RSpec.describe Game do
 
     context 'when black is checkmated in Mike\'s Mate I (with plenty of invalid moves)' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
+        allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
                                                                'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
                                                                'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
                                                                'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
@@ -1177,7 +1177,7 @@ RSpec.describe Game do
 
     context 'when black is checkmated in Scholar\'s Mate' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
                                                                'g8f6', 'h5f7')
       end
 
@@ -1190,7 +1190,7 @@ RSpec.describe Game do
 
     context 'when white makes a bunch of invalid moves and then is checkmated in back rank mate' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
+        allow(game).to receive(:player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
                                                                'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
                                                                'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
                                                                'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
@@ -1212,7 +1212,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[2][3] = :b_queen
         game.instance_variable_get(:@playing_field)[4][4] = :b_king
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
+        allow(game).to receive(:player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
                                                                'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
                                                                'c2e2')
       end
@@ -1233,7 +1233,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1')
+        allow(game).to receive(:player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1')
       end
 
       it 'returns true' do
@@ -2159,7 +2159,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][2] = :b_queen
         game.instance_variable_get(:@playing_field)[5][3] = :b_king
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
+        allow(game).to receive(:player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
       end
 
       it 'returns true' do
@@ -2178,7 +2178,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_king
         game.instance_variable_get(:@playing_field)[5][3] = :w_rook
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
+        allow(game).to receive(:player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
       end
 
       it 'returns true' do
@@ -2197,7 +2197,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_king
         game.instance_variable_get(:@playing_field)[4][2] = :w_rook
         game.instance_variable_set(:@current_player, :white)
-        allow(game).to receive(:obtain_player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
+        allow(game).to receive(:player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
       end
 
       it 'returns false' do
@@ -2216,7 +2216,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return('b1a1', 'd2c2')
+        allow(game).to receive(:player_move).and_return('b1a1', 'd2c2')
       end
 
       it 'returns true' do
@@ -2232,7 +2232,7 @@ RSpec.describe Game do
   describe '#resignation?' do
     context 'when white resigns before being put in Fool\'s Mate' do
       before do
-        allow(game).to receive(:obtain_player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
+        allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
       end
 
       it 'returns true' do
@@ -2251,7 +2251,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:obtain_player_move).and_return('katie', 'b1a1', 'q')
+        allow(game).to receive(:player_move).and_return('katie', 'b1a1', 'q')
       end
 
       it 'returns true' do
@@ -2273,7 +2273,7 @@ RSpec.describe Game do
                                [nil, nil, nil, :w_pawn, :b_pawn, :b_bishop, nil, nil]]
         game.instance_variable_set(:@playing_field, mikes_playing_field)
         game.instance_variable_set(:@current_player, :white)
-        allow(game).to receive(:obtain_player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
+        allow(game).to receive(:player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
                                                                'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
                                                                'c2c3', 'g6g1', 'q')
       end
