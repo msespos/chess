@@ -22,7 +22,7 @@ class Player
   def user_input(type)
     input = obtain_user_input(type)
     until input_in_right_format?(input, type)
-      puts invalid_move_message
+      puts invalid_move_message(type)
       input = obtain_user_input(type)
     end
     input
@@ -38,7 +38,8 @@ class Player
     gets.chomp
   end
 
-  # used by #user_input to check if the move is in algebraic notation (e.g. a1a3)
+  # used by #user_input to check if the move is in algebraic notation (e.g. a1a3),
+  # or if type is :piece, to check that the piece is one of n, b, r, and q
   def input_in_right_format?(input, type)
     return true if input.downcase == 'q'
 
@@ -52,8 +53,9 @@ class Player
   end
 
   # used by #user_input as the message for an invalid move
-  def invalid_move_message
-    'That is not a valid move! Please enter a valid move.'
+  def invalid_move_message(type)
+    move_or_piece = type == :move ? 'move' : 'piece'
+    "That is not a valid #{move_or_piece}! Please enter a valid #{move_or_piece}."
   end
 
   # used by Game#end_of_game_announcement
