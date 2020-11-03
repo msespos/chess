@@ -56,18 +56,19 @@ class Game
   def play_turn
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
-    move = obtain_player_move
+    move = player_move
     return if resignation?(move)
 
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
     display_board
+    promote_pawn if pawn_to_promote
   end
 
   # used by #play_turn
   # get the player's move using Player#player_move
-  def obtain_player_move
+  def player_move
     @player.player_move
   end
 
@@ -89,7 +90,7 @@ class Game
   def make_move_when_not_invalid(start, finish)
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message
-      move = obtain_player_move
+      move = player_move
       return if resignation?(move)
 
       start, finish = player_move_to_start_finish(move)
