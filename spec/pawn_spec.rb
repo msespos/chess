@@ -257,10 +257,10 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it is a black pawn' do
+    context 'when it is a black pawn capturing en passant' do
       it 'calls black_left_diagonal?' do
         expect(pawn).to receive(:black_left_diagonal?)
-        pawn.left_diagonal_capture?('start', 'finish', 'playing field', :black)
+        pawn.left_diagonal_capture?('start', 'finish', 'playing field', :black, true)
       end
     end
   end
@@ -281,6 +281,25 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         white_left_diagonal_or_not = pawn.white_left_diagonal?([3, 1], [2, 2], playing_field)
+        expect(white_left_diagonal_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a white pawn and en passant is true and a left diagonal square is empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][1] = :w_pawn
+        white_left_diagonal_or_not = pawn.white_left_diagonal?([3, 1], [2, 2], playing_field, true)
+        expect(white_left_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn and en passant is true and a left diagonal square is empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :w_pawn
+        playing_field[3][5] = :b_pawn
+        white_left_diagonal_or_not = pawn.white_left_diagonal?([4, 4], [3, 5], playing_field, true)
         expect(white_left_diagonal_or_not).to eq(false)
       end
     end
@@ -305,6 +324,25 @@ RSpec.describe Pawn do
         expect(black_left_diagonal_or_not).to eq(false)
       end
     end
+
+    context 'when it is a black pawn and en passant is true and a left diagonal square is empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[2][2] = :b_pawn
+        black_left_diagonal_or_not = pawn.black_left_diagonal?([2, 2], [3, 1], playing_field, true)
+        expect(black_left_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn and en passant is true and a left diagonal square is empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][5] = :b_pawn
+        playing_field[5][4] = :w_pawn
+        black_left_diagonal_or_not = pawn.black_left_diagonal?([4, 5], [5, 4], playing_field, true)
+        expect(black_left_diagonal_or_not).to eq(false)
+      end
+    end
   end
 
   describe '#right_diagonal_capture?' do
@@ -315,10 +353,10 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it is a black pawn' do
+    context 'when it is a black pawn capturing en passant' do
       it 'calls black_right_diagonal?' do
         expect(pawn).to receive(:black_right_diagonal?)
-        pawn.right_diagonal_capture?('start', 'finish', 'playing field', :black)
+        pawn.right_diagonal_capture?('start', 'finish', 'playing field', :black, true)
       end
     end
   end
@@ -342,6 +380,25 @@ RSpec.describe Pawn do
         expect(white_right_diagonal_or_not).to eq(false)
       end
     end
+
+    context 'when it is a white pawn and en passant is true and a right diagonal square is empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][1] = :w_pawn
+        white_right_diagonal_or_not = pawn.white_right_diagonal?([3, 1], [4, 2], playing_field, true)
+        expect(white_right_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn and en passant is true and a right diagonal square is empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][1] = :w_pawn
+        playing_field[1][2] = :b_pawn
+        white_right_diagonal_or_not = pawn.white_right_diagonal?([0, 1], [1, 2], playing_field, true)
+        expect(white_right_diagonal_or_not).to eq(false)
+      end
+    end
   end
 
   describe '#black_right_diagonal?' do
@@ -360,6 +417,25 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][2] = :b_pawn
         black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field)
+        expect(black_right_diagonal_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a black pawn and en passant is true and a right diagonal square is empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][2] = :b_pawn
+        black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field, true)
+        expect(black_right_diagonal_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn and en passant is true and a right diagonal square is empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[1][2] = :b_pawn
+        playing_field[0][1] = :w_pawn
+        black_right_diagonal_or_not = pawn.black_right_diagonal?([1, 2], [0, 1], playing_field, true)
         expect(black_right_diagonal_or_not).to eq(false)
       end
     end
