@@ -9,6 +9,8 @@ class Pawn
                      standard_conditions_met?(start, finish, playing_field, color)
     elsif standard_conditions_met?(start, finish, playing_field, color)
       return true
+    #elsif en_passant?(start, finish, playing_field, color)
+    #  return true
     end
     false
   end
@@ -113,5 +115,15 @@ class Pawn
   def black_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
       !playing_field[finish[0]][finish[1]].nil?
+  end
+
+  # used by #en_passant? to determine if a pawn is on the rank required
+  # to make an en passant capture
+  def on_en_passant_starting_rank?(start, color)
+    start[1] == if color == :white
+                  4
+                else
+                  3
+                end
   end
 end
