@@ -9,7 +9,7 @@ class Pawn
                      standard_conditions_met?(start, finish, playing_field, color)
     elsif standard_conditions_met?(start, finish, playing_field, color)
       return true
-    #elsif en_passant?(start, finish, playing_field, color)
+    #elsif en_passant_possible?(start, finish, playing_field, color)
     #  return true
     end
     false
@@ -80,41 +80,45 @@ class Pawn
   end
 
   # used by #standard_conditions_met? to determine if a left diagonal capture is possible
-  def left_diagonal_capture?(start, finish, playing_field, color)
+  def left_diagonal_capture?(start, finish, playing_field, color, en_passant = false)
     if color == :white
-      white_left_diagonal?(start, finish, playing_field)
+      white_left_diagonal?(start, finish, playing_field, en_passant = false)
     else
-      black_left_diagonal?(start, finish, playing_field)
+      black_left_diagonal?(start, finish, playing_field, en_passant = false)
     end
   end
 
-  def white_left_diagonal?(start, finish, playing_field)
-    finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-      !playing_field[finish[0]][finish[1]].nil?
+  def square_status_given_en_passant_status(en_passant, playing_field, finish)
+    en_passant ? playing_field[finish[0]][finish[1]].nil? : !playing_field[finish[0]][finish[1]].nil?
   end
 
-  def black_left_diagonal?(start, finish, playing_field)
+  def white_left_diagonal?(start, finish, playing_field, en_passant = false)
+    finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
+      square_status_given_en_passant_status(en_passant, playing_field, finish)
+  end
+
+  def black_left_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-      !playing_field[finish[0]][finish[1]].nil?
+      square_status_given_en_passant_status(en_passant, playing_field, finish)
   end
 
   # used by #standard_conditions_met? to determine if a right diagonal capture is possible
-  def right_diagonal_capture?(start, finish, playing_field, color)
+  def right_diagonal_capture?(start, finish, playing_field, color, en_passant = false)
     if color == :white
-      white_right_diagonal?(start, finish, playing_field)
+      white_right_diagonal?(start, finish, playing_field, en_passant = false)
     else
-      black_right_diagonal?(start, finish, playing_field)
+      black_right_diagonal?(start, finish, playing_field, en_passant = false)
     end
   end
 
-  def white_right_diagonal?(start, finish, playing_field)
+  def white_right_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      !playing_field[finish[0]][finish[1]].nil?
+      square_status_given_en_passant_status(en_passant, playing_field, finish)
   end
 
-  def black_right_diagonal?(start, finish, playing_field)
+  def black_right_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-      !playing_field[finish[0]][finish[1]].nil?
+     square_status_given_en_passant_status(en_passant, playing_field, finish)
   end
 
   # used by #en_passant? to determine if a pawn is on the rank required
