@@ -441,6 +441,42 @@ RSpec.describe Pawn do
     end
   end
 
+  describe '#square_occupancy_status' do
+    context 'when a square is empty and the status is not en passant' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        status = pawn.square_occupancy_status([0, 2], playing_field, false)
+        expect(status).to eq(false)
+      end
+    end
+
+    context 'when a square is not empty and the status is not en passant' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][2] = :b_pawn
+        status = pawn.square_occupancy_status([0, 2], playing_field, false)
+        expect(status).to eq(true)
+      end
+    end
+
+    context 'when a square is empty and the status is en passant' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        status = pawn.square_occupancy_status([0, 2], playing_field, true)
+        expect(status).to eq(true)
+      end
+    end
+
+    context 'when a square is not empty and the status is not en passant' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[0][2] = :b_pawn
+        status = pawn.square_occupancy_status([0, 2], playing_field, true)
+        expect(status).to eq(false)
+      end
+    end
+  end
+
   describe '#on_en_passant_starting_rank?' do
     context 'when it is a white pawn on the en passant starting rank' do
       it 'returns true' do
