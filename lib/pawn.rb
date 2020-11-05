@@ -88,18 +88,14 @@ class Pawn
     end
   end
 
-  def square_status_given_en_passant_status(en_passant, playing_field, finish)
-    en_passant ? playing_field[finish[0]][finish[1]].nil? : !playing_field[finish[0]][finish[1]].nil?
-  end
-
   def white_left_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-      square_status_given_en_passant_status(en_passant, playing_field, finish)
+      square_occupancy_status(finish, playing_field, en_passant)
   end
 
   def black_left_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-      square_status_given_en_passant_status(en_passant, playing_field, finish)
+      square_occupancy_status(finish, playing_field, en_passant)
   end
 
   # used by #standard_conditions_met? to determine if a right diagonal capture is possible
@@ -113,12 +109,20 @@ class Pawn
 
   def white_right_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      square_status_given_en_passant_status(en_passant, playing_field, finish)
+      square_occupancy_status(finish, playing_field, en_passant)
   end
 
   def black_right_diagonal?(start, finish, playing_field, en_passant = false)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-     square_status_given_en_passant_status(en_passant, playing_field, finish)
+      square_occupancy_status(finish, playing_field, en_passant)
+  end
+
+  def square_occupancy_status(finish, playing_field, en_passant)
+    if en_passant
+      playing_field[finish[0]][finish[1]].nil?
+    else
+      !playing_field[finish[0]][finish[1]].nil?
+    end
   end
 
   # used by #en_passant? to determine if a pawn is on the rank required
