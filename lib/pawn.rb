@@ -115,4 +115,8 @@ class Pawn
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
       square_occupancy_status(finish, playing_field)
   end
+
+  def square_occupancy_status(finish, playing_field)
+    !playing_field[finish[0]][finish[1]].nil?
+  end
 end
