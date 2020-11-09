@@ -436,7 +436,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
-        allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
+        allow(piece_valid).to receive(:white_pawn_standard_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
@@ -555,14 +555,14 @@ RSpec.describe Game do
     context 'when a white pawn is passed in' do
       it 'returns "white_pawn_path?"' do
         method = game.path_method_from_piece(:w_pawn)
-        expect(method).to eq('white_pawn_path?')
+        expect(method).to eq('white_pawn_standard_path?')
       end
     end
 
     context 'when a black pawn is passed in' do
       it 'returns "black_pawn_path?"' do
         method = game.path_method_from_piece(:b_pawn)
-        expect(method).to eq('black_pawn_path?')
+        expect(method).to eq('black_pawn_standard_path?')
       end
     end
 
