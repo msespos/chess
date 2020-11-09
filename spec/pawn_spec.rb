@@ -6,12 +6,12 @@ require_relative '../lib/pawn.rb'
 
 RSpec.describe Pawn do
   subject(:pawn) { described_class.new }
-  describe '#path?' do
+  describe '#standard_path?' do
     context 'when it is on the starting rank with two squares ahead free' do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(true)
         allow(pawn).to receive(:two_squares_ahead_free?).and_return(true)
-        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
         expect(path_or_not).to eq(true)
       end
     end
@@ -20,7 +20,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(true)
         allow(pawn).to receive(:standard_conditions_met?).and_return(true)
-        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
         expect(path_or_not).to eq(true)
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(true)
-        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
         expect(path_or_not).to eq(true)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(false)
-        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
         expect(path_or_not).to eq(false)
       end
     end
@@ -256,13 +256,6 @@ RSpec.describe Pawn do
         pawn.left_diagonal_capture?('start', 'finish', 'playing field', :white)
       end
     end
-
-    context 'when it is a black pawn capturing en passant' do
-      it 'calls black_left_diagonal?' do
-        expect(pawn).to receive(:black_left_diagonal?)
-        pawn.left_diagonal_capture?('start', 'finish', 'playing field', :black, true)
-      end
-    end
   end
 
   describe '#white_left_diagonal?' do
@@ -281,25 +274,6 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         white_left_diagonal_or_not = pawn.white_left_diagonal?([3, 1], [2, 2], playing_field)
-        expect(white_left_diagonal_or_not).to eq(false)
-      end
-    end
-
-    context 'when it is a white pawn and en passant is true and a left diagonal square is empty' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[3][1] = :w_pawn
-        white_left_diagonal_or_not = pawn.white_left_diagonal?([3, 1], [2, 2], playing_field, true)
-        expect(white_left_diagonal_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a white pawn and en passant is true and a left diagonal square is empty' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[4][4] = :w_pawn
-        playing_field[3][5] = :b_pawn
-        white_left_diagonal_or_not = pawn.white_left_diagonal?([4, 4], [3, 5], playing_field, true)
         expect(white_left_diagonal_or_not).to eq(false)
       end
     end
@@ -324,25 +298,6 @@ RSpec.describe Pawn do
         expect(black_left_diagonal_or_not).to eq(false)
       end
     end
-
-    context 'when it is a black pawn and en passant is true and a left diagonal square is empty' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[2][2] = :b_pawn
-        black_left_diagonal_or_not = pawn.black_left_diagonal?([2, 2], [3, 1], playing_field, true)
-        expect(black_left_diagonal_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a black pawn and en passant is true and a left diagonal square is empty' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[4][5] = :b_pawn
-        playing_field[5][4] = :w_pawn
-        black_left_diagonal_or_not = pawn.black_left_diagonal?([4, 5], [5, 4], playing_field, true)
-        expect(black_left_diagonal_or_not).to eq(false)
-      end
-    end
   end
 
   describe '#right_diagonal_capture?' do
@@ -350,13 +305,6 @@ RSpec.describe Pawn do
       it 'calls white_right_diagonal?' do
         expect(pawn).to receive(:white_right_diagonal?)
         pawn.right_diagonal_capture?('start', 'finish', 'playing field', :white)
-      end
-    end
-
-    context 'when it is a black pawn capturing en passant' do
-      it 'calls black_right_diagonal?' do
-        expect(pawn).to receive(:black_right_diagonal?)
-        pawn.right_diagonal_capture?('start', 'finish', 'playing field', :black, true)
       end
     end
   end
@@ -380,25 +328,6 @@ RSpec.describe Pawn do
         expect(white_right_diagonal_or_not).to eq(false)
       end
     end
-
-    context 'when it is a white pawn and en passant is true and a right diagonal square is empty' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[3][1] = :w_pawn
-        white_right_diagonal_or_not = pawn.white_right_diagonal?([3, 1], [4, 2], playing_field, true)
-        expect(white_right_diagonal_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a white pawn and en passant is true and a right diagonal square is empty' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[0][1] = :w_pawn
-        playing_field[1][2] = :b_pawn
-        white_right_diagonal_or_not = pawn.white_right_diagonal?([0, 1], [1, 2], playing_field, true)
-        expect(white_right_diagonal_or_not).to eq(false)
-      end
-    end
   end
 
   describe '#black_right_diagonal?' do
@@ -418,91 +347,6 @@ RSpec.describe Pawn do
         playing_field[4][2] = :b_pawn
         black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field)
         expect(black_right_diagonal_or_not).to eq(false)
-      end
-    end
-
-    context 'when it is a black pawn and en passant is true and a right diagonal square is empty' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[4][2] = :b_pawn
-        black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field, true)
-        expect(black_right_diagonal_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a black pawn and en passant is true and a right diagonal square is empty' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[1][2] = :b_pawn
-        playing_field[0][1] = :w_pawn
-        black_right_diagonal_or_not = pawn.black_right_diagonal?([1, 2], [0, 1], playing_field, true)
-        expect(black_right_diagonal_or_not).to eq(false)
-      end
-    end
-  end
-
-  describe '#square_occupancy_status' do
-    context 'when a square is empty and the status is not en passant' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        status = pawn.square_occupancy_status([0, 2], playing_field, false)
-        expect(status).to eq(false)
-      end
-    end
-
-    context 'when a square is not empty and the status is not en passant' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[0][2] = :b_pawn
-        status = pawn.square_occupancy_status([0, 2], playing_field, false)
-        expect(status).to eq(true)
-      end
-    end
-
-    context 'when a square is empty and the status is en passant' do
-      it 'returns true' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        status = pawn.square_occupancy_status([0, 2], playing_field, true)
-        expect(status).to eq(true)
-      end
-    end
-
-    context 'when a square is not empty and the status is not en passant' do
-      it 'returns false' do
-        playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[0][2] = :b_pawn
-        status = pawn.square_occupancy_status([0, 2], playing_field, true)
-        expect(status).to eq(false)
-      end
-    end
-  end
-
-  describe '#on_en_passant_starting_rank?' do
-    context 'when it is a white pawn on the en passant starting rank' do
-      it 'returns true' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 4], :white)
-        expect(en_passant_rank_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a black pawn on the en passant starting rank' do
-      it 'returns true' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 3], :black)
-        expect(en_passant_rank_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a white pawn not on the en passant starting rank' do
-      it 'returns false' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([7, 6], :white)
-        expect(en_passant_rank_or_not).to eq(false)
-      end
-    end
-
-    context 'when it is a black pawn not on the en passant starting rank' do
-      it 'returns false' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([4, 1], :black)
-        expect(en_passant_rank_or_not).to eq(false)
       end
     end
   end
