@@ -434,14 +434,14 @@ RSpec.describe Game do
     end
 
     # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
-    # and tests that Piece#white_pawn_standard_path_path exists
-    context 'when both spaces are valid and the color is correct and #white_pawn_standard_path? is true' do
+    # and tests that Piece#white_pawn_path exists
+    context 'when both spaces are valid and the color is correct and #white_pawn_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
-        allow(piece_valid).to receive(:white_pawn_standard_path?).and_return(true)
+        allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
         valid_or_not = game.valid_move?([3, 1], [3, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
@@ -458,21 +458,6 @@ RSpec.describe Game do
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0], 'color')
         expect(valid_or_not).to eq(false)
-      end
-    end
-
-    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
-    # and tests that Piece#white_pawn_en_passant_path exists though does not use an actual en passant move
-    context 'when both spaces are valid and the color is correct and #white_pawn_en_passant_path? is true' do
-      let(:piece_valid) { instance_double(Piece) }
-      it 'returns true' do
-        game.instance_variable_set(:@piece, piece_valid)
-        game.instance_variable_set(:@en_passant_column, 5)
-        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
-        allow(game).to receive(:correct_color?).and_return(true)
-        allow(piece_valid).to receive(:white_pawn_en_passant_path?).and_return(true)
-        valid_or_not = game.valid_move?([1, 1], [2, 2], 'color') # not actually an en passant move
-        expect(valid_or_not).to eq(true)
       end
     end
   end
@@ -576,14 +561,14 @@ RSpec.describe Game do
     context 'when a white pawn is passed in' do
       it 'returns "white_pawn_path?"' do
         method = game.path_method_from_piece(:w_pawn)
-        expect(method).to eq('white_pawn_standard_path?')
+        expect(method).to eq('white_pawn_path?')
       end
     end
 
     context 'when a black pawn is passed in' do
       it 'returns "black_pawn_path?"' do
         method = game.path_method_from_piece(:b_pawn)
-        expect(method).to eq('black_pawn_standard_path?')
+        expect(method).to eq('black_pawn_path?')
       end
     end
 
@@ -603,19 +588,10 @@ RSpec.describe Game do
 
     # integration test - tests #path_method_from_pawn as well
     context 'when a white pawn is passed in and it is not en passant' do
-      it 'returns "white_pawn_standard_path?"' do
+      it 'returns "white_pawn_path?"' do
         game.instance_variable_set(:@en_passant_column, nil)
         method = game.path_method_from_piece(:w_pawn)
-        expect(method).to eq('white_pawn_standard_path?')
-      end
-    end
-
-    # integration test - tests #path_method_from_pawn as well
-    context 'when a black pawn is passed in and it is en passant' do
-      it 'returns "black_pawn_en_passant_path?"' do
-        game.instance_variable_set(:@en_passant_column, 5)
-        method = game.path_method_from_piece(:b_pawn)
-        expect(method).to eq('black_pawn_en_passant_path?')
+        expect(method).to eq('white_pawn_path?')
       end
     end
   end
@@ -2269,7 +2245,7 @@ RSpec.describe Game do
   # integration tests - test other methods involved in gameplay and resignation validation
   # use a sequence of moves for the tests
   describe '#resignation?' do
-    context 'when white resigns before being put in Fool\'s Mate' do
+    context 'when black resigns before being put in Fool\'s Mate' do
       before do
         allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
       end
@@ -2401,6 +2377,16 @@ RSpec.describe Game do
       it 'returns :w_bishop' do
         new_piece = game.input_to_piece('B', :white)
         expect(new_piece).to eq(:w_bishop)
+      end
+    end
+  end
+
+  describe '#check_for_en_passant' do
+    context 'when [0, 0] and [0, 1] are passed in' do
+      it 'sets @en_passant_column to nil' do
+        game.check_for_en_passant([0, 0], [0, 1])
+        column = game.instance_variable_get(:@en_passant_column)
+        expect(column).to eq(nil)
       end
     end
   end
