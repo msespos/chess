@@ -6,9 +6,9 @@ module MoveValidation
   # check if the move is valid by checking if the start and finish squares are different
   # and checking if the start and finish squares are on the playing field
   # and checking if the start and finish spaces are valid (different color pieces, start not nil)
-  # and checking if the piece is the correct color for the player
+  # and checking if the piece is the correct color for the current player
   # and looking up the appropriate Piece path method using path_method_from_piece
-  # and calling it on @piece
+  # and calling it in Piece
   def valid_move?(start, finish, color, checking_current_player = true)
     return false if start == finish
 
@@ -20,7 +20,15 @@ module MoveValidation
 
     start_piece = @playing_field[start[0]][start[1]]
     path_method = path_method_from_piece(start_piece)
-    @piece.send(path_method, start, finish, @playing_field)
+    call_path_method_in_piece_class(path_method, start, finish)
+  end
+
+  def call_path_method_in_piece_class(path_method, start, finish)
+    if path_method[6..20] == 'pawn_en_passant'
+      @piece.send(path_method, start, finish, @playing_field, @pawn_two_square_move_column)
+    else
+      @piece.send(path_method, start, finish, @playing_field)
+    end
   end
 
   # used by #valid_move? to check if a set of coordinates is on the board
@@ -60,12 +68,15 @@ module MoveValidation
 
   # used by #valid_move to get the path method to be used from the piece symbol passed in
   def path_method_from_piece(start_piece)
-    if start_piece == :w_pawn
-      'white_pawn_path?'
-    elsif start_piece == :b_pawn
-      'black_pawn_path?'
+    if start_piece[2..6] == 'pawn'
+      path_method_from_pawn(start_piece)
     else
-      (start_piece[2..-1] + '_path?')
+      start_piece[2..-1] + '_path?'
     end
+  end
+
+  def path_method_from_pawn(start_piece)
+    color = start_piece == :w_pawn ? 'white' : 'black'
+    @pawn_two_square_move_column.nil? ? color + '_pawn_standard_path?' : color + '_pawn_en_passant_path?'
   end
 end
