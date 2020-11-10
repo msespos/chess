@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
-
 # piece class
 class Piece
   # determines if a path is legal for a rook using the start, finish and playing field
@@ -31,24 +29,14 @@ class Piece
     @knight.path?(start, finish)
   end
 
-  def white_pawn_standard_path?(start, finish, playing_field)
+  def white_pawn_path?(start, finish, playing_field, en_passant_column)
     @pawn = Pawn.new
-    @pawn.standard_path?(start, finish, playing_field, :white)
+    @pawn.path?(start, finish, playing_field, :white, en_passant_column)
   end
 
-  def black_pawn_standard_path?(start, finish, playing_field)
+  def black_pawn_path?(start, finish, playing_field, en_passant_column)
     @pawn = Pawn.new
-    @pawn.standard_path?(start, finish, playing_field, :black)
-  end
-
-  def white_pawn_en_passant_path?(start, finish, playing_field, column)
-    @pawn = Pawn.new
-    @pawn.en_passant_path?(start, finish, playing_field, :white, column)
-  end
-
-  def black_pawn_en_passant_path?(start, finish, playing_field, column)
-    @pawn = Pawn.new
-    @pawn.en_passant_path?(start, finish, playing_field, :black, column)
+    @pawn.path?(start, finish, playing_field, :black, en_passant_column)
   end
 
   # used by Rook#path? and Queen#path? to determine if all spots on a rank
@@ -143,5 +131,3 @@ class Piece
     finish[0] - start[1] == start[0] - finish[1]
   end
 end
-
-# rubocop:enable Metrics/ClassLength
