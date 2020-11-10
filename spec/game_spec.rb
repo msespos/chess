@@ -378,7 +378,8 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#rook_path exists
     context 'when both spaces are valid and the color is correct and #rook_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
@@ -390,7 +391,8 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#rook_path exists
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#rook_path exists
     context 'when both spaces are valid and the color is correct and #rook_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
@@ -403,7 +405,8 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#knight_path exists
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#knight_path exists
     context 'when both spaces are valid and the color is correct and #knight_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
@@ -416,7 +419,8 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#queen_path exists
     context 'when both spaces are valid and the color is correct and #queen_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
@@ -429,8 +433,9 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
-    context 'when both spaces are valid and the color is correct and #white_pawn_path? is false' do
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#white_pawn_standard_path_path exists
+    context 'when both spaces are valid and the color is correct and #white_pawn_standard_path? is true' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
@@ -442,7 +447,8 @@ RSpec.describe Game do
       end
     end
 
-    # integration test - tests Board#overwrite_playing_field and tests that Piece#queen_path exists
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#king_path exists
     context 'when both spaces are valid and the color is correct and #king_path? is false' do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns false' do
@@ -452,6 +458,21 @@ RSpec.describe Game do
         allow(piece_valid).to receive(:king_path?).and_return(false)
         valid_or_not = game.valid_move?([4, 0], [1, 0], 'color')
         expect(valid_or_not).to eq(false)
+      end
+    end
+
+    # integration test - tests Board#overwrite_playing_field and #call_path_method_in_piece_class
+    # and tests that Piece#white_pawn_en_passant_path exists though does not use an actual en passant move
+    context 'when both spaces are valid and the color is correct and #white_pawn_en_passant_path? is true' do
+      let(:piece_valid) { instance_double(Piece) }
+      it 'returns true' do
+        game.instance_variable_set(:@piece, piece_valid)
+        game.instance_variable_set(:@pawn_two_square_move_column, 5)
+        allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
+        allow(game).to receive(:correct_color?).and_return(true)
+        allow(piece_valid).to receive(:white_pawn_en_passant_path?).and_return(true)
+        valid_or_not = game.valid_move?([1, 1], [2, 2], 'color') # not actually an en passant move
+        expect(valid_or_not).to eq(true)
       end
     end
   end
@@ -577,6 +598,24 @@ RSpec.describe Game do
       it 'returns "king_path?"' do
         method = game.path_method_from_piece(:b_king)
         expect(method).to eq('king_path?')
+      end
+    end
+
+    # integration test - tests #path_method_from_pawn as well
+    context 'when a white pawn is passed in and it is not en passant' do
+      it 'returns "white_pawn_standard_path?"' do
+        game.instance_variable_set(:@pawn_two_square_move_column, nil)
+        method = game.path_method_from_piece(:w_pawn)
+        expect(method).to eq('white_pawn_standard_path?')
+      end
+    end
+
+    # integration test - tests #path_method_from_pawn as well
+    context 'when a black pawn is passed in and it is en passant' do
+      it 'returns "black_pawn_en_passant_path?"' do
+        game.instance_variable_set(:@pawn_two_square_move_column, 5)
+        method = game.path_method_from_piece(:b_pawn)
+        expect(method).to eq('black_pawn_en_passant_path?')
       end
     end
   end
