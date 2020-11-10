@@ -23,14 +23,6 @@ module MoveValidation
     call_path_method_in_piece_class(path_method, start, finish)
   end
 
-  def call_path_method_in_piece_class(path_method, start, finish)
-    if path_method[6..20] == 'pawn_en_passant'
-      @piece.send(path_method, start, finish, @playing_field, @pawn_two_square_move_column)
-    else
-      @piece.send(path_method, start, finish, @playing_field)
-    end
-  end
-
   # used by #valid_move? to check if a set of coordinates is on the board
   def on_playing_field?(coordinates)
     coordinates[0] >= 0 && coordinates[0] <= 7 && coordinates[1] >= 0 && coordinates[1] <= 7
@@ -78,5 +70,13 @@ module MoveValidation
   def path_method_from_pawn(start_piece)
     color = start_piece == :w_pawn ? 'white' : 'black'
     @pawn_two_square_move_column.nil? ? color + '_pawn_standard_path?' : color + '_pawn_en_passant_path?'
+  end
+
+  def call_path_method_in_piece_class(path_method, start, finish)
+    if path_method[6..20] == 'pawn_en_passant'
+      @piece.send(path_method, start, finish, @playing_field, @pawn_two_square_move_column)
+    else
+      @piece.send(path_method, start, finish, @playing_field)
+    end
   end
 end
