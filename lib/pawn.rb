@@ -4,7 +4,7 @@
 class Pawn
   # determine if a standard path is legal for a pawn using the start, finish, playing field and color
   # an en passant path is handled in #en_passant_path? below
-  def standard_path?(start, finish, playing_field, color)
+  def path?(start, finish, playing_field, color, en_passant_column)
     if on_starting_rank?(start, color)
       return true if two_squares_ahead_free?(start, finish, playing_field, color) ||
                      standard_conditions_met?(start, finish, playing_field, color)
