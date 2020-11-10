@@ -467,7 +467,7 @@ RSpec.describe Game do
       let(:piece_valid) { instance_double(Piece) }
       it 'returns true' do
         game.instance_variable_set(:@piece, piece_valid)
-        game.instance_variable_set(:@pawn_two_square_move_column, 5)
+        game.instance_variable_set(:@en_passant_column, 5)
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_en_passant_path?).and_return(true)
@@ -604,7 +604,7 @@ RSpec.describe Game do
     # integration test - tests #path_method_from_pawn as well
     context 'when a white pawn is passed in and it is not en passant' do
       it 'returns "white_pawn_standard_path?"' do
-        game.instance_variable_set(:@pawn_two_square_move_column, nil)
+        game.instance_variable_set(:@en_passant_column, nil)
         method = game.path_method_from_piece(:w_pawn)
         expect(method).to eq('white_pawn_standard_path?')
       end
@@ -613,7 +613,7 @@ RSpec.describe Game do
     # integration test - tests #path_method_from_pawn as well
     context 'when a black pawn is passed in and it is en passant' do
       it 'returns "black_pawn_en_passant_path?"' do
-        game.instance_variable_set(:@pawn_two_square_move_column, 5)
+        game.instance_variable_set(:@en_passant_column, 5)
         method = game.path_method_from_piece(:b_pawn)
         expect(method).to eq('black_pawn_en_passant_path?')
       end
