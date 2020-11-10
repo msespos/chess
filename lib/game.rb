@@ -24,6 +24,7 @@ class Game
     @current_player = :white
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
+    @pawn_two_square_move_column = nil
     initial_playing_field
   end
 
