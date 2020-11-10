@@ -67,11 +67,15 @@ module MoveValidation
     end
   end
 
+  # used by #path_method_from_piece to get the path method for a pawn, adding color
+  # and standard / en passant labeling
   def path_method_from_pawn(start_piece)
     color = start_piece == :w_pawn ? 'white' : 'black'
     @pawn_two_square_move_column.nil? ? color + '_pawn_standard_path?' : color + '_pawn_en_passant_path?'
   end
 
+  # used by #valid_move? to call the current path method within Piece, based on
+  # the path_method and other parameters
   def call_path_method_in_piece_class(path_method, start, finish)
     if path_method[6..20] == 'pawn_en_passant'
       @piece.send(path_method, start, finish, @playing_field, @pawn_two_square_move_column)
