@@ -6,12 +6,12 @@ require_relative '../lib/pawn.rb'
 
 RSpec.describe Pawn do
   subject(:pawn) { described_class.new }
-  describe '#standard_path?' do
+  describe '#path?' do
     context 'when it is on the starting rank with two squares ahead free' do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(true)
         allow(pawn).to receive(:two_squares_ahead_free?).and_return(true)
-        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
         expect(path_or_not).to eq(true)
       end
     end
@@ -20,7 +20,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(true)
         allow(pawn).to receive(:standard_conditions_met?).and_return(true)
-        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
         expect(path_or_not).to eq(true)
       end
     end
@@ -29,7 +29,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(true)
-        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
         expect(path_or_not).to eq(true)
       end
     end
@@ -38,7 +38,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(false)
-        path_or_not = pawn.standard_path?('start', 'finish', 'playing field', 'color')
+        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
         expect(path_or_not).to eq(false)
       end
     end
