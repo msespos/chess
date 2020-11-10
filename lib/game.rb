@@ -108,15 +108,19 @@ class Game
   # except that the third parameter used by #escape_squares_available? to indicate
   # that the method is being used to check a king moving out of check,
   # in which case we do want the king to actually move in this method
-  # (another copy is made and used in #escape_squares_available?)
+  # (another copy of the playing field is similarly made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false)
     return :invalid unless valid_move?(start, finish, @current_player)
+
+    check_for_en_passant(start, finish)
 
     # make a copy of the playing field in case the player is moving into check
     playing_field_before_move = @playing_field.clone.map(&:clone)
     captured = reassign_squares(start, finish)
     if in_check?
       # revert to the copy of the playing field made before the move into check
+      # do not revert if actually checking a king move made out of check
+      # as in that case we want to keep the playing field as is
       @playing_field = playing_field_before_move unless checking_move_out_of_check
       return :invalid
     end
