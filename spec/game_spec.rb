@@ -589,7 +589,6 @@ RSpec.describe Game do
     # integration test - tests #path_method_from_pawn as well
     context 'when a white pawn is passed in and it is not en passant' do
       it 'returns "white_pawn_path?"' do
-        game.instance_variable_set(:@en_passant_column, nil)
         method = game.path_method_from_piece(:w_pawn)
         expect(method).to eq('white_pawn_path?')
       end
@@ -2387,6 +2386,22 @@ RSpec.describe Game do
         game.check_for_en_passant([0, 0], [0, 1])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(nil)
+      end
+    end
+
+    context 'when [0, 1] and [0, 3] are passed in' do
+      it 'sets @en_passant_column to 0' do
+        game.check_for_en_passant([0, 1], [0, 3])
+        column = game.instance_variable_get(:@en_passant_column)
+        expect(column).to eq(0)
+      end
+    end
+
+    context 'when [5, 6] and [5, 4] are passed in' do
+      it 'sets @en_passant_column to 5' do
+        game.check_for_en_passant([5, 6], [5, 4])
+        column = game.instance_variable_get(:@en_passant_column)
+        expect(column).to eq(5)
       end
     end
   end
