@@ -8,6 +8,7 @@ require_relative 'check_validation'
 require_relative 'checkmate_validation'
 require_relative 'stalemate_validation'
 require_relative 'pawn_promotion'
+require_relative 'en_passant'
 
 # game class
 class Game
@@ -16,6 +17,7 @@ class Game
   include CheckmateValidation
   include StalemateValidation
   include PawnPromotion
+  include EnPassant
 
   def initialize
     @board = Board.new
@@ -24,7 +26,7 @@ class Game
     @current_player = :white
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
-    @pawn_two_square_move_column = nil
+    @en_passant_column = nil
     initial_playing_field
   end
 
