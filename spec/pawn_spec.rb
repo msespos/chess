@@ -350,6 +350,36 @@ RSpec.describe Pawn do
       end
     end
   end
+
+  describe '#on_en_passant_starting_rank?' do
+    context 'when it is a white pawn on the en passant starting rank' do
+      it 'returns true' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 4], :white)
+        expect(en_passant_rank_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn on the en passant starting rank' do
+      it 'returns true' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 3], :black)
+        expect(en_passant_rank_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn not on the en passant starting rank' do
+      it 'returns false' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([7, 6], :white)
+        expect(en_passant_rank_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a black pawn not on the en passant starting rank' do
+      it 'returns false' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([4, 1], :black)
+        expect(en_passant_rank_or_not).to eq(false)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
