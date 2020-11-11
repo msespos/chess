@@ -10,6 +10,8 @@ class Pawn
                      standard_conditions_met?(start, finish, playing_field, color)
     elsif standard_conditions_met?(start, finish, playing_field, color)
       return true
+    elsif en_passant_conditions_met?(start, finish, playing_field, color, en_passant_column)
+      return true
     end
     false
   end
@@ -89,12 +91,12 @@ class Pawn
 
   def white_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-      square_occupancy_status(finish, playing_field)
+      square_not_empty?(finish, playing_field)
   end
 
   def black_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-      square_occupancy_status(finish, playing_field)
+      square_not_empty?(finish, playing_field)
   end
 
   # used by #standard_conditions_met? to determine if a right diagonal capture is possible
@@ -108,15 +110,52 @@ class Pawn
 
   def white_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      square_occupancy_status(finish, playing_field)
+      square_not_empty?(finish, playing_field)
   end
 
   def black_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-      square_occupancy_status(finish, playing_field)
+      square_not_empty?(finish, playing_field)
   end
 
-  def square_occupancy_status(finish, playing_field)
+  def square_not_empty?(finish, playing_field)
     !playing_field[finish[0]][finish[1]].nil?
+  end
+
+  def en_passant_conditions_met?(start, finish, playing_field, color, en_passant_column)
+    return false unless on_en_passant_starting_rank?(start, color)
+
+    left_en_passant?(start, finish, playing_field, color, en_passant_column) ||
+      right_en_passant?(start, finish, playing_field, color, en_passant_column)
+  end
+
+  # used by #en_passant_conditions_met? to determine if a pawn is on the rank required
+  # to make an en passant capture
+  def on_en_passant_starting_rank?(start, color)
+    start[1] == if color == :white
+                  4
+                else
+                  3
+                end
+  end
+
+  def left_en_passant?(start, finish, playing_field, color, en_passant_column)
+    if color == :white
+      !left_diagonal_capture?(start, finish, playing_field, color) &&
+        en_passant_column == start[0] - 1
+    else
+      !left_diagonal_capture?(start, finish, playing_field, color) &&
+        en_passant_column == start[0] + 1
+    end
+  end
+
+  def right_en_passant?(start, finish, playing_field, color, en_passant_column)
+    if color == :white
+      !right_diagonal_capture?(start, finish, playing_field, color) &&
+        en_passant_column == start[0] + 1
+    else
+      !right_diagonal_capture?(start, finish, playing_field, color) &&
+        en_passant_column == start[0] - 1
+    end
   end
 end
