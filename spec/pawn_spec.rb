@@ -34,7 +34,7 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it is not on the starting rank without standard conditions met but en passant condiitons met' do
+    context 'when it is not on the starting rank, standard conditions not met, en passant condiitons met' do
       it 'returns false' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(false)
