@@ -34,10 +34,21 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it is not on the starting rank with standard conditions not met' do
+    context 'when it is not on the starting rank without standard conditions met but en passant condiitons met' do
       it 'returns false' do
         allow(pawn).to receive(:on_starting_rank?).and_return(false)
         allow(pawn).to receive(:standard_conditions_met?).and_return(false)
+        allow(pawn).to receive(:en_passant_conditions_met?).and_return(true)
+        path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
+        expect(path_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is not on the starting rank with neither standard nor en passant condiitons met' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_starting_rank?).and_return(false)
+        allow(pawn).to receive(:standard_conditions_met?).and_return(false)
+        allow(pawn).to receive(:en_passant_conditions_met?).and_return(false)
         path_or_not = pawn.path?('start', 'finish', 'playing field', 'color', 'column')
         expect(path_or_not).to eq(false)
       end
@@ -347,6 +358,69 @@ RSpec.describe Pawn do
         playing_field[4][2] = :b_pawn
         black_right_diagonal_or_not = pawn.black_right_diagonal?([4, 2], [3, 1], playing_field)
         expect(black_right_diagonal_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#square_not_empty?' do
+    context 'when the square is not empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][2] = :b_pawn
+        not_empty_or_not = pawn.square_not_empty?([4, 2], playing_field)
+        expect(not_empty_or_not).to eq(true)
+      end
+    end
+
+    context 'when the square is empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        not_empty_or_not = pawn.square_not_empty?([4, 2], playing_field)
+        expect(not_empty_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#en_passant_conditions_met?' do
+    context 'when it is not on an en passant starting rank' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
+        allow(pawn).to receive(:left_en_passant?).and_return(true)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
+                                                            'playing field', 'color', 'column')
+        expect(en_passant_or_not).to eq(false)
+      end
+    end
+
+    context 'when it has a left en passant capture available' do
+      it 'returns true' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
+        allow(pawn).to receive(:left_en_passant?).and_return(true)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
+                                                            'playing field', 'color', 'column')
+        expect(en_passant_or_not).to eq(true)
+      end
+    end
+
+    context 'when it has a right en passant capture available' do
+      it 'returns true' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
+        allow(pawn).to receive(:left_en_passant?).and_return(false)
+        allow(pawn).to receive(:right_en_passant?).and_return(true)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
+                                                            'playing field', 'color', 'column')
+        expect(en_passant_or_not).to eq(true)
+      end
+    end
+
+    context 'when none of the en passant conditions are met' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
+        allow(pawn).to receive(:left_en_passant?).and_return(false)
+        allow(pawn).to receive(:right_en_passant?).and_return(false)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
+                                                            'playing field', 'color', 'column')
+        expect(en_passant_or_not).to eq(false)
       end
     end
   end
