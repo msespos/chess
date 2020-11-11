@@ -98,6 +98,7 @@ class Game
 
       start, finish = player_move_to_start_finish(move)
     end
+    check_for_en_passant(start, finish)
   end
 
   # used by #make_move_when_not_invalid
@@ -111,8 +112,6 @@ class Game
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false)
     return :invalid unless valid_move?(start, finish, @current_player)
-
-    check_for_en_passant(start, finish)
 
     # make a copy of the playing field in case the player is moving into check
     playing_field_before_move = @playing_field.clone.map(&:clone)
@@ -130,6 +129,18 @@ class Game
   # used by #move_piece
   # reassign the squares necessary to make the move and capture, if also a capture
   def reassign_squares(start, finish)
+    unless @en_passant_column.nil?
+      if finish[0] == @en_passant_column
+        if start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
+          temp = @playing_field[start[0]][start[1]]
+          @playing_field[start[0]][start[1]] = nil
+          captured = @playing_field[finish[0]][start[1]]
+          @playing_field[finish[0]][finish[1]] = temp
+          @playing_field[finish[0]][start[1]] = nil
+          return captured
+        end
+      end
+    end
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
     captured = capture(finish)
