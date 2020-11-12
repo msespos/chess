@@ -1256,6 +1256,115 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(true)
       end
     end
+
+    context 'when replicating a bug that put black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('g2g3', 'd7d6', 'g3g4', 'd6d5', 'g4g5',
+                                                        'd5d4', 'f2f4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'f2f4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'c2c4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b6', 'f2f4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'f2f4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'd2d4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'h2h4', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'c7c5', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
+
+    context 'when trying to replicate a bug that puts black in checkmate by mistake' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'a7a5', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
+      end
+    end
   end
 
   # integration tests - also test #escape_squares_available? and
