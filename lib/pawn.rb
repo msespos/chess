@@ -139,6 +139,7 @@ class Pawn
                 end
   end
 
+  # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
   def left_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
       finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
@@ -151,6 +152,7 @@ class Pawn
     end
   end
 
+  # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
   def right_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
       finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
