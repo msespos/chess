@@ -130,14 +130,16 @@ class Game
   # reassign the squares necessary to make the move and capture, if also a capture
   def reassign_squares(start, finish)
     unless @en_passant_column.nil?
-      if finish[0] == @en_passant_column
-        if start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
-          temp = @playing_field[start[0]][start[1]]
-          @playing_field[start[0]][start[1]] = nil
-          captured = @playing_field[finish[0]][start[1]]
-          @playing_field[finish[0]][finish[1]] = temp
-          @playing_field[finish[0]][start[1]] = nil
-          return captured
+      if @playing_field[start[0]][start[1]] == :w_pawn || @playing_field[start[0]][start[1]] == :b_pawn
+        if finish[0] == @en_passant_column
+          if start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
+            temp = @playing_field[start[0]][start[1]]
+            @playing_field[start[0]][start[1]] = nil
+            captured = @playing_field[finish[0]][start[1]]
+            @playing_field[finish[0]][finish[1]] = temp
+            @playing_field[finish[0]][start[1]] = nil
+            return captured
+          end
         end
       end
     end
