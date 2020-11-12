@@ -141,20 +141,24 @@ class Pawn
 
   def left_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
-      !left_diagonal_capture?(start, finish, playing_field, color) &&
+      finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
+        !square_not_empty?(finish, playing_field) &&
         en_passant_column == start[0] - 1
     else
-      !left_diagonal_capture?(start, finish, playing_field, color) &&
+      finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
+        !square_not_empty?(finish, playing_field) &&
         en_passant_column == start[0] + 1
     end
   end
 
   def right_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
-      !right_diagonal_capture?(start, finish, playing_field, color) &&
+      finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
+        !square_not_empty?(finish, playing_field) &&
         en_passant_column == start[0] + 1
     else
-      !right_diagonal_capture?(start, finish, playing_field, color) &&
+      finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
+        !square_not_empty?(finish, playing_field) &&
         en_passant_column == start[0] - 1
     end
   end
