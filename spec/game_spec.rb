@@ -1365,6 +1365,33 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(false)
       end
     end
+
+    context 'when white captures en passant and black checkmates' do
+      before do
+        allow(game).to receive(:player_move).and_return('g2g4', 'e7e5', 'g4g5', 'h7h5', 'g5h6',
+                                                        'd8h4', 'c2c3', 'f8c5', 'c3c4', 'h4f2')
+      end
+
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when black tries an illegal move then captures en passant and checkmates' do
+      before do
+        allow(game).to receive(:player_move).and_return('a2a4', 'g7g5', 'b1c3', 'g5g4', 'f2f4',
+                                                        'g4h3', 'g4f3', 'c3d5', 'e7e6', 'a4a5',
+                                                        'd8f6', 'b2b4', 'f3f2')
+      end
+
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
   end
 
   # integration tests - also test #escape_squares_available? and
