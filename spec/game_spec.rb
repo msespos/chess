@@ -257,20 +257,20 @@ RSpec.describe Game do
     end
   end
 
-  describe '#capture' do
+  describe '#standard_capture' do
     context 'when the finish square is empty' do
       it 'returns nil' do
         game.instance_variable_get(:@playing_field)[7][5] = nil
-        capture_or_none = game.capture([7, 5])
-        expect(capture_or_none).to eq(nil)
+        standard_capture_or_none = game.standard_capture([7, 5])
+        expect(standard_capture_or_none).to eq(nil)
       end
     end
 
     context 'when the finish square has a white rook on it' do
       it 'returns :w_rook' do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-        capture_or_none = game.capture([7, 5])
-        expect(capture_or_none).to eq(:w_rook)
+        standard_capture_or_none = game.standard_capture([7, 5])
+        expect(standard_capture_or_none).to eq(:w_rook)
       end
     end
   end
