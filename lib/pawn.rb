@@ -54,46 +54,35 @@ class Pawn
   # are met for a pawn to make a move
   def standard_conditions_met?(start, finish, playing_field, color)
     one_square_ahead_free?(start, finish, playing_field, color) ||
-      left_diagonal_capture?(start, finish, playing_field, color) ||
-      right_diagonal_capture?(start, finish, playing_field, color)
+      diagonal_capture?(start, finish, playing_field, color)
   end
 
   # used by #standard_conditions_met? to determine if the square in front of a
   # starting position pawn is free
   def one_square_ahead_free?(start, finish, playing_field, color)
-    move_ahead = color == :white ? 1 : - 1
+    ahead_increment = color == :white ? 1 : - 1
     finish[0] == start[0] &&
-      finish[1] == start[1] + move_ahead &&
+      finish[1] == start[1] + ahead_increment &&
       playing_field[finish[0]][finish[1]].nil?
   end
 
-  # used by #standard_conditions_met? to determine if a left diagonal capture is possible
-  def left_diagonal_capture?(start, finish, playing_field, color)
-    move_diagonal = color == :white ? 1 : -1
-    finish[0] == start[0] - move_diagonal &&
-      finish[1] == start[1] + move_diagonal &&
+  # used by #standard_conditions_met? to determine if a diagonal capture is possible
+  def diagonal_capture?(start, finish, playing_field, color)
+    diagonal_increment = color == :white ? 1 : -1
+    (finish[0] == start[0] - diagonal_increment || finish[0] == start[0] + diagonal_increment) &&
+      finish[1] == start[1] + diagonal_increment &&
       !square_empty?(finish, playing_field)
-  end
-
-  # used by #standard_conditions_met? to determine if a right diagonal capture is possible
-  def right_diagonal_capture?(start, finish, playing_field, color)
-    move_diagonal = color == :white ? 1 : -1
-    finish[0] == start[0] + move_diagonal &&
-      finish[1] == start[1] + move_diagonal &&
-      !square_empty?(finish, playing_field)
-  end
-
-  # used by multiple diagonal-check methods to verify that a square is empty
-  def square_empty?(finish, playing_field)
-    playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by #path? to check if en passant is possible
   def en_passant_conditions_met?(start, finish, playing_field, color, en_passant_column)
     return false unless on_en_passant_starting_rank?(start, color)
 
-    left_en_passant?(start, finish, playing_field, color, en_passant_column) ||
-      right_en_passant?(start, finish, playing_field, color, en_passant_column)
+    en_passant_increment = color == :white ? 1 : -1
+    en_passant_horizontal_shift_correct?(start, finish, en_passant_increment) &&
+      en_passant_vertical_shift_correct?(start, finish, en_passant_increment) &&
+      next_to_en_passant_column?(start, finish, en_passant_column, en_passant_increment) &&
+      square_empty?(finish, playing_field)
   end
 
   # used by #en_passant_conditions_met? to determine if a pawn is on the rank required
@@ -106,21 +95,27 @@ class Pawn
                 end
   end
 
-  # used by #en_passant_conditions_met? to check for a left en passant
-  def left_en_passant?(start, finish, playing_field, color, en_passant_column)
-    move_en_passant = color == :white ? 1 : -1
-    finish[0] == start[0] - move_en_passant &&
-      finish[1] == start[1] + move_en_passant &&
-      square_empty?(finish, playing_field) &&
-      en_passant_column == start[0] - move_en_passant
+  # used by #en_passant_conditions_met? to check if the horizontal shift is correct
+  def en_passant_horizontal_shift_correct?(start, finish, en_passant_increment)
+    finish[0] == start[0] - en_passant_increment || finish[0] == start[0] + en_passant_increment
   end
 
-  # used by #en_passant_conditions_met? to check for a right en passant
-  def right_en_passant?(start, finish, playing_field, color, en_passant_column)
-    move_en_passant = color == :white ? 1 : -1
-    finish[0] == start[0] + move_en_passant &&
-      finish[1] == start[1] + move_en_passant &&
-      square_empty?(finish, playing_field) &&
-      en_passant_column == start[0] + move_en_passant
+  # used by #en_passant_conditions_met? to check if the vertical shift is correct
+  def en_passant_vertical_shift_correct?(start, finish, en_passant_increment)
+    finish[1] == start[1] + en_passant_increment
+  end
+
+  # used by #en_passant_conditions_met? to check if the pawn is next to the en passant column
+  def next_to_en_passant_column?(start, finish, en_passant_column, en_passant_increment)
+    en_passant_column == if finish[0] == start[0] - en_passant_increment
+                           start[0] - en_passant_increment
+                         else
+                           start[0] + en_passant_increment
+                         end
+  end
+
+  # used by multiple diagonal-check methods to verify that a square is empty
+  def square_empty?(finish, playing_field)
+    playing_field[finish[0]][finish[1]].nil?
   end
 end
