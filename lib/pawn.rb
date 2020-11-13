@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 # pawn class
 class Pawn
   # determine if a standard path is legal for a pawn using the start, finish, playing field and color
@@ -142,26 +144,44 @@ class Pawn
   # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
   def left_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
-      finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-        !square_not_empty?(finish, playing_field) &&
-        en_passant_column == start[0] - 1
+      left_white_en_passant(start, finish, playing_field, en_passant_column)
     else
-      finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-        !square_not_empty?(finish, playing_field) &&
-        en_passant_column == start[0] + 1
+      left_black_en_passant(start, finish, playing_field, en_passant_column)
     end
+  end
+
+  def left_white_en_passant(start, finish, playing_field, en_passant_column)
+    finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
+      !square_not_empty?(finish, playing_field) &&
+      en_passant_column == start[0] - 1
+  end
+
+  def left_black_en_passant(start, finish, playing_field, en_passant_column)
+    finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
+      !square_not_empty?(finish, playing_field) &&
+      en_passant_column == start[0] + 1
   end
 
   # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
   def right_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
-      finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-        !square_not_empty?(finish, playing_field) &&
-        en_passant_column == start[0] + 1
+      right_white_en_passant(start, finish, playing_field, en_passant_column)
     else
-      finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-        !square_not_empty?(finish, playing_field) &&
-        en_passant_column == start[0] - 1
+      right_black_en_passant(start, finish, playing_field, en_passant_column)
     end
   end
+
+  def right_white_en_passant(start, finish, playing_field, en_passant_column)
+    finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
+      !square_not_empty?(finish, playing_field) &&
+      en_passant_column == start[0] + 1
+  end
+
+  def right_black_en_passant(start, finish, playing_field, en_passant_column)
+    finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
+      !square_not_empty?(finish, playing_field) &&
+      en_passant_column == start[0] - 1
+  end
 end
+
+# rubocop:enable Metrics/ClassLength
