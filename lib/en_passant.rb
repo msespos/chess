@@ -19,4 +19,20 @@ module EnPassant
   def en_passant_black(start, finish, finish_piece)
     finish_piece == :b_pawn && start[1] == 6 && finish[1] == 4
   end
+
+  def meets_en_passant_conditions?(start, finish)
+    a_pawn?(start) && finish_on_en_passant_column?(finish) && start_next_to_en_passant_column?(start)
+  end
+
+  def a_pawn?(start)
+    @playing_field[start[0]][start[1]] == :w_pawn || @playing_field[start[0]][start[1]] == :b_pawn
+  end
+
+  def finish_on_en_passant_column?(finish)
+    finish[0] == @en_passant_column
+  end
+
+  def start_next_to_en_passant_column?(start)
+    start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
+  end
 end
