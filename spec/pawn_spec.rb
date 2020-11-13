@@ -172,20 +172,10 @@ RSpec.describe Pawn do
       end
     end
 
-    context 'when it has a left diagonal capture available' do
+    context 'when it has a diagonal capture available' do
       it 'returns true' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
-        allow(pawn).to receive(:left_diagonal_capture?).and_return(true)
-        standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
-        expect(standard_or_not).to eq(true)
-      end
-    end
-
-    context 'when it has a right diagonal capture available' do
-      it 'returns true' do
-        allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
-        allow(pawn).to receive(:left_diagonal_capture?).and_return(false)
-        allow(pawn).to receive(:right_diagonal_capture?).and_return(true)
+        allow(pawn).to receive(:diagonal_capture?).and_return(true)
         standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(true)
       end
@@ -194,8 +184,7 @@ RSpec.describe Pawn do
     context 'when none of the standard conditions are met' do
       it 'returns false' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
-        allow(pawn).to receive(:left_diagonal_capture?).and_return(false)
-        allow(pawn).to receive(:right_diagonal_capture?).and_return(false)
+        allow(pawn).to receive(:diagonal_capture?).and_return(false)
         standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(false)
       end
@@ -225,39 +214,6 @@ RSpec.describe Pawn do
     context 'when it is not on an en passant starting rank' do
       it 'returns false' do
         allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
-        allow(pawn).to receive(:left_en_passant?).and_return(true)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
-                                                            'playing field', 'color', 'column')
-        expect(en_passant_or_not).to eq(false)
-      end
-    end
-
-    context 'when it has a left en passant capture available' do
-      it 'returns true' do
-        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
-        allow(pawn).to receive(:left_en_passant?).and_return(true)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
-                                                            'playing field', 'color', 'column')
-        expect(en_passant_or_not).to eq(true)
-      end
-    end
-
-    context 'when it has a right en passant capture available' do
-      it 'returns true' do
-        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
-        allow(pawn).to receive(:left_en_passant?).and_return(false)
-        allow(pawn).to receive(:right_en_passant?).and_return(true)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
-                                                            'playing field', 'color', 'column')
-        expect(en_passant_or_not).to eq(true)
-      end
-    end
-
-    context 'when none of the en passant conditions are met' do
-      it 'returns false' do
-        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
-        allow(pawn).to receive(:left_en_passant?).and_return(false)
-        allow(pawn).to receive(:right_en_passant?).and_return(false)
         en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
                                                             'playing field', 'color', 'column')
         expect(en_passant_or_not).to eq(false)
@@ -295,14 +251,14 @@ RSpec.describe Pawn do
     end
   end
 
-  # integration tests that also test #left_diagonal_capture? and related helper methods
-  describe '#left_en_passant?' do
+  # integration tests that also test related helper methods
+  describe '#en_passant_conditions_met?' do
     context 'when it is a white pawn that can make a left diagonal en passant capture' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][4] = :b_pawn
-        left_en_passant_or_not = pawn.left_en_passant?([4, 4], [3, 5], playing_field, :white, 3)
+        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 3)
         expect(left_en_passant_or_not).to eq(true)
       end
     end
@@ -312,7 +268,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][3] = :b_pawn
         playing_field[5][3] = :w_pawn
-        left_en_passant_or_not = pawn.left_en_passant?([4, 3], [5, 2], playing_field, :black, 5)
+        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 3], [5, 2], playing_field, :black, 5)
         expect(left_en_passant_or_not).to eq(true)
       end
     end
@@ -322,7 +278,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][4] = :b_pawn
-        left_en_passant_or_not = pawn.left_en_passant?([4, 4], [3, 5], playing_field, :white, 2)
+        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 2)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
@@ -332,7 +288,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][5] = :b_pawn
-        left_en_passant_or_not = pawn.left_en_passant?([4, 4], [3, 5], playing_field, :white, 2)
+        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 2)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
@@ -341,20 +297,17 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        left_en_passant_or_not = pawn.left_en_passant?([4, 4], [3, 5], playing_field, :white, nil)
+        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, nil)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
-  end
 
-  # integration tests that also test #right_diagonal_capture? and related helper methods
-  describe '#left_en_passant?' do
     context 'when it is a white pawn that can make a right diagonal en passant capture' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.right_en_passant?([4, 4], [5, 5], playing_field, :white, 5)
+        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 5)
         expect(right_en_passant_or_not).to eq(true)
       end
     end
@@ -364,7 +317,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][3] = :b_pawn
         playing_field[3][3] = :w_pawn
-        right_en_passant_or_not = pawn.right_en_passant?([4, 3], [3, 2], playing_field, :black, 3)
+        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 3], [3, 2], playing_field, :black, 3)
         expect(right_en_passant_or_not).to eq(true)
       end
     end
@@ -374,7 +327,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.right_en_passant?([4, 4], [5, 5], playing_field, :white, 2)
+        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 2)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
@@ -384,7 +337,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.right_en_passant?([4, 4], [5, 5], playing_field, :white, 2)
+        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 2)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
@@ -393,7 +346,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        right_en_passant_or_not = pawn.right_en_passant?([4, 4], [5, 5], playing_field, :white, nil)
+        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, nil)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
