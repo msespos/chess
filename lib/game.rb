@@ -128,6 +128,7 @@ class Game
 
   # used by #move_piece
   # reassign the squares necessary to make the move and capture, if also a capture
+  # if in the case of an en passant move, make the move and capture en passant
   def reassign_squares(start, finish)
     unless @en_passant_column.nil?
       return move_and_capture(start, finish, true) if meets_en_passant_conditions?(start, finish)
@@ -135,6 +136,7 @@ class Game
     move_and_capture(start, finish)
   end
 
+  # used by #reassign_square to move and capture the pieces, standard or en passant
   def move_and_capture(start, finish, en_passant = false)
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
@@ -145,6 +147,7 @@ class Game
     captured
   end
 
+  # used by #move_and_capture to select and execute a standard or en passant capture
   def en_passant_or_standard_capture(start, finish, en_passant)
     en_passant == true ? @playing_field[finish[0]][start[1]] : standard_capture(finish)
   end

@@ -91,11 +91,13 @@ class Pawn
     end
   end
 
+  # used by #left_diagonal_capture to check the white pawn case
   def white_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
       square_not_empty?(finish, playing_field)
   end
 
+  # used by #left_diagonal_capture to check the black pawn case
   def black_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
       square_not_empty?(finish, playing_field)
@@ -110,20 +112,24 @@ class Pawn
     end
   end
 
+  # used by #right_diagonal_capture to check the white pawn case
   def white_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
       square_not_empty?(finish, playing_field)
   end
 
+  # used by #right_diagonal_capture to check the black pawn case
   def black_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
       square_not_empty?(finish, playing_field)
   end
 
+  # used by multiple diagonal-check methods to verify that a square is not empty
   def square_not_empty?(finish, playing_field)
     !playing_field[finish[0]][finish[1]].nil?
   end
 
+  # used by #path? to check if en passant is possible
   def en_passant_conditions_met?(start, finish, playing_field, color, en_passant_column)
     return false unless on_en_passant_starting_rank?(start, color)
 
@@ -141,7 +147,7 @@ class Pawn
                 end
   end
 
-  # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
+  # used by #en_passant_conditions_met? to check for a left en passant
   def left_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
       left_white_en_passant(start, finish, playing_field, en_passant_column)
@@ -150,19 +156,21 @@ class Pawn
     end
   end
 
+  # used by #left_en_passant? to check for the white pawn case
   def left_white_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
       !square_not_empty?(finish, playing_field) &&
       en_passant_column == start[0] - 1
   end
 
+  # used by #left_en_passant? to check for the black pawn case
   def left_black_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
       !square_not_empty?(finish, playing_field) &&
       en_passant_column == start[0] + 1
   end
 
-  # fixed several bugs on 11/12, including false positive checkmates, by rewriting this
+  # used by #en_passant_conditions_met? to check for a right en passant
   def right_en_passant?(start, finish, playing_field, color, en_passant_column)
     if color == :white
       right_white_en_passant(start, finish, playing_field, en_passant_column)
@@ -171,12 +179,14 @@ class Pawn
     end
   end
 
+  # used by #right_en_passant? to check for the white pawn case
   def right_white_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
       !square_not_empty?(finish, playing_field) &&
       en_passant_column == start[0] + 1
   end
 
+  # used by #right_en_passant? to check for the black pawn case
   def right_black_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
       !square_not_empty?(finish, playing_field) &&
