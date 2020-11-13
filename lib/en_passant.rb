@@ -6,12 +6,17 @@ module EnPassant
   # if so, set @en_passant_column to that column
   def check_for_en_passant(start, finish)
     finish_piece = @playing_field[finish[0]][finish[1]]
-    if finish_piece == :w_pawn && start[1] == 1 && finish[1] == 3
-      @en_passant_column = start[0]
-    elsif finish_piece == :b_pawn && start[1] == 6 && finish[1] == 4
-      @en_passant_column = start[0]
-    else
-      @en_passant_column = nil
-    end
+    @en_passant_column = if en_passant_white(start, finish, finish_piece) ||
+                            en_passant_black(start, finish, finish_piece)
+                           start[0]
+                         end
+  end
+
+  def en_passant_white(start, finish, finish_piece)
+    finish_piece == :w_pawn && start[1] == 1 && finish[1] == 3
+  end
+
+  def en_passant_black(start, finish, finish_piece)
+    finish_piece == :b_pawn && start[1] == 6 && finish[1] == 4
   end
 end
