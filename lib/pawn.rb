@@ -94,13 +94,13 @@ class Pawn
   # used by #left_diagonal_capture to check the white pawn case
   def white_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-      square_not_empty?(finish, playing_field)
+      !square_empty?(finish, playing_field)
   end
 
   # used by #left_diagonal_capture to check the black pawn case
   def black_left_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-      square_not_empty?(finish, playing_field)
+      !square_empty?(finish, playing_field)
   end
 
   # used by #standard_conditions_met? to determine if a right diagonal capture is possible
@@ -115,18 +115,18 @@ class Pawn
   # used by #right_diagonal_capture to check the white pawn case
   def white_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      square_not_empty?(finish, playing_field)
+      !square_empty?(finish, playing_field)
   end
 
   # used by #right_diagonal_capture to check the black pawn case
   def black_right_diagonal?(start, finish, playing_field)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-      square_not_empty?(finish, playing_field)
+      !square_empty?(finish, playing_field)
   end
 
-  # used by multiple diagonal-check methods to verify that a square is not empty
-  def square_not_empty?(finish, playing_field)
-    !playing_field[finish[0]][finish[1]].nil?
+  # used by multiple diagonal-check methods to verify that a square is empty
+  def square_empty?(finish, playing_field)
+    playing_field[finish[0]][finish[1]].nil?
   end
 
   # used by #path? to check if en passant is possible
@@ -159,14 +159,14 @@ class Pawn
   # used by #left_en_passant? to check for the white pawn case
   def left_white_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] - 1 && finish[1] == start[1] + 1 &&
-      !square_not_empty?(finish, playing_field) &&
+      square_empty?(finish, playing_field) &&
       en_passant_column == start[0] - 1
   end
 
   # used by #left_en_passant? to check for the black pawn case
   def left_black_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] + 1 && finish[1] == start[1] - 1 &&
-      !square_not_empty?(finish, playing_field) &&
+      square_empty?(finish, playing_field) &&
       en_passant_column == start[0] + 1
   end
 
@@ -182,14 +182,14 @@ class Pawn
   # used by #right_en_passant? to check for the white pawn case
   def right_white_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] + 1 && finish[1] == start[1] + 1 &&
-      !square_not_empty?(finish, playing_field) &&
+      square_empty?(finish, playing_field) &&
       en_passant_column == start[0] + 1
   end
 
   # used by #right_en_passant? to check for the black pawn case
   def right_black_en_passant(start, finish, playing_field, en_passant_column)
     finish[0] == start[0] - 1 && finish[1] == start[1] - 1 &&
-      !square_not_empty?(finish, playing_field) &&
+      square_empty?(finish, playing_field) &&
       en_passant_column == start[0] - 1
   end
 end
