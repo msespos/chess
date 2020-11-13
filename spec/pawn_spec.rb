@@ -362,21 +362,21 @@ RSpec.describe Pawn do
     end
   end
 
-  describe '#square_not_empty?' do
+  describe '#square_empty?' do
     context 'when the square is not empty' do
-      it 'returns true' do
+      it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][2] = :b_pawn
-        not_empty_or_not = pawn.square_not_empty?([4, 2], playing_field)
-        expect(not_empty_or_not).to eq(true)
+        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        expect(empty_or_not).to eq(false)
       end
     end
 
     context 'when the square is empty' do
-      it 'returns false' do
+      it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
-        not_empty_or_not = pawn.square_not_empty?([4, 2], playing_field)
-        expect(not_empty_or_not).to eq(false)
+        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        expect(empty_or_not).to eq(true)
       end
     end
   end
