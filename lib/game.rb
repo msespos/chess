@@ -130,30 +130,29 @@ class Game
   # reassign the squares necessary to make the move and capture, if also a capture
   def reassign_squares(start, finish)
     unless @en_passant_column.nil?
-      if @playing_field[start[0]][start[1]] == :w_pawn || @playing_field[start[0]][start[1]] == :b_pawn
-        if finish[0] == @en_passant_column
-          if start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
-            temp = @playing_field[start[0]][start[1]]
-            @playing_field[start[0]][start[1]] = nil
-            captured = @playing_field[finish[0]][start[1]]
-            @playing_field[finish[0]][finish[1]] = temp
-            @playing_field[finish[0]][start[1]] = nil
-            return captured
-          end
-        end
-      end
+      return move_and_capture(start, finish, true) if meets_en_passant_conditions?(start, finish)
     end
+    move_and_capture(start, finish)
+  end
+
+  def move_and_capture(start, finish, en_passant = false)
     temp = @playing_field[start[0]][start[1]]
     @playing_field[start[0]][start[1]] = nil
-    captured = capture(finish)
+    captured = en_passant_or_standard_capture(start, finish, en_passant)
     @playing_field[finish[0]][finish[1]] = temp
+    @playing_field[finish[0]][start[1]] = nil if en_passant == true
+
     captured
+  end
+
+  def en_passant_or_standard_capture(start, finish, en_passant)
+    en_passant == true ? @playing_field[finish[0]][start[1]] : standard_capture(finish)
   end
 
   # used by #reassign_squares
   # check if there is a capture in the move by checking if there is a piece in the finish square
   # make the capture and return the piece if there is - otherwise return nil
-  def capture(finish)
+  def standard_capture(finish)
     return @playing_field[finish[0]][finish[1]] unless @playing_field[finish[0]][finish[1]].nil?
 
     nil
