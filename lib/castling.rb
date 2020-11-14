@@ -19,4 +19,24 @@ module Castling
       end
     end
   end
+
+  def white_can_kingside_castle?
+    !@white_king_moved &&
+      !@white_kingside_rook_moved &&
+      no_white_kingside_castling_squares_in_check? &&
+      white_kingside_castling_squares_empty?
+  end
+
+  def no_white_kingside_castling_squares_in_check?
+    attacking_color = @current_player == :white ? :black : :white
+    (4..6).each do |column|
+      return false if under_attack?([column, 0], attacking_color)
+    end
+    true
+  end
+
+  def white_kingside_castling_squares_empty?
+    (5..6).each { |column| return false unless @playing_field[column][0].nil? }
+    true
+  end
 end
