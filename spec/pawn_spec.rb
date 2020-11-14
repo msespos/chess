@@ -101,6 +101,28 @@ RSpec.describe Pawn do
     end
   end
 
+  # integration tests that test helper methods as well
+  describe '#two_squares_ahead_free?' do
+    context 'when it is a white pawn with two squares ahead free' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][1] = :w_pawn
+        free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, :white)
+        expect(free_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn without two squares ahead free' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[3][6] = :b_pawn
+        playing_field[3][4] = :w_pawn
+        free_or_not = pawn.two_squares_ahead_free?([3, 6], [3, 4], playing_field, :black)
+        expect(free_or_not).to eq(false)
+      end
+    end
+  end
+
   describe '#white_two_squares?' do
     context 'when it is a white pawn and the two squares ahead are free' do
       it 'returns true' do
@@ -191,25 +213,142 @@ RSpec.describe Pawn do
     end
   end
 
-  describe '#square_empty?' do
-    context 'when the square is not empty' do
-      it 'returns false' do
+  # integration tests that test helper methods as well
+  describe '#standard_conditions_met?' do
+    context 'when it is a white pawn that can move forward one square' do
+      it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
-        playing_field[4][2] = :b_pawn
-        empty_or_not = pawn.square_empty?([4, 2], playing_field)
-        expect(empty_or_not).to eq(false)
+        playing_field[4][4] = :w_pawn
+        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [4, 5], playing_field, :white)
+        expect(conditions_met_or_not).to eq(true)
       end
     end
 
-    context 'when the square is empty' do
+    context 'when it is a white pawn that is blocked from moving forward one square' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :w_pawn
+        playing_field[4][5] = :b_pawn
+        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [4, 5], playing_field, :white)
+        expect(conditions_met_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a black pawn that is blocked from moving forward one square but can capture' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
-        empty_or_not = pawn.square_empty?([4, 2], playing_field)
-        expect(empty_or_not).to eq(true)
+        playing_field[4][4] = :b_pawn
+        playing_field[4][3] = :w_pawn
+        playing_field[3][3] = :w_pawn
+        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [3, 3], playing_field, :black)
+        expect(conditions_met_or_not).to eq(true)
       end
     end
   end
 
+  describe 'one_square_ahead_free?' do
+    context 'when it is a white pawn that can move forward one square' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :w_pawn
+        one_ahead_or_not = pawn.one_square_ahead_free?([4, 4], [4, 5], playing_field, :white)
+        expect(one_ahead_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn that can not move forward one square' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :w_pawn
+        playing_field[4][5] = :b_pawn
+        one_ahead_or_not = pawn.one_square_ahead_free?([4, 4], [4, 5], playing_field, :white)
+        expect(one_ahead_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'diagonal_capture?' do
+    context 'when it is a black pawn that can capture' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :b_pawn
+        playing_field[3][3] = :w_pawn
+        capture_or_not = pawn.diagonal_capture?([4, 4], [3, 3], playing_field, :black)
+        expect(capture_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn that can capture' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :b_pawn
+        playing_field[5][3] = :w_pawn
+        capture_or_not = pawn.diagonal_capture?([4, 4], [5, 3], playing_field, :black)
+        expect(capture_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn that cannot capture' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][4] = :b_pawn
+        capture_or_not = pawn.diagonal_capture?([4, 4], [3, 3], playing_field, :black)
+        expect(capture_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'en_passsant_conditions_met?' do
+    context 'when it is not on the en passant starting rank' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
+                                                            'color', 'column')
+        expect(en_passant_or_not).to eq(false)
+      end
+    end
+
+    context 'when all of the en passant conditions are met' do
+      it 'returns true' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
+        allow(pawn).to receive(:en_passant_horizontal_shift_correct?).and_return(true)
+        allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(true)
+        allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
+        allow(pawn).to receive(:square_empty?).and_return(true)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
+                                                            'color', 'column')
+        expect(en_passant_or_not).to eq(true)
+      end
+    end
+
+    context 'when one of the en passant conditions is not met' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
+        allow(pawn).to receive(:en_passant_horizontal_shift_correct?).and_return(true)
+        allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(true)
+        allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
+        allow(pawn).to receive(:square_empty?).and_return(false)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
+                                                            'color', 'column')
+        expect(en_passant_or_not).to eq(false)
+      end
+    end
+
+    context 'when two of the en passant conditions are not met' do
+      it 'returns false' do
+        allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(true)
+        allow(pawn).to receive(:en_passant_horizontal_shift_correct?).and_return(false)
+        allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(false)
+        allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
+        allow(pawn).to receive(:square_empty?).and_return(false)
+        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
+                                                            'color', 'column')
+        expect(en_passant_or_not).to eq(false)
+      end
+    end
+  end
+
+  # integration tests that test helper methods as well
   describe '#en_passant_conditions_met?' do
     context 'when it is not on an en passant starting rank' do
       it 'returns false' do
@@ -219,40 +358,7 @@ RSpec.describe Pawn do
         expect(en_passant_or_not).to eq(false)
       end
     end
-  end
 
-  describe '#on_en_passant_starting_rank?' do
-    context 'when it is a white pawn on the en passant starting rank' do
-      it 'returns true' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 4], :white)
-        expect(en_passant_rank_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a black pawn on the en passant starting rank' do
-      it 'returns true' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 3], :black)
-        expect(en_passant_rank_or_not).to eq(true)
-      end
-    end
-
-    context 'when it is a white pawn not on the en passant starting rank' do
-      it 'returns false' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([7, 6], :white)
-        expect(en_passant_rank_or_not).to eq(false)
-      end
-    end
-
-    context 'when it is a black pawn not on the en passant starting rank' do
-      it 'returns false' do
-        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([4, 1], :black)
-        expect(en_passant_rank_or_not).to eq(false)
-      end
-    end
-  end
-
-  # integration tests that also test related helper methods
-  describe '#en_passant_conditions_met?' do
     context 'when it is a white pawn that can make a left diagonal en passant capture' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -348,6 +454,55 @@ RSpec.describe Pawn do
         playing_field[4][4] = :w_pawn
         right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, nil)
         expect(right_en_passant_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#on_en_passant_starting_rank?' do
+    context 'when it is a white pawn on the en passant starting rank' do
+      it 'returns true' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 4], :white)
+        expect(en_passant_rank_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a black pawn on the en passant starting rank' do
+      it 'returns true' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([6, 3], :black)
+        expect(en_passant_rank_or_not).to eq(true)
+      end
+    end
+
+    context 'when it is a white pawn not on the en passant starting rank' do
+      it 'returns false' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([7, 6], :white)
+        expect(en_passant_rank_or_not).to eq(false)
+      end
+    end
+
+    context 'when it is a black pawn not on the en passant starting rank' do
+      it 'returns false' do
+        en_passant_rank_or_not = pawn.on_en_passant_starting_rank?([4, 1], :black)
+        expect(en_passant_rank_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#square_empty?' do
+    context 'when the square is not empty' do
+      it 'returns false' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        playing_field[4][2] = :b_pawn
+        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        expect(empty_or_not).to eq(false)
+      end
+    end
+
+    context 'when the square is empty' do
+      it 'returns true' do
+        playing_field = Array.new(8) { Array.new(8) { nil } }
+        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        expect(empty_or_not).to eq(true)
       end
     end
   end
