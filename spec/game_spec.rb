@@ -54,8 +54,8 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
-      it 'calls #initial_castling_piece_states' do
-        expect(game).to receive(:initial_castling_piece_states)
+      it 'calls #update_castling_piece_states)' do
+        expect(game).to receive(:update_castling_piece_states)
         game.send(:initialize)
       end
 
@@ -2683,6 +2683,38 @@ RSpec.describe Game do
         game.update_en_passant_column([5, 6], [5, 4])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(5)
+      end
+    end
+  end
+
+  describe '#update_castling_piece_states' do
+    context 'when called at the start' do
+      it 'sets @white_kingside_rook_moved to false' do
+        game.update_castling_piece_states(:start)
+        rook_moved = game.instance_variable_get(:@white_kingside_rook_moved)
+        expect(rook_moved).to eq(false)
+      end
+
+      it 'sets @black_king_moved to false' do
+        game.update_castling_piece_states(:start)
+        king_moved = game.instance_variable_get(:@black_king_moved)
+        expect(king_moved).to eq(false)
+      end
+    end
+
+    context 'when called during a game at a0' do
+      it 'sets @white_queenside_rook_moved to true' do
+        game.update_castling_piece_states(:during, [0, 0])
+        rook_moved = game.instance_variable_get(:@white_queenside_rook_moved)
+        expect(rook_moved).to eq(true)
+      end
+    end
+
+    context 'when called during a game at a8' do
+      it 'sets @black_queenside_rook_moved to true' do
+        game.update_castling_piece_states(:during, [0, 7])
+        rook_moved = game.instance_variable_get(:@black_queenside_rook_moved)
+        expect(rook_moved).to eq(true)
       end
     end
   end
