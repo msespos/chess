@@ -217,6 +217,35 @@ RSpec.describe Game do
   end
 
   describe '#reassign_squares' do
+    context 'when en passant column is nil' do
+      it 'calls #move_and_capture' do
+        game.instance_variable_set(:@en_passant_column, nil)
+        expect(game).to receive(:move_and_capture)
+        game.reassign_squares('start', 'finish')
+      end
+    end
+
+    context 'when en passant column is not nil and en passant conditions are not met' do
+      it 'calls #move_and_capture' do
+        game.instance_variable_set(:@en_passant_column, 3)
+        allow(game).to receive(:meets_en_passant_conditions?).and_return(false)
+        expect(game).to receive(:move_and_capture)
+        game.reassign_squares('start', 'finish')
+      end
+    end
+
+    context 'when en passant column is not nil and en passant conditions are met' do
+      it 'calls #move_and_capture' do
+        game.instance_variable_set(:@en_passant_column, 3)
+        allow(game).to receive(:meets_en_passant_conditions?).and_return(true)
+        expect(game).to receive(:move_and_capture)
+        game.reassign_squares('start', 'finish')
+      end
+    end
+  end
+
+  # integration tests - test helper methods as well
+  describe '#reassign_squares' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       it 'returns nil' do
         reassign = game.reassign_squares([0, 0], [0, 3])
@@ -235,25 +264,124 @@ RSpec.describe Game do
         expect(space).to eq(:w_rook)
       end
     end
+
+    context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
+      it 'returns :w_rook' do
+        game.instance_variable_get(:@playing_field)[7][5] = :w_rook
+        reassign = game.reassign_squares([6, 6], [7, 5])
+        expect(reassign).to eq(:w_rook)
+      end
+
+      it 'leaves g7 empty' do
+        game.reassign_squares([6, 6], [7, 5])
+        space = game.instance_variable_get(:@playing_field)[6][6]
+        expect(space).to eq(nil)
+      end
+
+      it 'puts a black pawn in h6' do
+        game.reassign_squares([6, 6], [7, 5])
+        space = game.instance_variable_get(:@playing_field)[7][5]
+        expect(space).to eq(:b_pawn)
+      end
+    end
+
+    context 'when a black pawn is moved from g4 to h3 legally and captures en passant' do
+      it 'returns :w_pawn' do
+        game.instance_variable_set(:@en_passant_column, 7)
+        game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
+        game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
+        reassign = game.reassign_squares([6, 3], [7, 2])
+        expect(reassign).to eq(:w_pawn)
+      end
+
+      it 'leaves g4 empty' do
+        game.instance_variable_set(:@en_passant_column, 7)
+        game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
+        game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
+        game.reassign_squares([6, 3], [7, 2])
+        space = game.instance_variable_get(:@playing_field)[6][3]
+        expect(space).to eq(nil)
+      end
+
+      it 'puts a black pawn in h3' do
+        game.instance_variable_set(:@en_passant_column, 7)
+        game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
+        game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
+        game.reassign_squares([6, 3], [7, 2])
+        space = game.instance_variable_get(:@playing_field)[7][2]
+        expect(space).to eq(:b_pawn)
+      end
+    end
   end
 
-  context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
-    it 'returns :w_rook' do
-      game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-      reassign = game.reassign_squares([6, 6], [7, 5])
-      expect(reassign).to eq(:w_rook)
+  # integration tests - test helper methods as well
+  describe '#move_and_capture' do
+    context 'when a white rook is moved from a1 to a4 legally and does not capture' do
+      it 'returns nil' do
+        captured = game.move_and_capture([0, 0], [0, 3])
+        expect(captured).to eq(nil)
+      end
     end
 
-    it 'leaves g7 empty' do
-      game.reassign_squares([6, 6], [7, 5])
-      space = game.instance_variable_get(:@playing_field)[6][6]
-      expect(space).to eq(nil)
+    context 'when a white rook is moved from a1 to a4 legally and captures a black rook' do
+      it 'returns :b_rook' do
+        game.instance_variable_get(:@playing_field)[0][3] = :b_rook
+        captured = game.move_and_capture([0, 0], [0, 3])
+        expect(captured).to eq(:b_rook)
+      end
     end
 
-    it 'puts a black pawn in h6' do
-      game.reassign_squares([6, 6], [7, 5])
-      space = game.instance_variable_get(:@playing_field)[7][5]
-      expect(space).to eq(:b_pawn)
+    context 'when a white pawn is moved from a5 to b6 legally and captures en passant' do
+      it 'returns :b_pawn' do
+        game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
+        game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
+        captured = game.move_and_capture([0, 4], [1, 5], true)
+        expect(captured).to eq(:b_pawn)
+      end
+    end
+
+    context 'when a white pawn tries to capture en passant but en passant is not set true' do
+      it 'returns nil' do
+        game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
+        game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
+        captured = game.move_and_capture([0, 4], [1, 5])
+        expect(captured).to eq(nil)
+      end
+    end
+  end
+
+  describe '#en_passant_or_standard_capture' do
+    context 'when en passant is true' do
+      it 'returns the piece in the next square over' do
+        game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
+        game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
+        captured = game.en_passant_or_standard_capture([0, 4], [1, 5], true)
+        expect(captured).to eq(:b_pawn)
+      end
+    end
+
+    context 'when en passant is not true and a pawn captures in the standard way' do
+      it 'returns the captured piece' do
+        game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
+        game.instance_variable_get(:@playing_field)[1][5] = :b_pawn
+        captured = game.en_passant_or_standard_capture([0, 4], [1, 5], false)
+        expect(captured).to eq(:b_pawn)
+      end
+    end
+
+    context 'when en passant is not true and a white rook is moved from a1 to a4 without capturing' do
+      it 'returns nil' do
+        captured = game.en_passant_or_standard_capture([0, 0], [0, 3], false)
+        expect(captured).to eq(nil)
+      end
+    end
+
+    context 'when en passant is not true and a white rook is moved from a1 to a4 and captures a black rook' do
+      it 'returns :b_rook' do
+        game.instance_variable_get(:@playing_field)[0][3] = :b_rook
+        captured = game.en_passant_or_standard_capture([0, 0], [0, 3], false)
+        expect(captured).to eq(:b_rook)
+      end
     end
   end
 
