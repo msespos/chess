@@ -29,7 +29,7 @@ class Game
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     @en_passant_column = nil
-    set_castling_pieces_to_not_moved
+    initial_castling_piece_states
     initial_playing_field
   end
 
