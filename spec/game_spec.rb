@@ -2644,10 +2644,10 @@ RSpec.describe Game do
     end
   end
 
-  describe '#check_for_en_passant' do
+  describe '#update_en_passant_column' do
     context 'when [0, 0] and [0, 1] are passed in' do
       it 'sets @en_passant_column to nil' do
-        game.check_for_en_passant([0, 0], [0, 1])
+        game.update_en_passant_column([0, 0], [0, 1])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(nil)
       end
@@ -2658,7 +2658,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][3] = :w_pawn
-        game.check_for_en_passant([0, 1], [0, 3])
+        game.update_en_passant_column([0, 1], [0, 3])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(0)
       end
@@ -2669,7 +2669,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][4] = :b_pawn
-        game.check_for_en_passant([5, 6], [5, 4])
+        game.update_en_passant_column([5, 6], [5, 4])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(5)
       end
