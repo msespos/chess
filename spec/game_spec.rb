@@ -48,6 +48,17 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
+      it 'sets @en_passant_column to nil' do
+        column = game.instance_variable_get(:@en_passant_column)
+        expect(column).to eq(nil)
+        game.send(:initialize)
+      end
+
+      it 'calls #initial_castling_piece_states' do
+        expect(game).to receive(:initial_castling_piece_states)
+        game.send(:initialize)
+      end
+
       it 'calls #initial_playing_field' do
         expect(game).to receive(:initial_playing_field)
         game.send(:initialize)
