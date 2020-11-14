@@ -9,6 +9,7 @@ require_relative 'checkmate_validation'
 require_relative 'stalemate_validation'
 require_relative 'pawn_promotion'
 require_relative 'en_passant'
+require_relative 'castling'
 
 # game class
 class Game
@@ -18,6 +19,7 @@ class Game
   include StalemateValidation
   include PawnPromotion
   include EnPassant
+  include Castling
 
   def initialize
     @board = Board.new
@@ -27,6 +29,7 @@ class Game
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     @en_passant_column = nil
+    set_castling_pieces_to_not_moved
     initial_playing_field
   end
 
@@ -98,7 +101,8 @@ class Game
 
       start, finish = player_move_to_start_finish(move)
     end
-    check_for_en_passant(start, finish)
+    update_castling_piece_movement(start)
+    update_en_passant_column(start, finish)
   end
 
   # used by #make_move_when_not_invalid
