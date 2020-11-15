@@ -1531,6 +1531,54 @@ RSpec.describe Game do
         expect(in_checkmate_or_not).to eq(true)
       end
     end
+
+    context 'when white and black both kingside castle and white then checkmates' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'f8c5', 'g1f3',
+                                                        'g8f6', 'e1g1', 'e8g8', 'f3e5', 'f6e4',
+                                                        'e5f7', 'd8g5', 'f7h6', 'g7h6', 'f8f7',
+                                                        'g8h8', 'd1f3', 'c5d4', 'f3f8')
+      end
+
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white and black both queenside castle and white then checkmates' do
+      before do
+        allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'c1e3', 'd8d6', 'e1c1',
+                                                        'c2c3', 'b8c6', 'b1d2', 'c8d7', 'd1a4',
+                                                        'e8c8', 'e1c1', 'd6a3', 'a4b4', 'c6b4',
+                                                        'h2h4', 'a3a2', 'h4h5', 'a2a1', 'd2b1',
+                                                        'a1b2', 'c1c2', 'c1d2', 'c1b2', 'b4c2',
+                                                        'h1h4', 'c2e3', 'd1e1', 'g7g5', 'g2g3',
+                                                        'e3f5', 'h4f4', 'f5d4', 'f4d4', 'f7f5',
+                                                        'd4a4', 'e7e5', 'a4a7', 'h7h6', 'a7a8')
+      end
+
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when white tries to kingside castle and cannot and black then checkmates' do
+      before do
+        allow(game).to receive(:player_move).and_return('f2f4', 'c7c6', 'e2e4', 'd8b6', 'g1f3',
+                                                        'g8f6', 'f1c4', 'f6g4', 'e1g1', 'a2a4',
+                                                        'b6f2')
+      end
+
+      it 'returns true' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(true)
+      end
+    end
   end
 
   # integration tests - also test #escape_squares_available? and
@@ -2719,6 +2767,22 @@ RSpec.describe Game do
     end
   end
 
+  describe 'move_is_white_castle?' do
+    context 'when all conditions are met' do
+      it 'returns true' do
+        white_castle_or_not = game.move_is_white_castle?([4, 0], [2, 0], :queen)
+        expect(white_castle_or_not).to eq(true)
+      end
+    end
+
+    context 'when the side is wrong' do
+      it 'returns false' do
+        white_castle_or_not = game.move_is_white_castle?([4, 0], [2, 0], :king)
+        expect(white_castle_or_not).to eq(false)
+      end
+    end
+  end
+
   describe 'white_can_kingside_castle?' do
     context 'when the white king has moved already' do
       it 'returns false' do
@@ -2732,6 +2796,24 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
         can_castle_or_not = game.white_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'white_can_queenside_castle?' do
+    context 'when the white king has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@white_king_moved, true)
+        can_castle_or_not = game.white_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when the white queenside rook has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@white_queenside_rook_moved, true)
+        can_castle_or_not = game.white_can_queenside_castle?
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2796,6 +2878,65 @@ RSpec.describe Game do
     end
   end
 
+  # integration tests that also test helper methods
+  describe 'white_can_queenside_castle?' do
+    context 'when neither piece has moved yet but the king is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@white_king_moved, false)
+        game.instance_variable_set(:@white_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
+        can_castle_or_not = game.white_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a square is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@white_king_moved, false)
+        game.instance_variable_set(:@white_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[3][2] = :b_rook
+        can_castle_or_not = game.white_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a piece is in the way' do
+      it 'returns false' do
+        game.instance_variable_set(:@white_king_moved, false)
+        game.instance_variable_set(:@white_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
+        can_castle_or_not = game.white_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when queenside castling is allowed' do
+      it 'returns true' do
+        game.instance_variable_set(:@white_king_moved, false)
+        game.instance_variable_set(:@white_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[0][0] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :w_rook
+        can_castle_or_not = game.white_can_queenside_castle?
+        expect(can_castle_or_not).to eq(true)
+      end
+    end
+  end
+
   describe 'no_white_castling_squares_in_check?' do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
@@ -2830,6 +2971,257 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
         squares_empty_or_not = game.white_kingside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'white_queenside_castling_squares_empty?' do
+    context 'when both squares are empty' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        squares_empty_or_not = game.white_queenside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(true)
+      end
+    end
+
+    context 'when one square is not empty' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
+        squares_empty_or_not = game.white_queenside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'move_is_black_castle?' do
+    context 'when all conditions are met' do
+      it 'returns true' do
+        black_castle_or_not = game.move_is_black_castle?([4, 7], [2, 7], :queen)
+        expect(black_castle_or_not).to eq(true)
+      end
+    end
+
+    context 'when the side is wrong' do
+      it 'returns false' do
+        black_castle_or_not = game.move_is_black_castle?([4, 7], [2, 7], :king)
+        expect(black_castle_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'black_can_kingside_castle?' do
+    context 'when the black king has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, true)
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when the black kingside rook has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_kingside_rook_moved, true)
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'black_can_queenside_castle?' do
+    context 'when the black king has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, true)
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when the black queenside rook has moved already' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_queenside_rook_moved, true)
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+  end
+
+  # integration tests that also test helper methods
+  describe 'black_can_kingside_castle?' do
+    context 'when neither piece has moved yet but the king is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_kingside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a square is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_kingside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[5][5] = :b_rook
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a piece is in the way' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_kingside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when kingside castling is allowed' do
+      it 'returns true' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_kingside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[7][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :w_rook
+        can_castle_or_not = game.black_can_kingside_castle?
+        expect(can_castle_or_not).to eq(true)
+      end
+    end
+  end
+
+  # integration tests that also test helper methods
+  describe 'black_can_queenside_castle?' do
+    context 'when neither piece has moved yet but the king is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[0][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a square is in check' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[0][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[3][5] = :b_rook
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when neither piece has moved yet but a piece is in the way' do
+      it 'returns false' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[0][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(false)
+      end
+    end
+
+    context 'when queenside castling is allowed' do
+      it 'returns true' do
+        game.instance_variable_set(:@black_king_moved, false)
+        game.instance_variable_set(:@black_queenside_rook_moved, false)
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[4][7] = :w_king
+        game.instance_variable_get(:@playing_field)[0][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :w_rook
+        can_castle_or_not = game.black_can_queenside_castle?
+        expect(can_castle_or_not).to eq(true)
+      end
+    end
+  end
+
+  describe 'no_black_castling_squares_in_check?' do
+    context 'when none of the castling squares are in check' do
+      it 'returns true' do
+        allow(game).to receive(:under_attack?).and_return(false, false, false)
+        squares_not_in_check = game.no_black_castling_squares_in_check?(:king)
+        expect(squares_not_in_check).to eq(true)
+      end
+    end
+
+    context 'when one of the castling squares is in check' do
+      it 'returns false' do
+        allow(game).to receive(:under_attack?).and_return(false, true, false)
+        squares_not_in_check = game.no_black_castling_squares_in_check?(:king)
+        expect(squares_not_in_check).to eq(false)
+      end
+    end
+  end
+
+  describe 'black_kingside_castling_squares_empty?' do
+    context 'when both squares are empty' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        squares_empty_or_not = game.black_kingside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(true)
+      end
+    end
+
+    context 'when one square is not empty' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
+        squares_empty_or_not = game.black_kingside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe 'black_queenside_castling_squares_empty?' do
+    context 'when both squares are empty' do
+      it 'returns true' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        squares_empty_or_not = game.black_queenside_castling_squares_empty?
+        expect(squares_empty_or_not).to eq(true)
+      end
+    end
+
+    context 'when one square is not empty' do
+      it 'returns false' do
+        blank_playing_field = Array.new(8) { Array.new(8) { nil } }
+        game.instance_variable_set(:@playing_field, blank_playing_field)
+        game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
+        squares_empty_or_not = game.black_queenside_castling_squares_empty?
         expect(squares_empty_or_not).to eq(false)
       end
     end
