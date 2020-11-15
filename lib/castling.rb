@@ -20,6 +20,17 @@ module Castling
     end
   end
 
+  def white_kingside_castle
+    @playing_field[4][0] = nil
+    @playing_field[5][0] = :w_rook
+    @playing_field[6][0] = :w_king
+    @playing_field[7][0] = nil
+  end
+
+  def move_is_white_kingside_castle?(start, finish)
+    start == [4, 0] && finish == [6, 0] && @playing_field[4][0] == :w_king
+  end
+
   def white_can_kingside_castle?
     !@white_king_moved &&
       !@white_kingside_rook_moved &&
