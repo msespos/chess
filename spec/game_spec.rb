@@ -2796,11 +2796,11 @@ RSpec.describe Game do
     end
   end
 
-  describe 'no_white_kingside_castling_squares_in_check?' do
+  describe 'no_white_castling_squares_in_check?' do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
         allow(game).to receive(:under_attack?).and_return(false, false, false)
-        squares_not_in_check = game.no_white_kingside_castling_squares_in_check?
+        squares_not_in_check = game.no_white_castling_squares_in_check?(:king)
         expect(squares_not_in_check).to eq(true)
       end
     end
@@ -2808,7 +2808,7 @@ RSpec.describe Game do
     context 'when one of the castling squares is in check' do
       it 'returns false' do
         allow(game).to receive(:under_attack?).and_return(false, true, false)
-        squares_not_in_check = game.no_white_kingside_castling_squares_in_check?
+        squares_not_in_check = game.no_white_castling_squares_in_check?(:king)
         expect(squares_not_in_check).to eq(false)
       end
     end
