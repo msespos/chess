@@ -115,6 +115,10 @@ class Game
   # in which case we do want the king to actually move in this method
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false)
+    if move_is_white_kingside_castle?(start, finish) && white_can_kingside_castle?
+      white_kingside_castle
+      return
+    end
     return :invalid unless valid_move?(start, finish, @current_player)
 
     # make a copy of the playing field in case the player is moving into check
