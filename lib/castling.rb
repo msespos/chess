@@ -22,28 +22,13 @@ module Castling
     end
   end
 
-  def castle(color, side)
-    if color == :white
-      @playing_field[4][0] = nil
-      if side == :king
-        @playing_field[5][0] = :w_rook
-        @playing_field[6][0] = :w_king
-        @playing_field[7][0] = nil
-      else
-        @playing_field[3][0] = :w_rook
-        @playing_field[2][0] = :w_king
-        @playing_field[0][0] = nil
-      end
-    else
-      @playing_field[4][7] = nil
-      if side == :king
-        @playing_field[5][7] = :b_rook
-        @playing_field[6][7] = :b_king
-        @playing_field[7][7] = nil
-      else
-        @playing_field[3][7] = :b_rook
-        @playing_field[2][7] = :b_king
-        @playing_field[0][7] = nil
+  def check_for_and_castle(start, finish)
+    %i[king queen].each do |side|
+      %i[white black].each do |color|
+        if move_is_castle?(start, finish, color, side) && can_castle?(color, side)
+          castle(color, side)
+          return :castled
+        end
       end
     end
   end
@@ -121,6 +106,32 @@ module Castling
       (1..3).each { |column| return false unless @playing_field[column][7].nil? }
     end
     true
+  end
+
+  def castle(color, side)
+    if color == :white
+      @playing_field[4][0] = nil
+      if side == :king
+        @playing_field[5][0] = :w_rook
+        @playing_field[6][0] = :w_king
+        @playing_field[7][0] = nil
+      else
+        @playing_field[3][0] = :w_rook
+        @playing_field[2][0] = :w_king
+        @playing_field[0][0] = nil
+      end
+    else
+      @playing_field[4][7] = nil
+      if side == :king
+        @playing_field[5][7] = :b_rook
+        @playing_field[6][7] = :b_king
+        @playing_field[7][7] = nil
+      else
+        @playing_field[3][7] = :b_rook
+        @playing_field[2][7] = :b_king
+        @playing_field[0][7] = nil
+      end
+    end
   end
 end
 
