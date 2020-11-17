@@ -1290,7 +1290,7 @@ RSpec.describe Game do
   describe '#in_checkmate?' do
     context 'when white is put in Fool\'s Mate' do
       before do
-        allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4')
+        allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4', 'q')
       end
 
       it 'returns true' do
@@ -1302,7 +1302,7 @@ RSpec.describe Game do
 
     context 'when black is put in Reversed Fool\'s Mate' do
       before do
-        allow(game).to receive(:player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5')
+        allow(game).to receive(:player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5', 'q')
       end
 
       it 'returns true' do
@@ -1319,7 +1319,7 @@ RSpec.describe Game do
                                                         'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
                                                         'a7a5', 'h3g5', 'b7b6', 'f3f7', 'e8f7',
                                                         'e8f8', 'e8d8', 'c2c3', 'c8b7', 'g5e6',
-                                                        'd8d7', 'd8e8', 'd8c8', 'f7e8')
+                                                        'd8d7', 'd8e8', 'd8c8', 'f7e8', 'q')
       end
 
       it 'returns true' do
@@ -1332,7 +1332,7 @@ RSpec.describe Game do
     context 'when black is checkmated in Scholar\'s Mate' do
       before do
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
-                                                        'g8f6', 'h5f7')
+                                                        'g8f6', 'h5f7', 'q')
       end
 
       it 'returns true' do
@@ -1348,7 +1348,7 @@ RSpec.describe Game do
                                                         'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
                                                         'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
                                                         'f3g5', 'e4e5', 'd1f3', 'b5c4', 'd2d3',
-                                                        'e5e1')
+                                                        'e5e1', 'q')
       end
 
       it 'returns true' do
@@ -1368,7 +1368,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
                                                         'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
-                                                        'c2e2')
+                                                        'c2e2', 'q')
       end
 
       it 'returns true' do
@@ -1387,7 +1387,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
-        allow(game).to receive(:player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1')
+        allow(game).to receive(:player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1', 'q')
       end
 
       it 'returns true' do
@@ -1509,7 +1509,7 @@ RSpec.describe Game do
     context 'when white captures en passant and black checkmates' do
       before do
         allow(game).to receive(:player_move).and_return('g2g4', 'e7e5', 'g4g5', 'h7h5', 'g5h6',
-                                                        'd8h4', 'c2c3', 'f8c5', 'c3c4', 'h4f2')
+                                                        'd8h4', 'c2c3', 'f8c5', 'c3c4', 'h4f2', 'q')
       end
 
       it 'returns true' do
@@ -1523,7 +1523,7 @@ RSpec.describe Game do
       before do
         allow(game).to receive(:player_move).and_return('a2a4', 'g7g5', 'b1c3', 'g5g4', 'f2f4',
                                                         'g4h3', 'g4f3', 'c3d5', 'e7e6', 'a4a5',
-                                                        'd8f6', 'b2b4', 'f3f2')
+                                                        'd8f6', 'b2b4', 'f3f2', 'q')
       end
 
       it 'returns true' do
@@ -1538,7 +1538,7 @@ RSpec.describe Game do
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'f8c5', 'g1f3',
                                                         'g8f6', 'e1g1', 'e8g8', 'f3e5', 'f6e4',
                                                         'e5f7', 'd8g5', 'f7h6', 'g7h6', 'f8f7',
-                                                        'g8h8', 'd1f3', 'c5d4', 'f3f8')
+                                                        'g8h8', 'd1f3', 'c5d4', 'f3f8', 'q')
       end
 
       it 'returns true' do
@@ -1557,7 +1557,8 @@ RSpec.describe Game do
                                                         'a1b2', 'c1c2', 'c1d2', 'c1b2', 'b4c2',
                                                         'h1h4', 'c2e3', 'd1e1', 'g7g5', 'g2g3',
                                                         'e3f5', 'h4f4', 'f5d4', 'f4d4', 'f7f5',
-                                                        'd4a4', 'e7e5', 'a4a7', 'h7h6', 'a7a8')
+                                                        'd4a4', 'e7e5', 'a4a7', 'h7h6', 'a7a8',
+                                                        'q')
       end
 
       it 'returns true' do
@@ -1571,7 +1572,7 @@ RSpec.describe Game do
       before do
         allow(game).to receive(:player_move).and_return('f2f4', 'c7c6', 'e2e4', 'd8b6', 'g1f3',
                                                         'g8f6', 'f1c4', 'f6g4', 'e1g1', 'a2a4',
-                                                        'b6f2')
+                                                        'b6f2', 'q')
       end
 
       it 'returns true' do
