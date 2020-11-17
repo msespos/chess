@@ -114,7 +114,7 @@ class Game
   # that the method is being used to check a king moving out of check,
   # in which case we do want the king to actually move in this method
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
-  def move_piece(start, finish, checking_move_out_of_check = false)
+  def move_piece(start, finish, checking_move_out_of_check = false, checking_stalemate = false)
     if move_is_white_castle?(start, finish, :king) && white_can_kingside_castle?
       white_castle(:king)
       return
@@ -140,14 +140,14 @@ class Game
       @playing_field = playing_field_before_move unless checking_move_out_of_check
       return :invalid
     end
-    add_to_captured_pieces(captured) unless captured.nil?
+    add_to_captured_pieces(captured) unless captured.nil? || checking_stalemate
   end
 
   # used by #move_piece
   # reassign the squares necessary to make the move and capture, if also a capture
   # if in the case of an en passant move, make the move and capture en passant
   def reassign_squares(start, finish)
-    if !@en_passant_column.nil? && meets_en_passant_conditions?(start, finish)
+    if !@en_passant_column.nil? && meets_en_passant_conditions?(start, finish, @current_player)
       move_and_capture(start, finish, true)
     else
       move_and_capture(start, finish)
