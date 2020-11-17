@@ -184,11 +184,8 @@ class Game
   # until it is full, then adds to the second row of the array
   def add_to_captured_pieces(piece)
     first_row = piece[0] == 'b' ? 0 : 2
-    if @captured_pieces[first_row].all?
-      @captured_pieces[first_row + 1].unshift(piece).pop
-    else
-      @captured_pieces[first_row].unshift(piece).pop
-    end
+    row_increment = @captured_pieces[first_row].all? ? 1 : 0
+    @captured_pieces[first_row + row_increment].unshift(piece).pop
   end
 
   # used by #play to assess if the game is over
