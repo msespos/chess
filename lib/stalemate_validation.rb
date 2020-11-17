@@ -33,7 +33,7 @@ module StalemateValidation
     @playing_field.each_with_index do |inner_column, inner_column_index|
       inner_column.each_index do |inner_row_index|
         next if move_piece([column_index, row_index],
-                           [inner_column_index, inner_row_index]) == :invalid
+                           [inner_column_index, inner_row_index], false, true) == :invalid
 
         # revert to pre-test-move copy of playing field
         @playing_field = playing_field_before_move
