@@ -2623,6 +2623,25 @@ RSpec.describe Game do
     end
   end
 
+  # integration test - test other methods involved in gameplay and resignation validation
+  # this test replicates a bug
+  # use a sequence of moves for the tests
+
+  describe '#resignation?' do
+    context 'when replicating a bug with displaying captured pieces' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1a6', 'b7a6', 'q')
+      end
+
+      it 'returns true' do
+        game.play
+        captured = game.instance_variable_get(:@captured_pieces)[2]
+        row = [:w_bishop, nil, nil, nil, nil, nil, nil, nil]
+        expect(captured).to eq(row)
+      end
+    end
+  end
+
   describe '#pawn_to_promote' do
     context 'when there is a white pawn to promote on a8' do
       before do
