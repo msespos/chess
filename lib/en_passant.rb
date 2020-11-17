@@ -24,8 +24,9 @@ module EnPassant
   end
 
   # used by #reassign_squares to verify the conditions for moving en passant
-  def meets_en_passant_conditions?(start, finish)
-    a_pawn?(start) && finish_on_en_passant_column?(finish) && start_next_to_en_passant_column?(start)
+  def meets_en_passant_conditions?(start, finish, color)
+    a_pawn?(start) && finish_on_en_passant_column?(finish) && start_next_to_en_passant_column?(start) &&
+      on_en_passant_starting_rank?(start, color)
   end
 
   # used by #meets_en_passant_conditions? to check if the piece is a pawn or not
@@ -41,5 +42,10 @@ module EnPassant
   # used by #meets_en_passant_conditions? to check if the move starts next to the current en passant column
   def start_next_to_en_passant_column?(start)
     start[0] == @en_passant_column - 1 || start[0] == @en_passant_column + 1
+  end
+
+  def on_en_passant_starting_rank?(start, color)
+    pawn = Pawn.new
+    pawn.on_en_passant_starting_rank?(start, color)
   end
 end
