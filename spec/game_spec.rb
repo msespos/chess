@@ -2625,7 +2625,11 @@ RSpec.describe Game do
   end
 
   # integration test - test other methods involved in gameplay and resignation validation
+<<<<<<< HEAD
   # these test replicate bugs
+=======
+  # this test replicates a bug
+>>>>>>> 11863ca8fca10cb5abd68c9cb22d088b9c228ea4
   # use a sequence of moves for the tests
 
   describe '#resignation?' do
@@ -2641,6 +2645,7 @@ RSpec.describe Game do
         expect(captured).to eq(row)
       end
     end
+<<<<<<< HEAD
 
     context 'when replicating a bug with displaying captured pieces' do
       before do
@@ -2667,6 +2672,8 @@ RSpec.describe Game do
         expect(captured).to eq(row)
       end
     end
+=======
+>>>>>>> 11863ca8fca10cb5abd68c9cb22d088b9c228ea4
   end
 
   describe '#pawn_to_promote' do
