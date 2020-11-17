@@ -121,12 +121,11 @@ class Game
         return
       end
     end
-    if move_is_black_castle?(start, finish, :king) && black_can_kingside_castle?
-      black_castle(:king)
-      return
-    elsif move_is_black_castle?(start, finish, :queen) && black_can_queenside_castle?
-      black_castle(:queen)
-      return
+    %i[king queen].each do |side|
+      if move_is_black_castle?(start, finish, side) && black_can_castle?(side)
+        black_castle(side)
+        return
+      end
     end
     return :invalid unless valid_move?(start, finish, @current_player)
 
