@@ -116,15 +116,11 @@ class Game
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false, checking_stalemate = false)
     %i[king queen].each do |side|
-      if move_is_white_castle?(start, finish, side) && white_can_castle?(side)
-        white_castle(side)
-        return
-      end
-    end
-    %i[king queen].each do |side|
-      if move_is_black_castle?(start, finish, side) && black_can_castle?(side)
-        black_castle(side)
-        return
+      %i[white black].each do |color|
+        if move_is_castle?(start, finish, color, side) && can_castle?(color, side)
+          castle(color, side)
+          return
+        end
       end
     end
     return :invalid unless valid_move?(start, finish, @current_player)

@@ -2814,27 +2814,27 @@ RSpec.describe Game do
     end
   end
 
-  describe 'move_is_white_castle?' do
+  describe 'move_is_castle?' do
     context 'when all conditions are met' do
       it 'returns true' do
-        white_castle_or_not = game.move_is_white_castle?([4, 0], [2, 0], :queen)
+        white_castle_or_not = game.move_is_castle?([4, 0], [2, 0], :white, :queen)
         expect(white_castle_or_not).to eq(true)
       end
     end
 
     context 'when the side is wrong' do
       it 'returns false' do
-        white_castle_or_not = game.move_is_white_castle?([4, 0], [2, 0], :king)
+        white_castle_or_not = game.move_is_castle?([4, 0], [2, 0], :white, :king)
         expect(white_castle_or_not).to eq(false)
       end
     end
   end
 
-  describe 'white_can_castle?' do
+  describe 'can_castle?' do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2842,17 +2842,17 @@ RSpec.describe Game do
     context 'when the white kingside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
   end
 
-  describe 'white_can_castle?' do
+  describe 'can_castle?' do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2860,7 +2860,7 @@ RSpec.describe Game do
     context 'when the white queenside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_queenside_rook_moved, true)
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2877,7 +2877,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test helper methods
-  describe 'white_can_castle?' do
+  describe 'can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, false)
@@ -2887,7 +2887,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2901,7 +2901,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[5][2] = :b_rook
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2915,7 +2915,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2929,14 +2929,14 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.white_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(true)
       end
     end
   end
 
   # integration tests that also test helper methods
-  describe 'white_can_castle?' do
+  describe 'can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, false)
@@ -2946,7 +2946,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2960,7 +2960,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[3][2] = :b_rook
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2974,7 +2974,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -2988,7 +2988,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.white_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:white, :queen)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3054,27 +3054,27 @@ RSpec.describe Game do
     end
   end
 
-  describe 'move_is_black_castle?' do
+  describe 'move_is_castle?' do
     context 'when all conditions are met' do
       it 'returns true' do
-        black_castle_or_not = game.move_is_black_castle?([4, 7], [2, 7], :queen)
+        black_castle_or_not = game.move_is_castle?([4, 7], [2, 7], :black, :queen)
         expect(black_castle_or_not).to eq(true)
       end
     end
 
     context 'when the side is wrong' do
       it 'returns false' do
-        black_castle_or_not = game.move_is_black_castle?([4, 7], [2, 7], :king)
+        black_castle_or_not = game.move_is_castle?([4, 7], [2, 7], :black, :king)
         expect(black_castle_or_not).to eq(false)
       end
     end
   end
 
-  describe 'black_can_castle?' do
+  describe 'can_castle?' do
     context 'when the black king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, true)
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3082,17 +3082,17 @@ RSpec.describe Game do
     context 'when the black kingside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_kingside_rook_moved, true)
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
   end
 
-  describe 'black_can_castle?' do
+  describe 'can_castle?' do
     context 'when the black king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, true)
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3100,14 +3100,14 @@ RSpec.describe Game do
     context 'when the black queenside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_queenside_rook_moved, true)
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
   end
 
   # integration tests that also test helper methods
-  describe 'black_can_castle?' do
+  describe 'can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, false)
@@ -3117,7 +3117,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3131,7 +3131,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[5][5] = :b_rook
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3145,7 +3145,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3159,14 +3159,14 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(true)
       end
     end
   end
 
   # integration tests that also test helper methods
-  describe 'black_can_castle?' do
+  describe 'can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, false)
@@ -3176,7 +3176,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
-        can_castle_or_not = game.black_can_castle?(:king)
+        can_castle_or_not = game.can_castle?(:black, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3190,7 +3190,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[3][5] = :b_rook
-        can_castle_or_not = game.black_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:black, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3204,7 +3204,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
-        can_castle_or_not = game.black_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:black, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3218,7 +3218,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.black_can_castle?(:queen)
+        can_castle_or_not = game.can_castle?(:black, :queen)
         expect(can_castle_or_not).to eq(true)
       end
     end
