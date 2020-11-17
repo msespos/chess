@@ -40,18 +40,16 @@ module Castling
     start == [4, 0] && finish == [finish_column, 0] && @playing_field[4][0] == :w_king
   end
 
-  def white_can_kingside_castle?
+  def white_can_castle?(side)
     !@white_king_moved &&
-      !@white_kingside_rook_moved &&
-      no_white_castling_squares_in_check?(:king) &&
-      white_kingside_castling_squares_empty?
+      !white_rook_moved?(side) &&
+      no_white_castling_squares_in_check?(side) &&
+      white_castling_squares_empty?(side)
   end
 
-  def white_can_queenside_castle?
-    !@white_king_moved &&
-      !@white_queenside_rook_moved &&
-      no_white_castling_squares_in_check?(:queen) &&
-      white_queenside_castling_squares_empty?
+  def white_rook_moved?(side)
+    rook_moved = 'white_' + side.to_s + 'side_rook_moved'
+    instance_variable_get("@#{rook_moved}")
   end
 
   def no_white_castling_squares_in_check?(side)
@@ -66,13 +64,12 @@ module Castling
     true
   end
 
-  def white_kingside_castling_squares_empty?
-    (5..6).each { |column| return false unless @playing_field[column][0].nil? }
-    true
-  end
-
-  def white_queenside_castling_squares_empty?
-    (1..3).each { |column| return false unless @playing_field[column][0].nil? }
+  def white_castling_squares_empty?(side)
+    if side == :king
+      (5..6).each { |column| return false unless @playing_field[column][0].nil? }
+    else
+      (1..3).each { |column| return false unless @playing_field[column][0].nil? }
+    end
     true
   end
 
