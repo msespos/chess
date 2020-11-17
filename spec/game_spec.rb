@@ -2814,7 +2814,19 @@ RSpec.describe Game do
     end
   end
 
-  describe 'move_is_castle?' do
+  describe '#check_for_and_castle' do
+    context 'when both conditions are met' do
+      it 'returns :castled' do
+        allow(game).to receive(:move_is_castle?).and_return(true)
+        allow(game).to receive(:can_castle?).and_return(true)
+        allow(game).to receive(:castle)
+        castled_or_not = game.check_for_and_castle('start', 'finish')
+        expect(castled_or_not).to eq(:castled)
+      end
+    end
+  end
+
+  describe '#move_is_castle?' do
     context 'when all conditions are met' do
       it 'returns true' do
         white_castle_or_not = game.move_is_castle?([4, 0], [2, 0], :white, :queen)
@@ -2830,7 +2842,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
@@ -2848,7 +2860,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
@@ -2866,7 +2878,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'white_rook_moved?' do
+  describe '#white_rook_moved?' do
     context 'when the kingside rook has moved already' do
       it 'returns true' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
@@ -2877,7 +2889,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test helper methods
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, false)
@@ -2936,7 +2948,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test helper methods
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, false)
@@ -2994,7 +3006,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'no_white_castling_squares_in_check?' do
+  describe '#no_white_castling_squares_in_check?' do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
         allow(game).to receive(:under_attack?).and_return(false, false, false)
@@ -3012,7 +3024,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'white_castling_squares_empty?(:king)' do
+  describe '#white_castling_squares_empty?(:king)' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -3033,7 +3045,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'white_castling_squares_empty?(:king)' do
+  describe '#white_castling_squares_empty?(:king)' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -3054,7 +3066,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'move_is_castle?' do
+  describe '#move_is_castle?' do
     context 'when all conditions are met' do
       it 'returns true' do
         black_castle_or_not = game.move_is_castle?([4, 7], [2, 7], :black, :queen)
@@ -3070,7 +3082,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when the black king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, true)
@@ -3088,7 +3100,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when the black king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, true)
@@ -3107,7 +3119,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test helper methods
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, false)
@@ -3166,7 +3178,7 @@ RSpec.describe Game do
   end
 
   # integration tests that also test helper methods
-  describe 'can_castle?' do
+  describe '#can_castle?' do
     context 'when neither piece has moved yet but the king is in check' do
       it 'returns false' do
         game.instance_variable_set(:@black_king_moved, false)
@@ -3242,7 +3254,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'black_castling_squares_empty?' do
+  describe '#black_castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -3263,7 +3275,7 @@ RSpec.describe Game do
     end
   end
 
-  describe 'black_castling_squares_empty?' do
+  describe '#black_castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
