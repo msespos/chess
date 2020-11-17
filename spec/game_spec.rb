@@ -2625,8 +2625,7 @@ RSpec.describe Game do
   end
 
   # integration test - test other methods involved in gameplay and resignation validation
-  # these test replicate bugs
-  # this test replicates a bug
+  # these tests replicate bugs
   # use a sequence of moves for the tests
 
   describe '#resignation?' do
