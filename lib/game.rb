@@ -115,13 +115,13 @@ class Game
   # in which case we do want the king to actually move in this method
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
   def move_piece(start, finish, checking_move_out_of_check = false, checking_stalemate = false)
-    if move_is_white_castle?(start, finish, :king) && white_can_kingside_castle?
-      white_castle(:king)
-      return
-    elsif move_is_white_castle?(start, finish, :queen) && white_can_queenside_castle?
-      white_castle(:queen)
-      return
-    elsif move_is_black_castle?(start, finish, :king) && black_can_kingside_castle?
+    %i[king queen].each do |side|
+      if move_is_white_castle?(start, finish, side) && white_can_castle?(side)
+        white_castle(side)
+        return
+      end
+    end
+    if move_is_black_castle?(start, finish, :king) && black_can_kingside_castle?
       black_castle(:king)
       return
     elsif move_is_black_castle?(start, finish, :queen) && black_can_queenside_castle?
