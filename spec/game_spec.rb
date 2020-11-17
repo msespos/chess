@@ -298,6 +298,7 @@ RSpec.describe Game do
 
     context 'when a black pawn is moved from g4 to h3 legally and captures en passant' do
       it 'returns :w_pawn' do
+        game.instance_variable_set(:@current_player, :black)
         game.instance_variable_set(:@en_passant_column, 7)
         game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
         game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
@@ -2619,6 +2620,51 @@ RSpec.describe Game do
         game.play
         resigned_or_not = game.instance_variable_get(:@resignation)
         expect(resigned_or_not).to eq(true)
+      end
+    end
+  end
+
+  # integration test - test other methods involved in gameplay and resignation validation
+  # these test replicate bugs
+  # use a sequence of moves for the tests
+
+  describe '#resignation?' do
+    context 'when replicating a bug with displaying captured pieces' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1a6', 'b7a6', 'q')
+      end
+
+      it 'returns true' do
+        game.play
+        captured = game.instance_variable_get(:@captured_pieces)[2]
+        row = [:w_bishop, nil, nil, nil, nil, nil, nil, nil]
+        expect(captured).to eq(row)
+      end
+    end
+
+    context 'when replicating a bug with displaying captured pieces' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'q')
+      end
+
+      it 'returns true' do
+        game.play
+        captured = game.instance_variable_get(:@captured_pieces)[0]
+        row = [:b_pawn, nil, nil, nil, nil, nil, nil, nil]
+        expect(captured).to eq(row)
+      end
+    end
+
+    context 'when replicating a bug with displaying captured pieces' do
+      before do
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f2f4', 'e5f4', 'q')
+      end
+
+      it 'returns true' do
+        game.play
+        captured = game.instance_variable_get(:@captured_pieces)[2]
+        row = [:w_pawn, nil, nil, nil, nil, nil, nil, nil]
+        expect(captured).to eq(row)
       end
     end
   end
