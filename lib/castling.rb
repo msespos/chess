@@ -22,26 +22,24 @@ module Castling
 
   def check_for_and_castle(start, finish)
     %i[king queen].each do |side|
-      %i[white black].each do |color|
-        if move_is_castle?(start, finish, color, side) && can_castle?(color, side)
-          castle(color, side)
-          return :castled
-        end
+      if move_is_castle?(start, finish, side) && can_castle?(side)
+        castle(side)
+        return :castled
       end
     end
   end
 
-  def move_is_castle?(start, finish, color, side)
+  def move_is_castle?(start, finish, side)
     finish_column = side == :king ? 6 : 2
-    row = color == :white ? 0 : 7
-    king = (color[0] + '_king').to_sym
+    row = @current_player == :white ? 0 : 7
+    king = (@current_player[0] + '_king').to_sym
     start == [4, row] && finish == [finish_column, row] && @playing_field[4][row] == king
   end
 
-  def can_castle?(color, side)
+  def can_castle?(side)
     !king_moved? &&
-      !rook_moved?(color, side) &&
-      no_castling_squares_in_check?(color, side) &&
+      !rook_moved?(side) &&
+      no_castling_squares_in_check?(side) &&
       castling_squares_empty?(side)
   end
 
@@ -50,14 +48,14 @@ module Castling
     instance_variable_get("@#{king_moved}")
   end
 
-  def rook_moved?(color, side)
-    rook_moved = color.to_s + '_' + side.to_s + 'side_rook_moved'
+  def rook_moved?(side)
+    rook_moved = @current_player.to_s + '_' + side.to_s + 'side_rook_moved'
     instance_variable_get("@#{rook_moved}")
   end
 
-  def no_castling_squares_in_check?(color, side)
-    attacking_color = color == :white ? :black : :white
-    row = color == :white ? 0 : 7
+  def no_castling_squares_in_check?(side)
+    attacking_color = @current_player == :white ? :black : :white
+    row = @current_player == :white ? 0 : 7
     (4..6).each do |column|
       if side == :king
         return false if under_attack?([column, row], attacking_color)
@@ -76,12 +74,12 @@ module Castling
     true
   end
 
-  def castle(color, side)
+  def castle(side)
     rook_column, king_column, empty_column = obtain_castling_columns(side)
-    row = color == :white ? 0 : 7
+    row = @current_player == :white ? 0 : 7
     @playing_field[4][row] = nil
-    @playing_field[rook_column][row] = (color[0] + '_rook').to_sym
-    @playing_field[king_column][row] = (color[0] + '_king').to_sym
+    @playing_field[rook_column][row] = (@current_player[0] + '_rook').to_sym
+    @playing_field[king_column][row] = (@current_player[0] + '_king').to_sym
     @playing_field[empty_column][row] = nil
   end
 
