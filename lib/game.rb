@@ -114,7 +114,10 @@ class Game
   # that the method is being used to check a king moving out of check,
   # in which case we do want the king to actually move in this method
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
-  def move_piece(start, finish, checking_move_out_of_check = false, checking_stalemate = false)
+  # and the fourth parameter is used to turn adding to captured pieces off for when
+  # this method is used just to test moves (for checking stalemate and checkmate) to avoid
+  # pieces being accidentally displayed that have only been checked and not actually captured
+  def move_piece(start, finish, checking_move_out_of_check = false, not_adding_captures = false)
     return if check_for_and_castle(start, finish) == :castled
 
     return :invalid unless valid_move?(start, finish, @current_player)
@@ -126,7 +129,7 @@ class Game
       restore_playing_field(playing_field_before_move, checking_move_out_of_check)
       return :invalid
     end
-    add_to_captured_pieces(captured) unless should_not_add_to_captured_pieces?(captured, checking_stalemate)
+    add_to_captured_pieces(captured) unless captured.nil? || not_adding_captures
   end
 
   # used by #move_piece
@@ -180,11 +183,6 @@ class Game
     first_row = piece[0] == 'b' ? 0 : 2
     row_increment = @captured_pieces[first_row].all? ? 1 : 0
     @captured_pieces[first_row + row_increment].unshift(piece).pop
-  end
-
-  # used by #move_piece to check if a piece (or nil) should not be added to @captured_pieces
-  def should_not_add_to_captured_pieces?(captured, checking_stalemate)
-    captured.nil? || checking_stalemate
   end
 
   # used by #play to assess if the game is over
