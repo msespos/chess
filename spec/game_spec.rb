@@ -3006,11 +3006,11 @@ RSpec.describe Game do
     end
   end
 
-  describe '#no_white_castling_squares_in_check?' do
+  describe '#no_castling_squares_in_check?' do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
         allow(game).to receive(:under_attack?).and_return(false, false, false)
-        squares_not_in_check = game.no_white_castling_squares_in_check?(:king)
+        squares_not_in_check = game.no_castling_squares_in_check?(:white, :king)
         expect(squares_not_in_check).to eq(true)
       end
     end
@@ -3018,7 +3018,7 @@ RSpec.describe Game do
     context 'when one of the castling squares is in check' do
       it 'returns false' do
         allow(game).to receive(:under_attack?).and_return(false, true, false)
-        squares_not_in_check = game.no_white_castling_squares_in_check?(:king)
+        squares_not_in_check = game.no_castling_squares_in_check?(:white, :king)
         expect(squares_not_in_check).to eq(false)
       end
     end
@@ -3168,10 +3168,10 @@ RSpec.describe Game do
         game.instance_variable_set(:@black_kingside_rook_moved, false)
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        game.instance_variable_get(:@playing_field)[4][7] = :w_king
-        game.instance_variable_get(:@playing_field)[7][7] = :w_rook
+        game.instance_variable_get(:@playing_field)[4][0] = :w_king
+        game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.can_castle?(:black, :king)
+        can_castle_or_not = game.can_castle?(:white, :king)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3227,20 +3227,20 @@ RSpec.describe Game do
         game.instance_variable_set(:@black_queenside_rook_moved, false)
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        game.instance_variable_get(:@playing_field)[4][7] = :w_king
-        game.instance_variable_get(:@playing_field)[0][7] = :w_rook
-        game.instance_variable_get(:@playing_field)[6][5] = :w_rook
+        game.instance_variable_get(:@playing_field)[4][7] = :b_king
+        game.instance_variable_get(:@playing_field)[0][7] = :b_rook
+        game.instance_variable_get(:@playing_field)[6][5] = :b_rook
         can_castle_or_not = game.can_castle?(:black, :queen)
         expect(can_castle_or_not).to eq(true)
       end
     end
   end
 
-  describe 'no_black_castling_squares_in_check?' do
+  describe '#no_castling_squares_in_check?' do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
         allow(game).to receive(:under_attack?).and_return(false, false, false)
-        squares_not_in_check = game.no_black_castling_squares_in_check?(:king)
+        squares_not_in_check = game.no_castling_squares_in_check?(:black, :king)
         expect(squares_not_in_check).to eq(true)
       end
     end
@@ -3248,7 +3248,7 @@ RSpec.describe Game do
     context 'when one of the castling squares is in check' do
       it 'returns false' do
         allow(game).to receive(:under_attack?).and_return(false, true, false)
-        squares_not_in_check = game.no_black_castling_squares_in_check?(:king)
+        squares_not_in_check = game.no_castling_squares_in_check?(:black, :king)
         expect(squares_not_in_check).to eq(false)
       end
     end
