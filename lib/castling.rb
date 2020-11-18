@@ -77,28 +77,18 @@ module Castling
   end
 
   def castle(color, side)
-    if color == :white
-      @playing_field[4][0] = nil
-      if side == :king
-        @playing_field[5][0] = :w_rook
-        @playing_field[6][0] = :w_king
-        @playing_field[7][0] = nil
-      else
-        @playing_field[3][0] = :w_rook
-        @playing_field[2][0] = :w_king
-        @playing_field[0][0] = nil
-      end
-    else
-      @playing_field[4][7] = nil
-      if side == :king
-        @playing_field[5][7] = :b_rook
-        @playing_field[6][7] = :b_king
-        @playing_field[7][7] = nil
-      else
-        @playing_field[3][7] = :b_rook
-        @playing_field[2][7] = :b_king
-        @playing_field[0][7] = nil
-      end
-    end
+    rook_column, king_column, empty_column = obtain_columns(side)
+    row = color == :white ? 0 : 7
+    @playing_field[4][row] = nil
+    @playing_field[rook_column][row] = (color[0] + '_rook').to_sym
+    @playing_field[king_column][row] = (color[0] + '_king').to_sym
+    @playing_field[empty_column][row] = nil
+  end
+
+  def obtain_columns(side)
+    rook_column = side == :king ? 5 : 3
+    king_column = side == :king ? 6 : 2
+    empty_column = side == :king ? 7 : 0
+    [rook_column, king_column, empty_column]
   end
 end
