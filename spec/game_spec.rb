@@ -2878,11 +2878,11 @@ RSpec.describe Game do
     end
   end
 
-  describe '#white_rook_moved?' do
+  describe '#rook_moved?' do
     context 'when the kingside rook has moved already' do
       it 'returns true' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
-        moved_or_not = game.white_rook_moved?(:king)
+        moved_or_not = game.rook_moved?(:white, :king)
         expect(moved_or_not).to eq(true)
       end
     end
