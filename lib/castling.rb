@@ -43,19 +43,19 @@ module Castling
   def can_castle?(color, side)
     if color == :white
       !@white_king_moved &&
-        !white_rook_moved?(side) &&
+        !rook_moved?(color, side) &&
         no_white_castling_squares_in_check?(side) &&
         white_castling_squares_empty?(side)
     else
       !@black_king_moved &&
-        !black_rook_moved?(side) &&
+        !rook_moved?(color, side) &&
         no_black_castling_squares_in_check?(side) &&
         black_castling_squares_empty?(side)
     end
   end
 
-  def white_rook_moved?(side)
-    rook_moved = 'white_' + side.to_s + 'side_rook_moved'
+  def rook_moved?(color, side)
+    rook_moved = color.to_s + '_' + side.to_s + 'side_rook_moved'
     instance_variable_get("@#{rook_moved}")
   end
 
@@ -78,11 +78,6 @@ module Castling
       (1..3).each { |column| return false unless @playing_field[column][0].nil? }
     end
     true
-  end
-
-  def black_rook_moved?(side)
-    rook_moved = 'black_' + side.to_s + 'side_rook_moved'
-    instance_variable_get("@#{rook_moved}")
   end
 
   def no_black_castling_squares_in_check?(side)
