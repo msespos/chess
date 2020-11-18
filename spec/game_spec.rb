@@ -3297,6 +3297,16 @@ RSpec.describe Game do
       end
     end
   end
+
+  describe '#castle' do
+    context 'when black castles kingside' do
+      it 'moves the pieces appropriately' do
+        game.castle(:black, :king)
+        castled_rook = game.instance_variable_get(:@playing_field)[5][7]
+        expect(castled_rook).to eq(:b_rook)
+      end
+    end
+  end
 end
 
 # rubocop:enable Metrics/BlockLength
