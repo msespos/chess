@@ -30,7 +30,7 @@ module CheckmateValidation
   def escape_squares_available?(accessible_square, attacking_color)
     # make a copy of the playing field to revert to after testing king moves
     playing_field_before_move = @playing_field.clone.map(&:clone)
-    move_piece(king_location, accessible_square, true)
+    move_piece(king_location, accessible_square, true, true)
     unless under_attack?(accessible_square, attacking_color)
       # revert to pre-test-move copy of playing field
       @playing_field = playing_field_before_move
