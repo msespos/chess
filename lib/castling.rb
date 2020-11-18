@@ -35,11 +35,9 @@ module Castling
 
   def move_is_castle?(start, finish, color, side)
     finish_column = side == :king ? 6 : 2
-    if color == :white
-      start == [4, 0] && finish == [finish_column, 0] && @playing_field[4][0] == :w_king
-    else
-      start == [4, 7] && finish == [finish_column, 7] && @playing_field[4][7] == :b_king
-    end
+    row = color == :white ? 0 : 7
+    king = (color[0] + '_king').to_sym
+    start == [4, row] && finish == [finish_column, row] && @playing_field[4][row] == king
   end
 
   def can_castle?(color, side)
