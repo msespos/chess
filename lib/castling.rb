@@ -44,12 +44,12 @@ module Castling
     if color == :white
       !@white_king_moved &&
         !rook_moved?(color, side) &&
-        no_white_castling_squares_in_check?(side) &&
+        no_castling_squares_in_check?(color, side) &&
         white_castling_squares_empty?(side)
     else
       !@black_king_moved &&
         !rook_moved?(color, side) &&
-        no_black_castling_squares_in_check?(side) &&
+        no_castling_squares_in_check?(color, side) &&
         black_castling_squares_empty?(side)
     end
   end
@@ -59,12 +59,13 @@ module Castling
     instance_variable_get("@#{rook_moved}")
   end
 
-  def no_white_castling_squares_in_check?(side)
-    attacking_color = @current_player == :white ? :black : :white
+  def no_castling_squares_in_check?(color, side)
+    attacking_color = color == :white ? :black : :white
+    row = color == :white ? 0 : 7
     (4..6).each do |column|
       if side == :king
-        return false if under_attack?([column, 0], attacking_color)
-      elsif under_attack?([column - 2, 0], attacking_color)
+        return false if under_attack?([column, row], attacking_color)
+      elsif under_attack?([column - 2, row], attacking_color)
         return false
       end
     end
@@ -76,18 +77,6 @@ module Castling
       (5..6).each { |column| return false unless @playing_field[column][0].nil? }
     else
       (1..3).each { |column| return false unless @playing_field[column][0].nil? }
-    end
-    true
-  end
-
-  def no_black_castling_squares_in_check?(side)
-    attacking_color = @current_player == :white ? :black : :white
-    (4..6).each do |column|
-      if side == :king
-        return false if under_attack?([column, 7], attacking_color)
-      elsif under_attack?([column - 2, 7], attacking_color)
-        return false
-      end
     end
     true
   end
