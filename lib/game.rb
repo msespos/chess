@@ -123,13 +123,10 @@ class Game
     playing_field_before_move = @playing_field.clone.map(&:clone)
     captured = reassign_squares(start, finish)
     if in_check?
-      # revert to the copy of the playing field made before the move into check
-      # do not revert if actually checking a king move made out of check
-      # as in that case we want to keep the playing field as is
-      @playing_field = playing_field_before_move unless checking_move_out_of_check
+      restore_playing_field(playing_field_before_move, checking_move_out_of_check)
       return :invalid
     end
-    add_to_captured_pieces(captured) unless captured.nil? || checking_stalemate
+    add_to_captured_pieces(captured) unless should_not_add_to_captured_pieces?(captured, checking_stalemate)
   end
 
   # used by #move_piece
@@ -168,6 +165,14 @@ class Game
     nil
   end
 
+  # used by #move_piece to restore the playing field
+  # to the copy of the playing field made before the move into check
+  # do not restore if actually checking a king move made out of check
+  # as in that case we want to keep the playing field as is
+  def restore_playing_field(playing_field_before_move, checking_move_out_of_check)
+    @playing_field = playing_field_before_move unless checking_move_out_of_check
+  end
+
   # used by #move_piece to add any captured piece to the @captured_pieces array
   # after checking the color of the piece, adds to the first row of the array
   # until it is full, then adds to the second row of the array
@@ -175,6 +180,11 @@ class Game
     first_row = piece[0] == 'b' ? 0 : 2
     row_increment = @captured_pieces[first_row].all? ? 1 : 0
     @captured_pieces[first_row + row_increment].unshift(piece).pop
+  end
+
+  # used by #move_piece to check if a piece (or nil) should not be added to @captured_pieces
+  def should_not_add_to_captured_pieces?(captured, checking_stalemate)
+    captured.nil? || checking_stalemate
   end
 
   # used by #play to assess if the game is over
