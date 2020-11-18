@@ -45,12 +45,12 @@ module Castling
       !@white_king_moved &&
         !rook_moved?(color, side) &&
         no_castling_squares_in_check?(color, side) &&
-        white_castling_squares_empty?(side)
+        castling_squares_empty?(side)
     else
       !@black_king_moved &&
         !rook_moved?(color, side) &&
         no_castling_squares_in_check?(color, side) &&
-        black_castling_squares_empty?(side)
+        castling_squares_empty?(side)
     end
   end
 
@@ -72,21 +72,11 @@ module Castling
     true
   end
 
-  def white_castling_squares_empty?(side)
-    if side == :king
-      (5..6).each { |column| return false unless @playing_field[column][0].nil? }
-    else
-      (1..3).each { |column| return false unless @playing_field[column][0].nil? }
-    end
-    true
-  end
-
-  def black_castling_squares_empty?(side)
-    if side == :king
-      (5..6).each { |column| return false unless @playing_field[column][7].nil? }
-    else
-      (1..3).each { |column| return false unless @playing_field[column][7].nil? }
-    end
+  def castling_squares_empty?(side)
+    bottom_of_range = side == :king ? 5 : 1
+    top_of_range = side == :king ? 6 : 3
+    row = @current_player == :white ? 0 : 7
+    (bottom_of_range..top_of_range).each { |column| return false unless @playing_field[column][row].nil? }
     true
   end
 
