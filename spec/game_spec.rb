@@ -3024,12 +3024,12 @@ RSpec.describe Game do
     end
   end
 
-  describe '#white_castling_squares_empty?(:king)' do
+  describe '#castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.white_castling_squares_empty?(:king)
+        squares_empty_or_not = game.castling_squares_empty?(:king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3039,18 +3039,18 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
-        squares_empty_or_not = game.white_castling_squares_empty?(:king)
+        squares_empty_or_not = game.castling_squares_empty?(:king)
         expect(squares_empty_or_not).to eq(false)
       end
     end
   end
 
-  describe '#white_castling_squares_empty?(:king)' do
+  describe '#castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.white_castling_squares_empty?(:king)
+        squares_empty_or_not = game.castling_squares_empty?(:king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3060,7 +3060,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
-        squares_empty_or_not = game.white_castling_squares_empty?(:queen)
+        squares_empty_or_not = game.castling_squares_empty?(:queen)
         expect(squares_empty_or_not).to eq(false)
       end
     end
@@ -3254,43 +3254,45 @@ RSpec.describe Game do
     end
   end
 
-  describe '#black_castling_squares_empty?' do
+  describe '#castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.black_castling_squares_empty?(:king)
+        squares_empty_or_not = game.castling_squares_empty?(:king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
 
     context 'when one square is not empty' do
       it 'returns false' do
+        game.instance_variable_set(:@current_player, :black)
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
-        squares_empty_or_not = game.black_castling_squares_empty?(:king)
+        squares_empty_or_not = game.castling_squares_empty?(:king)
         expect(squares_empty_or_not).to eq(false)
       end
     end
   end
 
-  describe '#black_castling_squares_empty?' do
+  describe '#castling_squares_empty?' do
     context 'when both squares are empty' do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.black_castling_squares_empty?(:queen)
+        squares_empty_or_not = game.castling_squares_empty?(:queen)
         expect(squares_empty_or_not).to eq(true)
       end
     end
 
     context 'when one square is not empty' do
       it 'returns false' do
+        game.instance_variable_set(:@current_player, :black)
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
-        squares_empty_or_not = game.black_castling_squares_empty?(:queen)
+        squares_empty_or_not = game.castling_squares_empty?(:queen)
         expect(squares_empty_or_not).to eq(false)
       end
     end
