@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ModuleLength
-
 # methods for implementing castling
 module Castling
   CASTLING_START_SQUARES = { white_king: [4, 0],
@@ -41,17 +39,15 @@ module Castling
   end
 
   def can_castle?(color, side)
-    if color == :white
-      !@white_king_moved &&
-        !rook_moved?(color, side) &&
-        no_castling_squares_in_check?(color, side) &&
-        castling_squares_empty?(side)
-    else
-      !@black_king_moved &&
-        !rook_moved?(color, side) &&
-        no_castling_squares_in_check?(color, side) &&
-        castling_squares_empty?(side)
-    end
+    !king_moved? &&
+      !rook_moved?(color, side) &&
+      no_castling_squares_in_check?(color, side) &&
+      castling_squares_empty?(side)
+  end
+
+  def king_moved?
+    king_moved = @current_player.to_s + '_king_moved'
+    instance_variable_get("@#{king_moved}")
   end
 
   def rook_moved?(color, side)
@@ -106,5 +102,3 @@ module Castling
     end
   end
 end
-
-# rubocop:enable Metrics/ModuleLength
