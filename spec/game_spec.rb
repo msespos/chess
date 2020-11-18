@@ -2668,6 +2668,20 @@ RSpec.describe Game do
         expect(captured).to eq(row)
       end
     end
+
+    context 'when replicating a bug with displaying captured pieces' do
+      before do
+        allow(game).to receive(:player_move).and_return('d2d4', 'e7e5', 'd4e5', 'f8b4', 'e1d2',
+                                                        'c1d2', 'b4d2', 'test', 'd1d2', 'q')
+      end
+
+      it 'returns true' do
+        game.play
+        captured = game.instance_variable_get(:@captured_pieces)[0]
+        row = [:b_bishop, :b_pawn, nil, nil, nil, nil, nil, nil]
+        expect(captured).to eq(row)
+      end
+    end
   end
 
   describe '#pawn_to_promote' do
