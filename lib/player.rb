@@ -41,7 +41,7 @@ class Player
   # used by #user_input to check if the move is in algebraic notation (e.g. a1a3),
   # or if type is :piece, to check that the piece is one of n, b, r, and q
   def input_in_right_format?(input, type)
-    return true if input.downcase == 'q'
+    return true if ['q', 's', 'l'].include?(input.downcase)
 
     if type == :move
       return false if input.length != 4
