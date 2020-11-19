@@ -1,0 +1,108 @@
+---
+:current_player: :white
+:resignation: false
+:captured_pieces:
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+:en_passant_column: 
+:white_king_moved: false
+:white_kingside_rook_moved: false
+:white_queenside_rook_moved: false
+:black_king_moved: false
+:black_kingside_rook_moved: false
+:black_queenside_rook_moved: false
+:playing_field:
+- - :w_rook
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_rook
+- - :w_knight
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_knight
+- - :w_bishop
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_bishop
+- - :w_queen
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_queen
+- - :w_king
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_king
+- - :w_bishop
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_bishop
+- - :w_knight
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_knight
+- - :w_rook
+  - :w_pawn
+  - 
+  - 
+  - 
+  - 
+  - :b_pawn
+  - :b_rook
