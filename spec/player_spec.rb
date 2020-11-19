@@ -80,6 +80,28 @@ RSpec.describe Player do
       end
     end
 
+    context 'it is a move input in the right format' do
+      it 'returns true' do
+        right_format_or_not = player.input_in_right_format?('q', :move)
+        expect(right_format_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        right_format_or_not = player.input_in_right_format?('Q', :move)
+        expect(right_format_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        right_format_or_not = player.input_in_right_format?('S', :move)
+        expect(right_format_or_not).to eq(true)
+      end
+
+      it 'returns true' do
+        right_format_or_not = player.input_in_right_format?('l', :move)
+        expect(right_format_or_not).to eq(true)
+      end
+    end
+
     context 'it is a move input of the wrong length' do
       it 'returns false' do
         right_format_or_not = player.input_in_right_format?('a1a3a5', :piece)
