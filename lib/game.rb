@@ -10,6 +10,7 @@ require_relative 'stalemate_validation'
 require_relative 'pawn_promotion'
 require_relative 'en_passant'
 require_relative 'castling'
+require_relative 'save_load'
 
 # game class
 class Game
@@ -20,6 +21,7 @@ class Game
   include PawnPromotion
   include EnPassant
   include Castling
+  include SaveLoad
 
   def initialize
     @board = Board.new
@@ -64,7 +66,16 @@ class Game
     puts @player.current_player_announcement(@current_player)
     move = player_move
     return if resignation?(move)
-
+    if move.downcase == 's'
+      save_game
+      display_board
+      return
+    end
+    if move.downcase == 'l'
+      load_game
+      display_board
+      return
+    end
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
     @current_player = @current_player == :white ? :black : :white
