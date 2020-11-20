@@ -2,7 +2,6 @@
 
 # methods for the one player version of the game
 module OnePlayerVersion
-
   def play_computer_turn
     start = random_square
     finish = random_square
