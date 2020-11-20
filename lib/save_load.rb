@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/MethodLength
+
 require 'yaml'
 
 # methods for saving and loading the game
@@ -14,8 +16,8 @@ module SaveLoad
   end
 
   def save_text
-    "There are 3 slots to save in, labeled 1, 2, and 3.\n" +
-    'Please select a number. You will overwrite any already saved game in that slot.'
+    "There are 3 slots to save in, labeled 1, 2, and 3.\n"\
+      'Please select a number. You will overwrite any already saved game in that slot.'
   end
 
   def slot
@@ -28,19 +30,17 @@ module SaveLoad
   end
 
   def to_yaml
-    YAML.dump ({
-      current_player: @current_player,
-      resignation: @resignation,
-      captured_pieces: @captured_pieces,
-      en_passant_column: @en_passant_column,
-      white_king_moved: @white_king_moved,
-      white_kingside_rook_moved: @white_kingside_rook_moved,
-      white_queenside_rook_moved: @white_queenside_rook_moved,
-      black_king_moved: @black_king_moved,
-      black_kingside_rook_moved: @black_kingside_rook_moved,
-      black_queenside_rook_moved: @black_queenside_rook_moved,
-      playing_field: @playing_field
-    })
+    YAML.dump({ current_player: @current_player,
+                resignation: @resignation,
+                captured_pieces: @captured_pieces,
+                en_passant_column: @en_passant_column,
+                white_king_moved: @white_king_moved,
+                white_kingside_rook_moved: @white_kingside_rook_moved,
+                white_queenside_rook_moved: @white_queenside_rook_moved,
+                black_king_moved: @black_king_moved,
+                black_kingside_rook_moved: @black_kingside_rook_moved,
+                black_queenside_rook_moved: @black_queenside_rook_moved,
+                playing_field: @playing_field })
   end
 
   def load_game
@@ -49,22 +49,32 @@ module SaveLoad
   end
 
   def load_text
-    "There are 3 slots that a game could be saved in, labeled 1, 2, and 3.\n" +
-    'Please select a number. You should have saved a game in that slot already.'
+    "There are 3 slots that a game could be saved in, labeled 1, 2, and 3.\n"\
+      'Please select a number. You should have saved a game in that slot already.'
   end
 
   def from_yaml(game)
-    status = YAML.load(File.read(game))
+    status = YAML.safe_load(File.read(game), [Symbol])
+    assign_all_but_castling_variables(status)
+    assign_castling_variables(status)
+  end
+
+  def assign_all_but_castling_variables(status)
     @current_player = status[:current_player]
     @resignation = status[:resignation]
     @captured_pieces = status[:captured_pieces]
     @en_passant_column = status[:en_passant_column]
+    @playing_field = status[:playing_field]
+  end
+
+  def assign_castling_variables(status)
     @white_king_moved = status[:white_king_moved]
     @white_kingside_rook_moved = status[:white_kingside_rook_moved]
     @white_queenside_rook_moved = status[:white_queenside_rook_moved]
     @black_king_moved = status[:black_king_moved]
     @black_kingside_rook_moved = status[:black_kingside_rook_moved]
     @black_queenside_rook_moved = status[:black_queenside_rook_moved]
-    @playing_field = status[:playing_field]
   end
 end
+
+# rubocop:enable Metrics/MethodLength
