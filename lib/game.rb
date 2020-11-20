@@ -112,7 +112,6 @@ class Game
     while move_piece(start, finish) == :invalid
       puts @player.invalid_move_message(:move)
       move = player_move
-      return if resignation?(move)
 
       start, finish = player_move_to_start_finish(move)
     end
