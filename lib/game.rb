@@ -11,6 +11,7 @@ require_relative 'pawn_promotion'
 require_relative 'en_passant'
 require_relative 'castling'
 require_relative 'save_load'
+require_relative 'one_player_version'
 
 # game class
 class Game
@@ -22,6 +23,7 @@ class Game
   include EnPassant
   include Castling
   include SaveLoad
+  include OnePlayerVersion
 
   def initialize
     @board = Board.new
