@@ -62,25 +62,21 @@ class Game
 
   # used by #play to implement a full turn
   def play_turn
-    puts @player.in_check_announcement(@current_player) if in_check?
-    puts @player.current_player_announcement(@current_player)
+    announcements
     move = player_move
     return if resignation?(move)
-    if move.downcase == 's'
-      save_game
-      display_board
-      return
-    end
-    if move.downcase == 'l'
-      load_game
-      display_board
-      return
-    end
+
+    return if save_or_load(move)
+
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
-    @current_player = @current_player == :white ? :black : :white
-    display_board
-    promote_pawn if pawn_to_promote
+    end_turn
+  end
+
+  # used by #play_turn
+  def announcements
+    puts @player.in_check_announcement(@current_player) if in_check?
+    puts @player.current_player_announcement(@current_player)
   end
 
   # used by #play_turn
@@ -93,6 +89,14 @@ class Game
   # check if the player has resigned
   def resignation?(move)
     @resignation = true if move.downcase == 'q'
+  end
+
+  def save_or_load(move)
+    return unless move.downcase == 's' || move.downcase == 'l'
+
+    move.downcase == 's' ? save_game : load_game
+    display_board
+    true
   end
 
   # used by #play_turn
@@ -194,6 +198,13 @@ class Game
     first_row = piece[0] == 'b' ? 0 : 2
     row_increment = @captured_pieces[first_row].all? ? 1 : 0
     @captured_pieces[first_row + row_increment].unshift(piece).pop
+  end
+
+  # used by #play_turn
+  def end_turn
+    @current_player = @current_player == :white ? :black : :white
+    display_board
+    promote_pawn if pawn_to_promote
   end
 
   # used by #play to assess if the game is over
