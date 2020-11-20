@@ -2,7 +2,7 @@
 
 # methods for the one player version of the game
 module OnePlayerVersion
-  def play_computer_turn
+  def computer_move
     start = random_square
     finish = random_square
     while move_piece(start, finish, false, true) == invalid
