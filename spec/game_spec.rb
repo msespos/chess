@@ -2726,7 +2726,7 @@ RSpec.describe Game do
       it 'sets the appropriate @playing_field square to a black queen' do
         game.instance_variable_set(:@player, player_pawn)
         game.instance_variable_get(:@playing_field)[3][0] = :b_pawn
-        allow(player_pawn).to receive(:user_input)
+        allow(player_pawn).to receive(:user_move_input)
         allow(game).to receive(:input_to_piece).and_return(:b_queen)
         game.promote_pawn
         new_piece = game.instance_variable_get(:@playing_field)[3][0]
@@ -2739,7 +2739,7 @@ RSpec.describe Game do
       it 'sets the appropriate @playing_field square to a white queen' do
         game.instance_variable_set(:@player, player_pawn)
         game.instance_variable_get(:@playing_field)[2][7] = :w_pawn
-        allow(player_pawn).to receive(:user_input)
+        allow(player_pawn).to receive(:user_move_input)
         allow(game).to receive(:input_to_piece).and_return(:w_rook)
         game.promote_pawn
         new_piece = game.instance_variable_get(:@playing_field)[2][7]

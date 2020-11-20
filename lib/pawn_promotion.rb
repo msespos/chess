@@ -18,7 +18,7 @@ module PawnPromotion
 
   def promote_pawn
     color, column = pawn_to_promote
-    input = @player.user_input(:piece)
+    input = @player.user_move_input(:piece)
     new_piece = input_to_piece(input, color)
     color == :black ? @playing_field[column][0] = new_piece : @playing_field[column][7] = new_piece
     display_board

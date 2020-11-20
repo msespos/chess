@@ -84,7 +84,7 @@ class Game
   # used by #play_turn
   # get the player's move using Player#player_move
   def player_move
-    @player.user_input(:move)
+    @player.user_move_input(:move)
   end
 
   # used by #play_turn and #make_move_when_not_invalid
