@@ -19,36 +19,40 @@ class Player
 
   # used by Game#player_move and Game#promote_pawn to get the player's input
   # and check it, prompting and re-obtaining if invalid input is entered
-  def user_move_input(type)
-    input = obtain_user_move_input(type)
-    until move_input_in_right_format?(input, type)
+  def user_input(type)
+    input = obtain_user_input(type)
+    until input_in_right_format?(input, type)
       puts invalid_move_message(type)
-      input = obtain_user_move_input(type)
+      input = obtain_user_input(type)
     end
     input
   end
 
   # used by #user_input to get the player's move before checking it
-  def obtain_user_move_input(type)
+  def obtain_user_input(type)
     if type == :move
       puts 'Please enter your move.'
-    else
+    elsif type == :piece
       puts "You can promote a pawn!\nPlease enter n, b, r or q to promote."
+    else
+      puts 'How many are playing? 1 or 2?'
     end
     gets.chomp
   end
 
   # used by #user_input to check if the move is in algebraic notation (e.g. a1a3),
   # or if type is :piece, to check that the piece is one of n, b, r, and q
-  def move_input_in_right_format?(input, type)
+  def input_in_right_format?(input, type)
     return true if %w[q s l].include?(input.downcase)
 
     if type == :move
       return false if input.length != 4
 
       input =~ /[a-h][1-8][a-h][1-8]/ ? true : false
-    else
+    elsif type == :piece
       %w[n b r q].include?(input.downcase)
+    else
+      %w[1 2].include?(input)
     end
   end
 
