@@ -30,7 +30,8 @@ module SaveLoad
   end
 
   def to_yaml
-    YAML.dump({ current_player: @current_player,
+    YAML.dump({ number_of_players: @number_of_players,
+                current_player: @current_player,
                 resignation: @resignation,
                 captured_pieces: @captured_pieces,
                 en_passant_column: @en_passant_column,
@@ -60,6 +61,7 @@ module SaveLoad
   end
 
   def assign_all_but_castling_variables(status)
+    @number_of_players = status[:number_of_players]
     @current_player = status[:current_player]
     @resignation = status[:resignation]
     @captured_pieces = status[:captured_pieces]
