@@ -2,13 +2,14 @@
 
 # methods for the one player version of the game
 module OnePlayerVersion
-  def computer_move
+  def computer_takes_a_turn
     start = random_square
     finish = random_square
-    while move_piece(start, finish, false, true) == invalid
+    while move_piece(start, finish, false, true) == :invalid
       start = random_square
       finish = random_square
     end
+    [start, finish]
   end
 
   def random_square
