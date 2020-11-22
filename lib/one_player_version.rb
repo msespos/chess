@@ -9,7 +9,6 @@ module OnePlayerVersion
       start = random_square
       finish = random_square
     end
-    [start, finish]
   end
 
   def random_square
