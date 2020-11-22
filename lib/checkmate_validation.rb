@@ -68,7 +68,7 @@ module CheckmateValidation
     squares = attacker_squares(king_location)
     return false if squares.length > 1
 
-    return false if attacking_piece_protected?(squares[0])
+    return false if attacking_piece_protected?(squares[0]) && !under_attack?(squares[0], @current_player, true)
 
     return false unless under_attack?(squares[0], @current_player)
 
