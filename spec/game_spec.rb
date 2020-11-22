@@ -1290,6 +1290,7 @@ RSpec.describe Game do
   describe '#in_checkmate?' do
     context 'when white is put in Fool\'s Mate' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4', 'q')
       end
 
@@ -1302,6 +1303,7 @@ RSpec.describe Game do
 
     context 'when black is put in Reversed Fool\'s Mate' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5', 'q')
       end
 
@@ -1314,6 +1316,7 @@ RSpec.describe Game do
 
     context 'when black is checkmated in Mike\'s Mate I (with plenty of invalid moves)' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
                                                         'f1b5', 'h7h6', 'e8d7', 'd8d7', 'b5d7',
                                                         'e8d7', 'd1f3', 'd7e8', 'g1g3', 'g1h3',
@@ -1331,6 +1334,7 @@ RSpec.describe Game do
 
     context 'when black is checkmated in Scholar\'s Mate' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
                                                         'g8f6', 'h5f7', 'q')
       end
@@ -1344,6 +1348,7 @@ RSpec.describe Game do
 
     context 'when white makes a bunch of invalid moves and then is checkmated in back rank mate' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
                                                         'e2e4', 'a7a5', 'f1c4', 'a8a6', 'g1f3',
                                                         'a6e6', 'e1f1', 'e6e4', 'f1g1', 'b7b5',
@@ -1366,6 +1371,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[2][3] = :b_queen
         game.instance_variable_get(:@playing_field)[4][4] = :b_king
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
                                                         'f1e1', 'e5e4', 'e1f1', 'e4e3', 'f1e1',
                                                         'c2e2', 'q')
@@ -1387,6 +1393,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1', 'q')
       end
 
@@ -1399,6 +1406,7 @@ RSpec.describe Game do
 
     context 'when replicating a bug that put black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('g2g3', 'd7d6', 'g3g4', 'd6d5', 'g4g5',
                                                         'd5d4', 'f2f4', 'q')
       end
@@ -1412,6 +1420,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'f2f4', 'q')
       end
 
@@ -1424,6 +1433,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'c2c4', 'q')
       end
 
@@ -1436,6 +1446,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b6', 'f2f4', 'q')
       end
 
@@ -1448,6 +1459,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'f2f4', 'q')
       end
 
@@ -1460,6 +1472,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'd2d4', 'q')
       end
 
@@ -1472,6 +1485,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'h2h4', 'q')
       end
 
@@ -1484,6 +1498,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'c7c5', 'q')
       end
 
@@ -1496,6 +1511,7 @@ RSpec.describe Game do
 
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'a7a5', 'q')
       end
 
@@ -1508,6 +1524,7 @@ RSpec.describe Game do
 
     context 'when white captures en passant and black checkmates' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('g2g4', 'e7e5', 'g4g5', 'h7h5', 'g5h6',
                                                         'd8h4', 'c2c3', 'f8c5', 'c3c4', 'h4f2', 'q')
       end
@@ -1521,6 +1538,7 @@ RSpec.describe Game do
 
     context 'when black tries an illegal move then captures en passant and checkmates' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('a2a4', 'g7g5', 'b1c3', 'g5g4', 'f2f4',
                                                         'g4h3', 'g4f3', 'c3d5', 'e7e6', 'a4a5',
                                                         'd8f6', 'b2b4', 'f3f2', 'q')
@@ -1535,6 +1553,7 @@ RSpec.describe Game do
 
     context 'when white and black both kingside castle and white then checkmates' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'f8c5', 'g1f3',
                                                         'g8f6', 'e1g1', 'e8g8', 'f3e5', 'f6e4',
                                                         'e5f7', 'd8g5', 'f7h6', 'g7h6', 'f8f7',
@@ -1550,6 +1569,7 @@ RSpec.describe Game do
 
     context 'when white and black both queenside castle and white then checkmates' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'c1e3', 'd8d6', 'e1c1',
                                                         'c2c3', 'b8c6', 'b1d2', 'c8d7', 'd1a4',
                                                         'e8c8', 'e1c1', 'd6a3', 'a4b4', 'c6b4',
@@ -1570,6 +1590,7 @@ RSpec.describe Game do
 
     context 'when white tries to kingside castle and cannot and black then checkmates' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('f2f4', 'c7c6', 'e2e4', 'd8b6', 'g1f3',
                                                         'g8f6', 'f1c4', 'f6g4', 'e1g1', 'a2a4',
                                                         'b6f2', 'q')
@@ -1579,6 +1600,21 @@ RSpec.describe Game do
         game.play
         in_checkmate_or_not = game.in_checkmate?
         expect(in_checkmate_or_not).to eq(true)
+      end
+    end
+
+    context 'when replicating a bug in which White should not be in checkmate' do
+      before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
+        allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'd2d4', 'e5d4', 'c1g5',
+                                                        'd8g5', 'd1d4', 'b8c6', 'a2a4', 'c6d4',
+                                                        'b2b4', 'f8b4', 'e1d1', 'g5d2', 'q')
+      end
+
+      it 'returns false' do
+        game.play
+        in_checkmate_or_not = game.in_checkmate?
+        expect(in_checkmate_or_not).to eq(false)
       end
     end
   end
@@ -2498,6 +2534,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][2] = :b_queen
         game.instance_variable_get(:@playing_field)[5][3] = :b_king
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
       end
 
@@ -2517,6 +2554,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_king
         game.instance_variable_get(:@playing_field)[5][3] = :w_rook
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
       end
 
@@ -2536,6 +2574,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][2] = :w_king
         game.instance_variable_get(:@playing_field)[4][2] = :w_rook
         game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
       end
 
@@ -2555,6 +2594,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('b1a1', 'd2c2')
       end
 
@@ -2571,6 +2611,7 @@ RSpec.describe Game do
   describe '#resignation?' do
     context 'when black resigns before being put in Fool\'s Mate' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
       end
 
@@ -2590,6 +2631,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[1][2] = :w_king
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('katie', 'b1a1', 'q')
       end
 
@@ -2612,6 +2654,7 @@ RSpec.describe Game do
                                [nil, nil, nil, :w_pawn, :b_pawn, :b_bishop, nil, nil]]
         game.instance_variable_set(:@playing_field, mikes_playing_field)
         game.instance_variable_set(:@current_player, :white)
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
                                                         'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
                                                         'c2c3', 'g6g1', 'q')
@@ -2632,6 +2675,7 @@ RSpec.describe Game do
   describe '#resignation?' do
     context 'when replicating a bug with displaying captured pieces' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1a6', 'b7a6', 'q')
       end
 
@@ -2645,6 +2689,7 @@ RSpec.describe Game do
 
     context 'when replicating a bug with displaying captured pieces' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'q')
       end
 
@@ -2658,6 +2703,7 @@ RSpec.describe Game do
 
     context 'when replicating a bug with displaying captured pieces' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f2f4', 'e5f4', 'q')
       end
 
@@ -2671,6 +2717,7 @@ RSpec.describe Game do
 
     context 'when replicating a bug with displaying captured pieces' do
       before do
+        allow(game).to receive(:obtain_number_of_players).and_return(2)
         allow(game).to receive(:player_move).and_return('d2d4', 'e7e5', 'd4e5', 'f8b4', 'e1d2',
                                                         'c1d2', 'b4d2', 'test', 'd1d2', 'q')
       end
@@ -2726,7 +2773,7 @@ RSpec.describe Game do
       it 'sets the appropriate @playing_field square to a black queen' do
         game.instance_variable_set(:@player, player_pawn)
         game.instance_variable_get(:@playing_field)[3][0] = :b_pawn
-        allow(player_pawn).to receive(:user_move_input)
+        allow(player_pawn).to receive(:user_input)
         allow(game).to receive(:input_to_piece).and_return(:b_queen)
         game.promote_pawn
         new_piece = game.instance_variable_get(:@playing_field)[3][0]
@@ -2739,7 +2786,7 @@ RSpec.describe Game do
       it 'sets the appropriate @playing_field square to a white queen' do
         game.instance_variable_set(:@player, player_pawn)
         game.instance_variable_get(:@playing_field)[2][7] = :w_pawn
-        allow(player_pawn).to receive(:user_move_input)
+        allow(player_pawn).to receive(:user_input)
         allow(game).to receive(:input_to_piece).and_return(:w_rook)
         game.promote_pawn
         new_piece = game.instance_variable_get(:@playing_field)[2][7]
