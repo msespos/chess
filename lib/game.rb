@@ -29,6 +29,7 @@ class Game
     @board = Board.new
     @piece = Piece.new
     @player = Player.new
+    @number_of_players = nil
     @current_player = :white
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
@@ -50,9 +51,14 @@ class Game
   # play the whole game
   def play
     puts @player.intro_text
+    @number_of_players = obtain_number_of_players
     display_board
     play_turn until game_over?
     end_of_game_announcement
+  end
+
+  def obtain_number_of_players
+    @player.user_input(:number_of_players).to_i
   end
 
   # used by #play to send the current playing field to the board and print the board
@@ -64,27 +70,36 @@ class Game
 
   # used by #play to implement a full turn
   def play_turn
-    announcements
-    move = player_move
-    return if resignation?(move)
-
-    return if save_or_load(move)
-
-    start, finish = player_move_to_start_finish(move)
-    make_move_when_not_invalid(start, finish)
-    end_turn
+    intro_announcements
+    if @number_of_players == 2 || @current_player == :white
+      return if player_takes_a_turn == :quit_turn
+    else
+      computer_takes_a_turn
+    end
+    complete_turn
   end
 
   # used by #play_turn
-  def announcements
+  def intro_announcements
     puts @player.in_check_announcement(@current_player) if in_check?
     puts @player.current_player_announcement(@current_player)
+  end
+
+  def player_takes_a_turn
+    move = player_move
+    return :quit_turn if resignation?(move)
+
+    return :quit_turn if save_or_load(move)
+
+    start, finish = player_move_to_start_finish(move)
+    make_move_when_not_invalid(start, finish)
+    [start, finish]
   end
 
   # used by #play_turn
   # get the player's move using Player#player_move
   def player_move
-    @player.user_move_input(:move)
+    @player.user_input(:move)
   end
 
   # used by #play_turn and #make_move_when_not_invalid
@@ -119,6 +134,7 @@ class Game
     end
     update_castling_piece_states(:during, start)
     update_en_passant_column(start, finish)
+    [start, finish]
   end
 
   # used by #make_move_when_not_invalid
@@ -202,7 +218,7 @@ class Game
   end
 
   # used by #play_turn
-  def end_turn
+  def complete_turn
     @current_player = @current_player == :white ? :black : :white
     display_board
     promote_pawn if pawn_to_promote
