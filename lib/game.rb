@@ -26,7 +26,6 @@ class Game
   include OnePlayerVersion
 
   def initialize
-    @board = Board.new
     @piece = Piece.new
     @player = Player.new
     @number_of_players = nil
@@ -51,10 +50,15 @@ class Game
   # play the whole game
   def play
     puts @player.intro_text
+    @board = Board.new(obtain_minimalist_mode)
     @number_of_players = obtain_number_of_players
     display_board
     play_turn until game_over?
     end_of_game_announcement
+  end
+
+  def obtain_minimalist_mode
+    @player.user_input(:minimalist_mode).to_sym == :l ? :light : :dark
   end
 
   def obtain_number_of_players
