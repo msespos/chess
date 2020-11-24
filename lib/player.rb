@@ -34,8 +34,10 @@ class Player
       puts 'Please enter your move.'
     elsif type == :piece
       puts "You can promote a pawn!\nPlease enter n, b, r or q to promote."
-    else
+    elsif type == :number_of_players
       puts 'How many are playing? 1 or 2?'
+    elsif type == :minimalist_mode
+      puts "Is your terminal background light or dark?\nPlease enter l or d."
     end
     gets.chomp
   end
@@ -43,23 +45,37 @@ class Player
   # used by #user_input to check if the move is in algebraic notation (e.g. a1a3),
   # or if type is :piece, to check that the piece is one of n, b, r, and q
   def input_in_right_format?(input, type)
-    return true if %w[q s l].include?(input.downcase)
-
     if type == :move
-      return false if input.length != 4
-
-      input =~ /[a-h][1-8][a-h][1-8]/ ? true : false
+      move_in_right_format?(input)
     elsif type == :piece
       %w[n b r q].include?(input.downcase)
-    else
+    elsif type == :number_of_players
       %w[1 2].include?(input)
+    elsif type == :minimalist_mode
+      %w[l d].include?(input.downcase)
     end
+  end
+
+  def move_in_right_format?(input)
+    return true if %w[q s l].include?(input.downcase)
+
+    return false if input.length != 4
+
+    input =~ /[a-h][1-8][a-h][1-8]/
   end
 
   # used by #user_input as the message for an invalid move
   def invalid_move_message(type)
-    move_or_piece = type == :move ? 'move' : 'piece'
-    "That is not a valid #{move_or_piece}! Please enter a valid #{move_or_piece}."
+    entry = if type == :move
+              'move'
+            elsif type == :piece
+              'piece'
+            elsif type == :number_of_players
+              'number of players'
+            elsif type == :minimalist_mode
+              'entry'
+            end
+    "That is not a valid #{entry}! Please enter a valid #{entry}."
   end
 
   # used by Game#end_of_game_announcement
