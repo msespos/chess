@@ -1,26 +1,37 @@
 # frozen_string_literal: true
 
+require 'colorize'
+
 # board class
 class Board
-  W_PAWN = " \u2659".encode('utf-8')
-  W_KNIGHT = " \u2658".encode('utf-8')
-  W_BISHOP = " \u2657".encode('utf-8')
-  W_ROOK = " \u2656".encode('utf-8')
-  W_QUEEN = " \u2655".encode('utf-8')
-  W_KING = " \u2654".encode('utf-8')
-  B_PAWN = " \u265F".encode('utf-8')
-  B_KNIGHT = " \u265E".encode('utf-8')
-  B_BISHOP = " \u265D".encode('utf-8')
-  B_ROOK = " \u265C".encode('utf-8')
-  B_QUEEN = " \u265B".encode('utf-8')
-  B_KING = " \u265A".encode('utf-8')
   EMPTY_SQUARE = ' -'
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
 
-  def initialize
+  def initialize(minimalist_mode)
+    @minimalist_mode = minimalist_mode
+    initial_white_pieces
+    initial_black_pieces
     initial_board
+  end
+
+  def initial_white_pieces
+    @w_pawn = @minimalist_mode == :light ? " \u2659".encode('utf-8') : " \u265F".encode('utf-8')
+    @w_knight = @minimalist_mode == :light ? " \u2658".encode('utf-8') : " \u265E".encode('utf-8')
+    @w_bishop = @minimalist_mode == :light ? " \u2657".encode('utf-8') : " \u265D".encode('utf-8')
+    @w_rook = @minimalist_mode == :light ? " \u2656".encode('utf-8') : " \u265C".encode('utf-8')
+    @w_queen = @minimalist_mode == :light ? " \u2655".encode('utf-8') : " \u265B".encode('utf-8')
+    @w_king = @minimalist_mode == :light ? " \u2654".encode('utf-8') : " \u265A".encode('utf-8')
+  end
+
+  def initial_black_pieces
+    @b_pawn = @minimalist_mode == :light ? " \u265F".encode('utf-8') : " \u2659".encode('utf-8')
+    @b_knight = @minimalist_mode == :light ? " \u265E".encode('utf-8') : " \u2658".encode('utf-8')
+    @b_bishop = @minimalist_mode == :light ? " \u265D".encode('utf-8') : " \u2657".encode('utf-8')
+    @b_rook = @minimalist_mode == :light ? " \u265C".encode('utf-8') : " \u2656".encode('utf-8')
+    @b_queen = @minimalist_mode == :light ? " \u265B".encode('utf-8') : " \u2655".encode('utf-8')
+    @b_king = @minimalist_mode == :light ? " \u265A".encode('utf-8') : " \u2654".encode('utf-8')
   end
 
   # build a board with initial setup
@@ -71,7 +82,8 @@ class Board
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
                                         EMPTY_SQUARE
                                       else
-                                        Board.const_get(playing_field[column][row].to_s.upcase)
+                                        piece = playing_field[column][row].to_s
+                                        instance_variable_get("@#{piece}")
                                       end
       end
     end
@@ -90,7 +102,8 @@ class Board
 
   # used by add_captured_pieces to place the pieces
   def place_captured_pieces_on_board(captured_pieces, row, column)
-    piece = Board.const_get(captured_pieces[row][column].to_s.upcase)
+    piece_as_string = captured_pieces[row][column].to_s
+    piece = instance_variable_get("@#{piece_as_string}")
     [0, 1].include?(row) ? @board[row + 3][column + 10] = piece : @board[12 - row][column + 10] = piece
   end
 end
