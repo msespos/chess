@@ -1,37 +1,35 @@
 # frozen_string_literal: true
 
-require 'colorize'
-
 # board class
-class Board
+class CheckerboardBoard
   EMPTY_SQUARE = ' -'
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
 
-  def initialize(minimalist_mode)
-    @minimalist_mode = minimalist_mode
+  def initialize
+    @minimalist_mode = :light
     initial_white_pieces
     initial_black_pieces
     initial_board
   end
 
   def initial_white_pieces
-    @w_pawn = @minimalist_mode == :light ? " \u2659".encode('utf-8') : " \u265F".encode('utf-8')
-    @w_knight = @minimalist_mode == :light ? " \u2658".encode('utf-8') : " \u265E".encode('utf-8')
-    @w_bishop = @minimalist_mode == :light ? " \u2657".encode('utf-8') : " \u265D".encode('utf-8')
-    @w_rook = @minimalist_mode == :light ? " \u2656".encode('utf-8') : " \u265C".encode('utf-8')
-    @w_queen = @minimalist_mode == :light ? " \u2655".encode('utf-8') : " \u265B".encode('utf-8')
-    @w_king = @minimalist_mode == :light ? " \u2654".encode('utf-8') : " \u265A".encode('utf-8')
+    @w_pawn = " \033[37m\u265F \033[0m"
+    @w_knight = " \033[37m\u265E \033[0m"
+    @w_bishop = " \033[37m\u265D \033[0m"
+    @w_rook = " \033[37m\u265C \033[0m"
+    @w_queen = " \033[37m\u265B \033[0m"
+    @w_king = " \033[37m\u265A \033[0m"
   end
 
   def initial_black_pieces
-    @b_pawn = @minimalist_mode == :light ? " \u265F".encode('utf-8') : " \u2659".encode('utf-8')
-    @b_knight = @minimalist_mode == :light ? " \u265E".encode('utf-8') : " \u2658".encode('utf-8')
-    @b_bishop = @minimalist_mode == :light ? " \u265D".encode('utf-8') : " \u2657".encode('utf-8')
-    @b_rook = @minimalist_mode == :light ? " \u265C".encode('utf-8') : " \u2656".encode('utf-8')
-    @b_queen = @minimalist_mode == :light ? " \u265B".encode('utf-8') : " \u2655".encode('utf-8')
-    @b_king = @minimalist_mode == :light ? " \u265A".encode('utf-8') : " \u2654".encode('utf-8')
+    @b_pawn = " \033[30m\u265F \033[0m"
+    @b_knight = " \033[30m\u265E \033[0m"
+    @b_bishop = " \033[30m\u265D \033[0m"
+    @b_rook = " \033[30m\u265C \033[0m"
+    @b_queen = " \033[30m\u265B \033[0m"
+    @b_king = " \033[30m\u265A \033[0m"
   end
 
   # build a board with initial setup
@@ -47,7 +45,7 @@ class Board
   def initial_board_letter_rows
     [1, 12].each do |row|
       @board[row][0] = BLANK_SPOT
-      (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr }
+      (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr + ' ' }
     end
   end
 
@@ -80,13 +78,30 @@ class Board
     (0..7).each do |column|
       (0..7).each do |row|
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
-                                        EMPTY_SQUARE
+                                        background(row, column)
                                       else
                                         piece = playing_field[column][row].to_s
-                                        instance_variable_get("@#{piece}")
+                                        piece_as_symbol = instance_variable_get("@#{piece}")
+                                        background(row, column, piece_as_symbol)
                                       end
       end
     end
+  end
+
+  def background(row, column, piece_as_symbol = '   ')
+    if row % 2 == 0 && column % 2 == 1 || row % 2 == 1 && column % 2 == 0
+      light_background_square(piece_as_symbol)
+    else
+      dark_background_square(piece_as_symbol)
+    end
+  end
+
+  def light_background_square(piece_as_symbol)
+    "\033[46m#{piece_as_symbol}\033[0m"
+  end
+  
+  def dark_background_square(piece_as_symbol)
+    "\033[44m#{piece_as_symbol}\033[0m"
   end
 
   # add the pieces from the Game 4x8 array of captured pieces to the board
