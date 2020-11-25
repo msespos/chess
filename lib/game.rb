@@ -50,14 +50,22 @@ class Game
   # play the whole game
   def play
     puts @player.intro_text
-    @board = Board.new(:minimalist, :white, :dark)
+    @board = Board.new(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_background)
     @number_of_players = obtain_number_of_players
     display_board
     play_turn until game_over?
     end_of_game_announcement
   end
 
-  def obtain_minimalist_mode
+  def minimalist_or_checkerboard
+    :minimalist
+  end
+
+  def white_or_black_on_bottom
+    :white
+  end
+
+  def light_or_dark_background
     @player.user_input(:minimalist_mode).to_sym == :l ? :light : :dark
   end
 
