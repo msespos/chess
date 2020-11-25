@@ -50,8 +50,7 @@ class Game
   # play the whole game
   def play
     puts @player.intro_text
-    #@board = MinimalistBoard.new(obtain_minimalist_mode)
-    @board = CheckerboardBoard.new
+    @board = Board.new(:minimalist, :white, :dark)
     @number_of_players = obtain_number_of_players
     display_board
     play_turn until game_over?
