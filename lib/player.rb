@@ -38,8 +38,10 @@ class Player
       puts 'How many are playing? 1 or 2?'
     elsif type == :minimalist_or_checkerboard
       puts "Would you like a minimalist or checkerboard design?\nPlease enter m or c."
-    elsif type == :white_or_black_start
+    elsif type == :bottom_color_one_player
       puts "Would you like to play as white or black?\nPlease enter w or b."
+    elsif type == :bottom_color_two_player
+      puts "Would you like white or black at the bottom of the board?\nPlease enter w or b."
     elsif type == :light_or_dark_font
       puts "Is your current terminal font light or dark?\nPlease enter l or d.\n\
 (This will allow for the best display of the minimalist board.)"
@@ -58,7 +60,7 @@ class Player
       %w[1 2].include?(input)
     elsif type == :minimalist_or_checkerboard
       %w[m c].include?(input)
-    elsif type == :white_or_black_start
+    elsif type == :bottom_color_one_player || type == :bottom_color_two_player
       %w[w b].include?(input)
     elsif type == :light_or_dark_font
       %w[l d].include?(input.downcase)
@@ -83,7 +85,7 @@ class Player
               'number of players'
             elsif type == :minimalist_or_checkerboard
               'design'
-            elsif type == :white_or_black_start
+            elsif type == :bottom_color_one_player || type == :bottom_color_two_player
               'color'
             elsif type == :light_or_dark_font
               'type'
