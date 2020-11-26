@@ -36,8 +36,12 @@ class Player
       puts "You can promote a pawn!\nPlease enter n, b, r or q to promote."
     elsif type == :number_of_players
       puts 'How many are playing? 1 or 2?'
-    elsif type == :minimalist_mode
-      puts "Is your terminal background light or dark?\nPlease enter l or d."
+    elsif type == :minimalist_or_checkerboard
+      puts "Would you like a minimalist or checkerboard design?\nPlease enter m or c."
+    elsif type == :white_or_black_on_bottom
+      puts "Would you like to play as white or black?\nPlease enter w or b."
+    elsif type == :light_or_dark_font
+      puts "Is your current terminal font light or dark?\nPlease enter l or d."
     end
     gets.chomp
   end
@@ -51,7 +55,11 @@ class Player
       %w[n b r q].include?(input.downcase)
     elsif type == :number_of_players
       %w[1 2].include?(input)
-    elsif type == :minimalist_mode
+    elsif type == :minimalist_or_checkerboard
+      %w[m c].include?(input)
+    elsif type == :white_or_black_on_bottom
+      %w[w b].include?(input)
+    elsif type == :light_or_dark_font
       %w[l d].include?(input.downcase)
     end
   end
@@ -72,8 +80,12 @@ class Player
               'piece'
             elsif type == :number_of_players
               'number of players'
-            elsif type == :minimalist_mode
-              'entry'
+            elsif type == :minimalist_or_checkerboard
+              'design'
+            elsif type == :white_or_black_on_bottom
+              'color'
+            elsif type == :light_or_dark_font
+              'type'
             end
     "That is not a valid #{entry}! Please enter a valid #{entry}."
   end
