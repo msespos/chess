@@ -51,28 +51,37 @@ class Game
   def play
     puts @player.intro_text
     @number_of_players = number_of_players
-    @board = Board.new(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_background)
+    @white_or_black_start = white_or_black_start
+    @minimalist_or_checkerboard = minimalist_or_checkerboard
+    @light_or_dark_font = light_or_dark_font
+    @board = Board.new(@white_or_black_start, @minimalist_or_checkerboard, @light_or_dark_font)
     display_board
     play_turn until game_over?
     end_of_game_announcement
   end
 
-  def minimalist_or_checkerboard
-    @player.user_input(:minimalist_or_checkerboard) == 'm' ? :minimalist : :checkerboard
-  end
-
-  def white_or_black_on_bottom
-    if @number_of_players == 1
-      @player.user_input(:white_or_black_on_bottom) == 'w' ? :white : :black
-    end
-  end
-
-  def light_or_dark_background
-    @player.user_input(:light_or_dark_font) == 'l' ? :light : :dark
-  end
-
   def number_of_players
-    @player.user_input(:number_of_players).to_i
+    @number_of_players = @player.user_input(:number_of_players).to_i
+  end
+
+  def white_or_black_start
+    return :white unless @number_of_players == 1
+
+    @player.user_input(:white_or_black_start) == 'w' ? :white : :black
+  end
+
+  def minimalist_or_checkerboard
+    @minimalist_or_checkerboard = if @player.user_input(:minimalist_or_checkerboard) == 'm'
+                                    :minimalist
+                                  else
+                                    :checkerboard
+                                  end
+  end
+
+  def light_or_dark_font
+    return :light unless @minimalist_or_checkerboard == :minimalist
+
+    @light_or_dark_font = @player.user_input(:light_or_dark_font) == 'l' ? :light : :dark
   end
 
   # used by #play to send the current playing field to the board and print the board
