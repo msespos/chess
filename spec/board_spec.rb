@@ -5,12 +5,12 @@
 require_relative '../lib/board.rb'
 
 RSpec.describe Board do
-  subject(:board) { described_class.new }
+  subject(:board) { described_class.new(:white, :minimalist, :dark) }
   describe '#initialize' do
     context 'when the board class is instantiated' do
-      it 'calls #initial_board' do
-        expect(board).to receive(:initial_board)
-        board.send(:initialize)
+      it 'calls #set_up_board' do
+        expect(board).to receive(:set_up_board)
+        board.send(:initialize, :white, :minimalist, :dark)
       end
     end
   end
