@@ -50,26 +50,28 @@ class Game
   # play the whole game
   def play
     puts @player.intro_text
+    @number_of_players = number_of_players
     @board = Board.new(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_background)
-    @number_of_players = obtain_number_of_players
     display_board
     play_turn until game_over?
     end_of_game_announcement
   end
 
   def minimalist_or_checkerboard
-    :minimalist
+    @player.user_input(:minimalist_or_checkerboard) == 'm' ? :minimalist : :checkerboard
   end
 
   def white_or_black_on_bottom
-    :white
+    if @number_of_players == 1
+      @player.user_input(:white_or_black_on_bottom) == 'w' ? :white : :black
+    end
   end
 
   def light_or_dark_background
-    @player.user_input(:minimalist_mode).to_sym == :l ? :light : :dark
+    @player.user_input(:light_or_dark_font) == 'l' ? :light : :dark
   end
 
-  def obtain_number_of_players
+  def number_of_players
     @player.user_input(:number_of_players).to_i
   end
 
