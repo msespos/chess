@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 # board class
 class Board
   MINIMALIST_DASH = ' -'
@@ -7,46 +9,51 @@ class Board
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
 
-  def initialize(minimalist_or_checkerboard, white_or_black_on_bottom, dark_or_light_background)
-    initial_white_pieces
-    initial_black_pieces
+  def initialize(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_background)
+    @minimalist_or_checkerboard = minimalist_or_checkerboard
+    @white_or_black_on_bottom = white_or_black_on_bottom
+    @light_or_dark_background = light_or_dark_background
+    # initial_white_minimalist_pieces
+    # initial_black_minimalist_pieces
+    initial_white_checkerboard_pieces
+    initial_black_checkerboard_pieces
     initial_board
   end
 
-#  def initial_white_pieces
-#    @w_pawn = @minimalist_mode == :light ? " \u2659".encode('utf-8') : " \u265F".encode('utf-8')
-#    @w_knight = @minimalist_mode == :light ? " \u2658".encode('utf-8') : " \u265E".encode('utf-8')
-#    @w_bishop = @minimalist_mode == :light ? " \u2657".encode('utf-8') : " \u265D".encode('utf-8')
-#    @w_rook = @minimalist_mode == :light ? " \u2656".encode('utf-8') : " \u265C".encode('utf-8')
-#    @w_queen = @minimalist_mode == :light ? " \u2655".encode('utf-8') : " \u265B".encode('utf-8')
-#    @w_king = @minimalist_mode == :light ? " \u2654".encode('utf-8') : " \u265A".encode('utf-8')
-#  end
-#
-#  def initial_black_pieces
-#    @b_pawn = @minimalist_mode == :light ? " \u265F".encode('utf-8') : " \u2659".encode('utf-8')
-#    @b_knight = @minimalist_mode == :light ? " \u265E".encode('utf-8') : " \u2658".encode('utf-8')
-#    @b_bishop = @minimalist_mode == :light ? " \u265D".encode('utf-8') : " \u2657".encode('utf-8')
-#    @b_rook = @minimalist_mode == :light ? " \u265C".encode('utf-8') : " \u2656".encode('utf-8')
-#    @b_queen = @minimalist_mode == :light ? " \u265B".encode('utf-8') : " \u2655".encode('utf-8')
-#    @b_king = @minimalist_mode == :light ? " \u265A".encode('utf-8') : " \u2654".encode('utf-8')
-#  end
-
-  def initial_white_pieces
-    @w_pawn = " \033[37m\u265F \033[0m"
-    @w_knight = " \033[37m\u265E \033[0m"
-    @w_bishop = " \033[37m\u265D \033[0m"
-    @w_rook = " \033[37m\u265C \033[0m"
-    @w_queen = " \033[37m\u265B \033[0m"
-    @w_king = " \033[37m\u265A \033[0m"
+  def initial_white_minimalist_pieces
+    @w_pawn = @light_or_dark_background == :light ? " \u2659".encode('utf-8') : " \u265F".encode('utf-8')
+    @w_knight = @light_or_dark_background == :light ? " \u2658".encode('utf-8') : " \u265E".encode('utf-8')
+    @w_bishop = @light_or_dark_background == :light ? " \u2657".encode('utf-8') : " \u265D".encode('utf-8')
+    @w_rook = @light_or_dark_background == :light ? " \u2656".encode('utf-8') : " \u265C".encode('utf-8')
+    @w_queen = @light_or_dark_background == :light ? " \u2655".encode('utf-8') : " \u265B".encode('utf-8')
+    @w_king = @light_or_dark_background == :light ? " \u2654".encode('utf-8') : " \u265A".encode('utf-8')
   end
 
-  def initial_black_pieces
-    @b_pawn = " \033[30m\u265F \033[0m"
-    @b_knight = " \033[30m\u265E \033[0m"
-    @b_bishop = " \033[30m\u265D \033[0m"
-    @b_rook = " \033[30m\u265C \033[0m"
-    @b_queen = " \033[30m\u265B \033[0m"
-    @b_king = " \033[30m\u265A \033[0m"
+  def initial_black_minimalist_pieces
+    @b_pawn = @light_or_dark_background == :light ? " \u265F".encode('utf-8') : " \u2659".encode('utf-8')
+    @b_knight = @light_or_dark_background == :light ? " \u265E".encode('utf-8') : " \u2658".encode('utf-8')
+    @b_bishop = @light_or_dark_background == :light ? " \u265D".encode('utf-8') : " \u2657".encode('utf-8')
+    @b_rook = @light_or_dark_background == :light ? " \u265C".encode('utf-8') : " \u2656".encode('utf-8')
+    @b_queen = @light_or_dark_background == :light ? " \u265B".encode('utf-8') : " \u2655".encode('utf-8')
+    @b_king = @light_or_dark_background == :light ? " \u265A".encode('utf-8') : " \u2654".encode('utf-8')
+  end
+
+  def initial_white_checkerboard_pieces
+    @w_pawn = "\033[37m \u265F \033[0m"
+    @w_knight = "\033[37m \u265E \033[0m"
+    @w_bishop = "\033[37m \u265D \033[0m"
+    @w_rook = "\033[37m \u265C \033[0m"
+    @w_queen = "\033[37m \u265B \033[0m"
+    @w_king = "\033[37m \u265A \033[0m"
+  end
+
+  def initial_black_checkerboard_pieces
+    @b_pawn = "\033[30m \u265F \033[0m"
+    @b_knight = "\033[30m \u265E \033[0m"
+    @b_bishop = "\033[30m \u265D \033[0m"
+    @b_rook = "\033[30m \u265C \033[0m"
+    @b_queen = "\033[30m \u265B \033[0m"
+    @b_king = "\033[30m \u265A \033[0m"
   end
 
   # build a board with initial setup
@@ -95,18 +102,18 @@ class Board
     (0..7).each do |column|
       (0..7).each do |row|
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
-                                        background(row, column)
+                                        square(row, column)
                                       else
                                         piece_as_string = playing_field[column][row].to_s
-                                        piece_as_symbol = instance_variable_get("@#{piece_as_string}")
-                                        background(row, column, piece_as_symbol)
+                                        piece = instance_variable_get("@#{piece_as_string}")
+                                        square(row, column, piece)
                                       end
       end
     end
   end
 
-  def background(row, column, piece = '   ')
-    if row % 2 == 0 && column % 2 == 1 || row % 2 == 1 && column % 2 == 0
+  def square(row, column, piece = '   ')
+    if row.even? && column.odd? || row.odd? && column.even?
       light_background_square(piece)
     else
       dark_background_square(piece)
@@ -114,11 +121,11 @@ class Board
   end
 
   def light_background_square(piece)
-    "\033[46m#{piece_as_symbol}\033[0m"
+    "\033[46m#{piece}\033[0m"
   end
 
   def dark_background_square(piece)
-    "\033[44m#{piece_as_symbol}\033[0m"
+    "\033[44m#{piece}\033[0m"
   end
 
   # add the pieces from the Game 4x8 array of captured pieces to the board
@@ -139,3 +146,5 @@ class Board
     [0, 1].include?(row) ? @board[row + 3][column + 10] = piece : @board[12 - row][column + 10] = piece
   end
 end
+
+# rubocop:enable Metrics/ClassLength
