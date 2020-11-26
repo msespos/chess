@@ -9,10 +9,15 @@ class Board
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
 
-  def initialize(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_font)
+  def initialize(white_or_black_start, minimalist_or_checkerboard, light_or_dark_font)
     @minimalist_or_checkerboard = minimalist_or_checkerboard
-    @white_or_black_on_bottom = white_or_black_on_bottom
     @light_or_dark_font = light_or_dark_font
+    @white_or_black_start = white_or_black_start
+    set_up_pieces
+    set_up_board
+  end
+
+  def set_up_pieces
     if @minimalist_or_checkerboard == :minimalist
       initial_white_minimalist_pieces
       initial_black_minimalist_pieces
@@ -20,7 +25,6 @@ class Board
       initial_white_checkerboard_pieces
       initial_black_checkerboard_pieces
     end
-    initial_board
   end
 
   def initial_white_minimalist_pieces
@@ -60,7 +64,7 @@ class Board
   end
 
   # build a board with initial setup
-  def initial_board
+  def set_up_board
     @board = Array.new(BOARD_HEIGHT) { Array.new(BOARD_WIDTH) { nil } }
     initial_board_letter_rows
     initial_board_minimalist_dashes
