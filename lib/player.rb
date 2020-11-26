@@ -70,7 +70,7 @@ class Player
 
     return false if input.length != 4
 
-    input =~ /[a-h][1-8][a-h][1-8]/
+    (input =~ /[a-h][1-8][a-h][1-8]/) == 0
   end
 
   # used by #user_input as the message for an invalid move
