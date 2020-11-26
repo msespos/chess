@@ -10,9 +10,9 @@ class Board
   BOARD_WIDTH = 18
 
   def initialize(white_or_black_start, minimalist_or_checkerboard, light_or_dark_font)
+    @white_or_black_start = white_or_black_start
     @minimalist_or_checkerboard = minimalist_or_checkerboard
     @light_or_dark_font = light_or_dark_font
-    @white_or_black_start = white_or_black_start
     set_up_pieces
     set_up_board
   end
