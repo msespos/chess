@@ -9,33 +9,36 @@ class Board
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
 
-  def initialize(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_background)
+  def initialize(minimalist_or_checkerboard, white_or_black_on_bottom, light_or_dark_font)
     @minimalist_or_checkerboard = minimalist_or_checkerboard
     @white_or_black_on_bottom = white_or_black_on_bottom
-    @light_or_dark_background = light_or_dark_background
-    # initial_white_minimalist_pieces
-    # initial_black_minimalist_pieces
-    initial_white_checkerboard_pieces
-    initial_black_checkerboard_pieces
+    @light_or_dark_font = light_or_dark_font
+    if @minimalist_or_checkerboard == :minimalist
+      initial_white_minimalist_pieces
+      initial_black_minimalist_pieces
+    elsif @minimalist_or_checkerboard == :checkerboard
+      initial_white_checkerboard_pieces
+      initial_black_checkerboard_pieces
+    end
     initial_board
   end
 
   def initial_white_minimalist_pieces
-    @w_pawn = @light_or_dark_background == :light ? " \u2659".encode('utf-8') : " \u265F".encode('utf-8')
-    @w_knight = @light_or_dark_background == :light ? " \u2658".encode('utf-8') : " \u265E".encode('utf-8')
-    @w_bishop = @light_or_dark_background == :light ? " \u2657".encode('utf-8') : " \u265D".encode('utf-8')
-    @w_rook = @light_or_dark_background == :light ? " \u2656".encode('utf-8') : " \u265C".encode('utf-8')
-    @w_queen = @light_or_dark_background == :light ? " \u2655".encode('utf-8') : " \u265B".encode('utf-8')
-    @w_king = @light_or_dark_background == :light ? " \u2654".encode('utf-8') : " \u265A".encode('utf-8')
+    @w_pawn = @light_or_dark_font == :light ? " \u265F" : " \u2659"
+    @w_knight = @light_or_dark_font == :light ? " \u265E" : " \u2658"
+    @w_bishop = @light_or_dark_font == :light ? " \u265D" : " \u2657"
+    @w_rook = @light_or_dark_font == :light ? " \u265C" : " \u2656"
+    @w_queen = @light_or_dark_font == :light ? " \u265B" : " \u2655"
+    @w_king = @light_or_dark_font == :light ? " \u265A" : " \u2654"
   end
 
   def initial_black_minimalist_pieces
-    @b_pawn = @light_or_dark_background == :light ? " \u265F".encode('utf-8') : " \u2659".encode('utf-8')
-    @b_knight = @light_or_dark_background == :light ? " \u265E".encode('utf-8') : " \u2658".encode('utf-8')
-    @b_bishop = @light_or_dark_background == :light ? " \u265D".encode('utf-8') : " \u2657".encode('utf-8')
-    @b_rook = @light_or_dark_background == :light ? " \u265C".encode('utf-8') : " \u2656".encode('utf-8')
-    @b_queen = @light_or_dark_background == :light ? " \u265B".encode('utf-8') : " \u2655".encode('utf-8')
-    @b_king = @light_or_dark_background == :light ? " \u265A".encode('utf-8') : " \u2654".encode('utf-8')
+    @b_pawn = @light_or_dark_font == :light ? " \u2659" : " \u265F"
+    @b_knight = @light_or_dark_font == :light ? " \u2658" : " \u265E"
+    @b_bishop = @light_or_dark_font == :light ? " \u2657" : " \u265D"
+    @b_rook = @light_or_dark_font == :light ? " \u2656" : " \u265C"
+    @b_queen = @light_or_dark_font == :light ? " \u2655" : " \u265B"
+    @b_king = @light_or_dark_font == :light ? " \u2654" : " \u265A"
   end
 
   def initial_white_checkerboard_pieces
@@ -69,7 +72,11 @@ class Board
   def initial_board_letter_rows
     [1, 12].each do |row|
       @board[row][0] = BLANK_SPOT
-      (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr + ' ' }
+      if @minimalist_or_checkerboard == :minimalist
+        (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr }
+      elsif @minimalist_or_checkerboard == :checkerboard
+        (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr + ' ' }
+      end
     end
   end
 
@@ -102,11 +109,19 @@ class Board
     (0..7).each do |column|
       (0..7).each do |row|
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
-                                        square(row, column)
+                                        if @minimalist_or_checkerboard == :minimalist
+                                          MINIMALIST_DASH
+                                        elsif @minimalist_or_checkerboard == :checkerboard
+                                          square(row, column)
+                                        end
                                       else
                                         piece_as_string = playing_field[column][row].to_s
                                         piece = instance_variable_get("@#{piece_as_string}")
-                                        square(row, column, piece)
+                                        if @minimalist_or_checkerboard == :minimalist
+                                          piece
+                                        elsif @minimalist_or_checkerboard == :checkerboard
+                                          square(row, column, piece)
+                                        end
                                       end
       end
     end
