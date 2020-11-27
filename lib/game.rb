@@ -93,7 +93,7 @@ class Game
   # used by #play to send the current playing field to the board and print the board
   def display_board
     playing_field = @bottom_color == :white ? @playing_field : invert_playing_field(@playing_field)
-    @board.overwrite_playing_field(@playing_field)
+    @board.overwrite_playing_field(playing_field)
     captured_pieces = @bottom_color == :white ? @captured_pieces : invert_captured_pieces(@captured_pieces)
     @board.add_captured_pieces(captured_pieces)
     puts @board
