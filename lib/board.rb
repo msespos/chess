@@ -54,7 +54,7 @@ class Board
 
   def checkerboard_pieces(color)
     piece_prefix = color == :white ? '@w_' : '@b_'
-    code_prefix = color == :black ? "\033[30m" : "\033[37m"
+    code_prefix = color == :white ? "\033[37m" : "\033[30m"
     code_suffix = " \033[0m"
     SHADED_PIECES.each do |piece_as_symbol, code|
       piece = piece_prefix + piece_as_symbol.to_s
