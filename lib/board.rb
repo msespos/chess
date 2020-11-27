@@ -8,6 +8,18 @@ class Board
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
+  SHADED_PIECES = { pawn: " \u265F",
+                    knight: " \u265E",
+                    bishop: " \u265D",
+                    rook: " \u265C",
+                    queen: " \u265B",
+                    king: " \u265A" }.freeze
+  OUTLINED_PIECES = { pawn: " \u2659",
+                      knight: " \u2658",
+                      bishop: " \u2657",
+                      rook: " \u2656",
+                      queen: " \u2655",
+                      king: " \u2654" }.freeze
 
   def initialize(bottom_color, minimalist_or_checkerboard, light_or_dark_font)
     @bottom_color = bottom_color
@@ -19,30 +31,25 @@ class Board
 
   def set_up_pieces
     if @minimalist_or_checkerboard == :minimalist
-      initial_white_minimalist_pieces
-      initial_black_minimalist_pieces
+      minimalist_pieces(:white)
+      minimalist_pieces(:black)
     elsif @minimalist_or_checkerboard == :checkerboard
       initial_white_checkerboard_pieces
       initial_black_checkerboard_pieces
     end
   end
 
-  def initial_white_minimalist_pieces
-    @w_pawn = @light_or_dark_font == :light ? " \u265F" : " \u2659"
-    @w_knight = @light_or_dark_font == :light ? " \u265E" : " \u2658"
-    @w_bishop = @light_or_dark_font == :light ? " \u265D" : " \u2657"
-    @w_rook = @light_or_dark_font == :light ? " \u265C" : " \u2656"
-    @w_queen = @light_or_dark_font == :light ? " \u265B" : " \u2655"
-    @w_king = @light_or_dark_font == :light ? " \u265A" : " \u2654"
-  end
-
-  def initial_black_minimalist_pieces
-    @b_pawn = @light_or_dark_font == :light ? " \u2659" : " \u265F"
-    @b_knight = @light_or_dark_font == :light ? " \u2658" : " \u265E"
-    @b_bishop = @light_or_dark_font == :light ? " \u2657" : " \u265D"
-    @b_rook = @light_or_dark_font == :light ? " \u2656" : " \u265C"
-    @b_queen = @light_or_dark_font == :light ? " \u2655" : " \u265B"
-    @b_king = @light_or_dark_font == :light ? " \u2654" : " \u265A"
+  def minimalist_pieces(color)
+    if color == :white
+      pieces = @light_or_dark_font == :light ? SHADED_PIECES : OUTLINED_PIECES
+    elsif color == :black
+      pieces = @light_or_dark_font == :light ? OUTLINED_PIECES : SHADED_PIECES
+    end
+    prefix = color == :white ? '@w_' : '@b_'
+    pieces.each do |piece_as_symbol, code|
+      piece = prefix + piece_as_symbol.to_s
+      instance_variable_set(piece, code)
+    end
   end
 
   def initial_white_checkerboard_pieces
