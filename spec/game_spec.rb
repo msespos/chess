@@ -82,6 +82,7 @@ RSpec.describe Game do
     context 'when a playing field is passed in' do
       it 'calls Board#overwrite_playing_field with the playing field' do
         game.instance_variable_set(:@board, board_field)
+        game.instance_variable_set(:@bottom_color, :white)
         playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
                          [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                          [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
@@ -1285,6 +1286,7 @@ RSpec.describe Game do
     context 'when white is put in Fool\'s Mate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'd8h4', 'q')
@@ -1300,6 +1302,7 @@ RSpec.describe Game do
     context 'when black is put in Reversed Fool\'s Mate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'f7f6', 'd2d4', 'g7g5', 'd1h5', 'q')
@@ -1315,6 +1318,7 @@ RSpec.describe Game do
     context 'when black is checkmated in Mike\'s Mate I (with plenty of invalid moves)' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'e2e3', 'e7e6', 'f1b4',
@@ -1335,6 +1339,7 @@ RSpec.describe Game do
     context 'when black is checkmated in Scholar\'s Mate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'b8c6', 'd1h5',
@@ -1351,6 +1356,7 @@ RSpec.describe Game do
     context 'when white makes a bunch of invalid moves and then is checkmated in back rank mate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('a2a5', 'b3b8', 'e1d1', 'f1h3', 'h7h6',
@@ -1376,6 +1382,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][4] = :b_king
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return('c4d4', 'e1e2', 'd4c3', 'e2f1', 'c3c2',
@@ -1400,6 +1407,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return("Katie\'s", 'awesome', 'b1a1', 'f3f1', 'q')
@@ -1415,6 +1423,7 @@ RSpec.describe Game do
     context 'when replicating a bug that put black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('g2g3', 'd7d6', 'g3g4', 'd6d5', 'g4g5',
@@ -1431,6 +1440,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'f2f4', 'q')
@@ -1446,6 +1456,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'b7b6', 'c2c4', 'q')
@@ -1461,6 +1472,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b6', 'f2f4', 'q')
@@ -1476,6 +1488,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'f2f4', 'q')
@@ -1491,6 +1504,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'd2d4', 'q')
@@ -1506,6 +1520,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4e5', 'b7b5', 'h2h4', 'q')
@@ -1521,6 +1536,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'c7c5', 'q')
@@ -1536,6 +1552,7 @@ RSpec.describe Game do
     context 'when trying to replicate a bug that puts black in checkmate by mistake' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'g1f3', 'd5d4', 'e4e5', 'a7a5', 'q')
@@ -1551,6 +1568,7 @@ RSpec.describe Game do
     context 'when white captures en passant and black checkmates' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('g2g4', 'e7e5', 'g4g5', 'h7h5', 'g5h6',
@@ -1567,6 +1585,7 @@ RSpec.describe Game do
     context 'when black tries an illegal move then captures en passant and checkmates' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('a2a4', 'g7g5', 'b1c3', 'g5g4', 'f2f4',
@@ -1584,6 +1603,7 @@ RSpec.describe Game do
     context 'when white and black both kingside castle and white then checkmates' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1c4', 'f8c5', 'g1f3',
@@ -1602,6 +1622,7 @@ RSpec.describe Game do
     context 'when white and black both queenside castle and white then checkmates' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('d2d4', 'd7d5', 'c1e3', 'd8d6', 'e1c1',
@@ -1625,6 +1646,7 @@ RSpec.describe Game do
     context 'when white tries to kingside castle and cannot and black then checkmates' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('f2f4', 'c7c6', 'e2e4', 'd8b6', 'g1f3',
@@ -1642,6 +1664,7 @@ RSpec.describe Game do
     context 'when replicating a bug in which White should not be in checkmate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:light)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'd2d4', 'e5d4', 'c1g5',
@@ -2573,6 +2596,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][3] = :b_king
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('typo', 'e3e2', 'g2h1', 'e2f2')
       end
@@ -2594,6 +2618,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[5][3] = :w_rook
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('d3c3', 'h1a1', 'c3d3', 'a9b9', 'a1c1')
       end
@@ -2615,6 +2640,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][2] = :w_rook
         game.instance_variable_set(:@current_player, :white)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('g3g2', 'c2c23', 'c2b1', 'e3e1')
       end
@@ -2636,6 +2662,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('b1a1', 'd2c2')
       end
@@ -2654,6 +2681,7 @@ RSpec.describe Game do
     context 'when black resigns before being put in Fool\'s Mate' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('f2f3', 'e7e5', 'g2g4', 'q')
       end
@@ -2675,6 +2703,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][1] = :w_queen
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('katie', 'b1a1', 'q')
       end
@@ -2699,6 +2728,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, mikes_playing_field)
         game.instance_variable_set(:@current_player, :white)
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:checkerboard)
         allow(game).to receive(:player_move).and_return('e4e5', 'c6f3', 'f6f8', 'e7f8', 'c1d1',
                                                         'f3f4', 'g5h6', 'f4h6', 'd1d4', 'h6g6',
@@ -2721,6 +2751,7 @@ RSpec.describe Game do
     context 'when replicating a bug with displaying captured pieces' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f1a6', 'b7a6', 'q')
@@ -2737,6 +2768,7 @@ RSpec.describe Game do
     context 'when replicating a bug with displaying captured pieces' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return('e2e4', 'd7d5', 'e4d5', 'q')
@@ -2753,6 +2785,7 @@ RSpec.describe Game do
     context 'when replicating a bug with displaying captured pieces' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return('e2e4', 'e7e5', 'f2f4', 'e5f4', 'q')
@@ -2769,6 +2802,7 @@ RSpec.describe Game do
     context 'when replicating a bug with displaying captured pieces' do
       before do
         allow(game).to receive(:number_of_players).and_return(2)
+        allow(game).to receive(:bottom_color).and_return(:white)
         allow(game).to receive(:minimalist_or_checkerboard).and_return(:minimalist)
         allow(game).to receive(:light_or_dark_font).and_return(:dark)
         allow(game).to receive(:player_move).and_return('d2d4', 'e7e5', 'd4e5', 'f8b4', 'e1d2',
