@@ -34,8 +34,8 @@ class Board
       minimalist_pieces(:white)
       minimalist_pieces(:black)
     elsif @minimalist_or_checkerboard == :checkerboard
-      initial_white_checkerboard_pieces
-      initial_black_checkerboard_pieces
+      white_checkerboard_pieces
+      black_checkerboard_pieces
     end
   end
 
@@ -52,7 +52,7 @@ class Board
     end
   end
 
-  def initial_white_checkerboard_pieces
+  def white_checkerboard_pieces
     @w_pawn = "\033[37m \u265F \033[0m"
     @w_knight = "\033[37m \u265E \033[0m"
     @w_bishop = "\033[37m \u265D \033[0m"
@@ -61,7 +61,7 @@ class Board
     @w_king = "\033[37m \u265A \033[0m"
   end
 
-  def initial_black_checkerboard_pieces
+  def black_checkerboard_pieces
     @b_pawn = "\033[30m \u265F \033[0m"
     @b_knight = "\033[30m \u265E \033[0m"
     @b_bishop = "\033[30m \u265D \033[0m"
