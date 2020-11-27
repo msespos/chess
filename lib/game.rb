@@ -90,7 +90,8 @@ class Game
   def display_board
     playing_field = @bottom_color == :white ? @playing_field : invert_playing_field(@playing_field)
     @board.overwrite_playing_field(playing_field)
-    @board.add_captured_pieces(@captured_pieces)
+    captured_pieces = @bottom_color == :white ? @captured_pieces : invert_captured_pieces(@captured_pieces)
+    @board.add_captured_pieces(captured_pieces)
     puts @board
   end
 
@@ -99,6 +100,20 @@ class Game
     (0..7).each do |column|
       (0..7).each do |row|
         inverted[column][row] = playing_field[7 - column][7 - row]
+      end
+    end
+    inverted
+  end
+
+  def invert_captured_pieces(captured_pieces)
+    inverted = Array.new(4) { Array.new(8) { nil } }
+    (0..3).each do |row|
+      (0..7).each do |column|
+        if [0, 1].include?(row)
+          inverted[row][column] = captured_pieces[row + 2][column]
+        elsif [2, 3].include?(row)
+          inverted[row][column] = captured_pieces[row - 2][column]
+        end
       end
     end
     inverted
