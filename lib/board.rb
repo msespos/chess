@@ -34,8 +34,8 @@ class Board
       minimalist_pieces(:white)
       minimalist_pieces(:black)
     elsif @minimalist_or_checkerboard == :checkerboard
-      white_checkerboard_pieces
-      black_checkerboard_pieces
+      checkerboard_pieces(:white)
+      checkerboard_pieces(:black)
     end
   end
 
@@ -52,22 +52,15 @@ class Board
     end
   end
 
-  def white_checkerboard_pieces
-    @w_pawn = "\033[37m \u265F \033[0m"
-    @w_knight = "\033[37m \u265E \033[0m"
-    @w_bishop = "\033[37m \u265D \033[0m"
-    @w_rook = "\033[37m \u265C \033[0m"
-    @w_queen = "\033[37m \u265B \033[0m"
-    @w_king = "\033[37m \u265A \033[0m"
-  end
-
-  def black_checkerboard_pieces
-    @b_pawn = "\033[30m \u265F \033[0m"
-    @b_knight = "\033[30m \u265E \033[0m"
-    @b_bishop = "\033[30m \u265D \033[0m"
-    @b_rook = "\033[30m \u265C \033[0m"
-    @b_queen = "\033[30m \u265B \033[0m"
-    @b_king = "\033[30m \u265A \033[0m"
+  def checkerboard_pieces(color)
+    piece_prefix = color == :white ? '@w_' : '@b_'
+    code_prefix = color == :black ? "\033[30m" : "\033[37m"
+    code_suffix = " \033[0m"
+    SHADED_PIECES.each do |piece_as_symbol, code|
+      piece = piece_prefix + piece_as_symbol.to_s
+      full_code = code_prefix + code + code_suffix
+      instance_variable_set(piece, full_code)
+    end
   end
 
   # build a board with initial setup
