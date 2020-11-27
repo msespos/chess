@@ -34,12 +34,34 @@ class Game
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     @en_passant_column = nil
     update_castling_piece_states(:initial)
+    initial_playing_field
+  end
+
+  # set up the playing field for the start of the game
+  def initial_playing_field
+    @playing_field = Array.new(8) { Array.new(8) { nil } }
+    @playing_field[0] = %i[w_rook w_knight w_bishop w_queen w_king w_bishop w_knight w_rook]
+    @playing_field[1] = %i[w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn]
+    @playing_field[6] = %i[b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn]
+    @playing_field[7] = %i[b_rook b_knight b_bishop b_queen b_king b_bishop b_knight b_rook]
+    @playing_field = @playing_field.transpose
+  end
+
+  # play the whole game
+  def play
+    obtain_initial_player_input
+    @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
+    puts @player.intro_text
+    display_board
+    play_turn until game_over?
+    end_of_game_announcement
+  end
+
+  def obtain_initial_player_input
     @number_of_players = number_of_players
     @bottom_color = bottom_color
     @minimalist_or_checkerboard = minimalist_or_checkerboard
     @light_or_dark_font = light_or_dark_font
-    @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
-    initial_playing_field
   end
 
   def number_of_players
@@ -68,28 +90,10 @@ class Game
     @light_or_dark_font = @player.user_input(:light_or_dark_font) == 'l' ? :light : :dark
   end
 
-  # set up the playing field for the start of the game
-  def initial_playing_field
-    @playing_field = Array.new(8) { Array.new(8) { nil } }
-    @playing_field[0] = %i[w_rook w_knight w_bishop w_queen w_king w_bishop w_knight w_rook]
-    @playing_field[1] = %i[w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn w_pawn]
-    @playing_field[6] = %i[b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn b_pawn]
-    @playing_field[7] = %i[b_rook b_knight b_bishop b_queen b_king b_bishop b_knight b_rook]
-    @playing_field = @playing_field.transpose
-  end
-
-  # play the whole game
-  def play
-    puts @player.intro_text
-    display_board
-    play_turn until game_over?
-    end_of_game_announcement
-  end
-
   # used by #play to send the current playing field to the board and print the board
   def display_board
     playing_field = @bottom_color == :white ? @playing_field : invert_playing_field(@playing_field)
-    @board.overwrite_playing_field(playing_field)
+    @board.overwrite_playing_field(@playing_field)
     captured_pieces = @bottom_color == :white ? @captured_pieces : invert_captured_pieces(@captured_pieces)
     @board.add_captured_pieces(captured_pieces)
     puts @board
