@@ -113,12 +113,17 @@ class Game
     inverted = Array.new(4) { Array.new(8) { nil } }
     (0..3).each do |row|
       (0..7).each do |column|
-        if [0, 1].include?(row)
-          inverted[row][column] = captured_pieces[row + 2][column]
-        elsif [2, 3].include?(row)
-          inverted[row][column] = captured_pieces[row - 2][column]
-        end
+        inverted = fill_inverted_pieces_array(row, column, captured_pieces, inverted)
       end
+    end
+    inverted
+  end
+
+  def fill_inverted_pieces_array(row, column, captured_pieces, inverted)
+    if [0, 1].include?(row)
+      inverted[row][column] = captured_pieces[row + 2][column]
+    elsif [2, 3].include?(row)
+      inverted[row][column] = captured_pieces[row - 2][column]
     end
     inverted
   end
