@@ -170,18 +170,18 @@ RSpec.describe Board do
     end
   end
 
-  describe 'square' do
+  describe '#checkerboard_square' do
     context 'when it creates a light-colored background square' do
       it 'prints "\033[46m   \033[0m"' do
-        background_square = board.square(2, 3)
-        expect(background_square).to eq("\033[46m   \033[0m")
+        square = board.checkerboard_square(2, 3)
+        expect(square).to eq("\033[46m   \033[0m")
       end
     end
 
     context 'when it creates a dark-colored square with a white pawn on it' do
       it "prints '\033[44m#{@w_pawn}\033[0m'" do
-        background_square = board.square(7, 7, @w_pawn)
-        expect(background_square).to eq("\033[44m#{@w_pawn}\033[0m")
+        square = board.checkerboard_square(7, 7, @w_pawn)
+        expect(square).to eq("\033[44m#{@w_pawn}\033[0m")
       end
     end
   end
