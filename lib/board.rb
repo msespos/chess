@@ -134,7 +134,7 @@ class Board
     string
   end
 
-  # used by Game to overwrite the 8x8 playing field section of the board using an 8x8 
+  # used by Game to overwrite the 8x8 playing field section of the board using an 8x8
   # playing field input from Game by accessing either nil or a piece from the playing field,
   # and converting nil or the piece symbols to Board constants that represent empty squares or the pieces
   def overwrite_playing_field(playing_field)
