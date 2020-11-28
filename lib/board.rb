@@ -74,22 +74,21 @@ class Board
   # used by #initial_board to generate the rows of letters
   # at the top and bottom of the board
   def letter_rows
+    spacing = @minimalist_or_checkerboard == :minimalist ? nil : ' '
     [1, 12].each do |row|
-      @board[row][0] = BLANK_SPOT
-      if @bottom_color == :white
-        if @minimalist_or_checkerboard == :minimalist
-          (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr }
-        elsif @minimalist_or_checkerboard == :checkerboard
-          (0..7).each { |column| @board[row][column + 1] = ' ' + (column + 97).chr + ' ' }
-        end
-      elsif @bottom_color == :black
-        if @minimalist_or_checkerboard == :minimalist
-          (0..7).each { |column| @board[row][column + 1] = ' ' + (104 - column).chr }
-        elsif @minimalist_or_checkerboard == :checkerboard
-          (0..7).each { |column| @board[row][column + 1] = ' ' + (104 - column).chr + ' ' }
-        end
+      (0..7).each do |column|
+        @board[row][0] = BLANK_SPOT
+        @bottom_color == :white ? rightwards_letters(spacing, row, column) : leftwards_letters(spacing, row, column)
       end
     end
+  end
+
+  def rightwards_letters(spacing, row, column)
+    @board[row][column + 1] = ' ' + (column + 97).chr + spacing
+  end
+
+  def leftwards_letters(spacing, row, column)
+    @board[row][column + 1] = ' ' + (104 - column).chr + spacing
   end
 
   # used by #initial_board to generate the minimalist dashes in the middle of the board
