@@ -8,9 +8,52 @@ RSpec.describe Board do
   subject(:board) { described_class.new(:white, :minimalist, :dark) }
   describe '#initialize' do
     context 'when the board class is instantiated' do
+      it 'calls #set_up_pieces' do
+        expect(board).to receive(:set_up_pieces)
+        board.send(:initialize, :white, :minimalist, :dark)
+      end
+
       it 'calls #set_up_board' do
         expect(board).to receive(:set_up_board)
         board.send(:initialize, :white, :minimalist, :dark)
+      end
+    end
+  end
+
+  describe '#minimalist_pieces' do
+    context 'when :white is passed in and a light font has been selected' do
+      it 'sets @w_pawn to " \u265F"' do
+        board.instance_variable_set(:@light_or_dark_font, :light)
+        board.minimalist_pieces(:white)
+        w_pawn = board.instance_variable_get(:@w_pawn)
+        expect(w_pawn).to eq(" \u265F")
+      end
+    end
+
+    context 'when :black is passed in and a dark font has been selected' do
+      it 'sets @b_pawn to " \u265F"' do
+        board.instance_variable_set(:@light_or_dark_font, :dark)
+        board.minimalist_pieces(:black)
+        b_pawn = board.instance_variable_get(:@b_pawn)
+        expect(b_pawn).to eq(" \u265F")
+      end
+    end
+  end
+
+  describe '#checkerboard_pieces' do
+    context 'when :white is passed in' do
+      it 'sets @w_pawn to "\033[37m \u265F \033[0m"' do
+        board.checkerboard_pieces(:white)
+        w_pawn = board.instance_variable_get(:@w_pawn)
+        expect(w_pawn).to eq("\033[37m \u265F \033[0m")
+      end
+    end
+
+    context 'when :black is passed in' do
+      it 'sets @b_pawn to "\033[30m \u265F \033[0m"' do
+        board.checkerboard_pieces(:black)
+        b_pawn = board.instance_variable_get(:@b_pawn)
+        expect(b_pawn).to eq("\033[30m \u265F \033[0m")
       end
     end
   end
@@ -39,8 +82,8 @@ RSpec.describe Board do
   end
 
   describe '#overwrite_playing_field' do
-    context 'when it receives an initial board from Game' do
-      it 'prints out the initial board' do
+    context 'when it receives an initial minimalist board from Game' do
+      it 'prints out the initial minimalist board' do
         board.overwrite_playing_field([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
                                        [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                                        [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
@@ -68,8 +111,8 @@ RSpec.describe Board do
       end
     end
 
-    context 'when it receives a board with a few opening moves from Game' do
-      it 'prints out the current board' do
+    context 'when it receives a minimalist board with a few opening moves from Game' do
+      it 'prints out the current minimalist board' do
         board.overwrite_playing_field([[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
                                        [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, nil],
                                        [nil, :w_pawn, nil, nil, nil, :b_knight, :b_pawn, :b_bishop],
@@ -97,8 +140,8 @@ RSpec.describe Board do
       end
     end
 
-    context 'when it receives a board with an endgame situation' do
-      it 'prints out the current board' do
+    context 'when it receives a minimalist board with an endgame situation' do
+      it 'prints out the current minimalist board' do
         board.overwrite_playing_field([[nil, nil, nil, nil, :b_pawn, nil, nil, nil],
                                        [:w_king, nil, :w_pawn, nil, nil, nil, nil, nil],
                                        [nil, nil, :w_pawn, nil, nil, nil, nil, nil],
@@ -123,6 +166,22 @@ RSpec.describe Board do
      a b c d e f g h
 
         BOARD
+      end
+    end
+  end
+
+  describe 'square' do
+    context 'when it creates a light-colored background square' do
+      it 'prints "\033[46m   \033[0m"' do
+        background_square = board.square(2, 3)
+        expect(background_square).to eq("\033[46m   \033[0m")
+      end
+    end
+
+    context 'when it creates a dark-colored square with a white pawn on it' do
+      it "prints '\033[44m#{@w_pawn}\033[0m'" do
+        background_square = board.square(7, 7, @w_pawn)
+        expect(background_square).to eq("\033[44m#{@w_pawn}\033[0m")
       end
     end
   end
