@@ -133,25 +133,25 @@ class Board
     (0..7).each do |column|
       (0..7).each do |row|
         @board[row + 3][column + 1] = if playing_field[column][row].nil?
-                                        if @minimalist_or_checkerboard == :minimalist
-                                          MINIMALIST_DASH
-                                        elsif @minimalist_or_checkerboard == :checkerboard
-                                          square(row, column)
-                                        end
+                                        empty_square(row, column)
                                       else
-                                        piece_as_string = playing_field[column][row].to_s
-                                        piece = instance_variable_get("@#{piece_as_string}")
-                                        if @minimalist_or_checkerboard == :minimalist
-                                          piece
-                                        elsif @minimalist_or_checkerboard == :checkerboard
-                                          square(row, column, piece)
-                                        end
+                                        square_with_piece(row, column, playing_field)
                                       end
       end
     end
   end
 
-  def square(row, column, piece = '   ')
+  def empty_square(row, column)
+    @minimalist_or_checkerboard == :minimalist ? MINIMALIST_DASH : checkerboard_square(row, column)
+  end
+
+  def square_with_piece(row, column, playing_field)
+    piece_as_string = playing_field[column][row].to_s
+    piece = instance_variable_get("@#{piece_as_string}")
+    @minimalist_or_checkerboard == :minimalist ? piece : checkerboard_square(row, column, piece)
+  end
+
+  def checkerboard_square(row, column, piece = '   ')
     if row.even? && column.odd? || row.odd? && column.even?
       light_background_square(piece)
     else
