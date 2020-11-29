@@ -31,86 +31,86 @@ RSpec.describe Player do
     end
   end
 
-  describe '#input_in_right_format?' do
+  describe '#input_in_correct_format?' do
     context 'it is a move input in the right format' do
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('a1a3', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('a1a3', :move)
+        expect(correct_format_or_not).to eq(true)
       end
 
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('b3h4', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('b3h4', :move)
+        expect(correct_format_or_not).to eq(true)
       end
     end
 
     context 'it is a move input of the wrong length' do
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('a1a3a5', :move)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('a1a3a5', :move)
+        expect(correct_format_or_not).to eq(false)
       end
 
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('b3', :move)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('b3', :move)
+        expect(correct_format_or_not).to eq(false)
       end
     end
 
     context 'it is a move input in the wrong format' do
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('aabb', :move)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('aabb', :move)
+        expect(correct_format_or_not).to eq(false)
       end
 
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('b0h9', :move)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('b0h9', :move)
+        expect(correct_format_or_not).to eq(false)
       end
     end
 
     context 'it is a piece input in the right format' do
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('q', :piece)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('q', :piece)
+        expect(correct_format_or_not).to eq(true)
       end
 
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('n', :piece)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('n', :piece)
+        expect(correct_format_or_not).to eq(true)
       end
     end
 
     context 'it is a move input in the right format' do
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('q', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('q', :move)
+        expect(correct_format_or_not).to eq(true)
       end
 
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('Q', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('Q', :move)
+        expect(correct_format_or_not).to eq(true)
       end
 
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('S', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('S', :move)
+        expect(correct_format_or_not).to eq(true)
       end
 
       it 'returns true' do
-        right_format_or_not = player.input_in_right_format?('l', :move)
-        expect(right_format_or_not).to eq(true)
+        correct_format_or_not = player.input_in_correct_format?('l', :move)
+        expect(correct_format_or_not).to eq(true)
       end
     end
 
     context 'it is a move input of the wrong length' do
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('a1a3a5', :piece)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('a1a3a5', :piece)
+        expect(correct_format_or_not).to eq(false)
       end
 
       it 'returns false' do
-        right_format_or_not = player.input_in_right_format?('k', :piece)
-        expect(right_format_or_not).to eq(false)
+        correct_format_or_not = player.input_in_correct_format?('k', :piece)
+        expect(correct_format_or_not).to eq(false)
       end
     end
   end
