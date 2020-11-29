@@ -8,15 +8,14 @@ class Player
               piece: "You can promote a pawn!\nPlease enter n, b, r or q to promote.",
               number_of_players: 'How many are playing? 1 or 2?',
               minimalist_or_checkerboard: "Would you like a minimalist or checkerboard design?\n\
-                                           Please enter m or c.",
+Please enter m or c.",
               bottom_color_one_player: "Would you like to play as white or black?\nPlease enter w or b.",
               bottom_color_two_player: "Would you like white or black at the bottom of the board?\n\
-                                        Please enter w or b.",
+Please enter w or b.",
               light_or_dark_font: "Is your current terminal font light or dark?\nPlease enter l or d.\n\
-                                  (This will allow for the best display of the minimalist board.)" }.freeze
+(This will allow for the best display of the minimalist board.)" }.freeze
 
   INPUT_FORMATS = { piece: %w[n b r q],
-                    number_of_players: %w[1 2],
                     minimalist_or_checkerboard: %w[m c],
                     bottom_color_one_player: %w[w b],
                     bottom_color_two_player: %w[w b],
@@ -67,11 +66,14 @@ class Player
   def input_in_correct_format?(input, type)
     if type == :move
       move_in_correct_format?(input)
+    elsif type == :number_of_players
+      %w[1 2].include?(input)
     else
       INPUT_FORMATS[type].include?(input.downcase)
     end
   end
 
+  # used by #input_in_correct_format? to test the move for the correct format
   def move_in_correct_format?(input)
     return true if %w[q s l].include?(input.downcase)
 
