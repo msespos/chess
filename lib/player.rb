@@ -2,6 +2,32 @@
 
 # player class
 class Player
+  PROMPTS = { move: 'Please enter your move.',
+              piece: "You can promote a pawn!\nPlease enter n, b, r or q to promote.",
+              number_of_players: 'How many are playing? 1 or 2?',
+              minimalist_or_checkerboard: "Would you like a minimalist or checkerboard design?\n\
+                                           Please enter m or c.",
+              bottom_color_one_player: "Would you like to play as white or black?\nPlease enter w or b.",
+              bottom_color_two_player: "Would you like white or black at the bottom of the board?\n\
+                                        Please enter w or b.",
+              light_or_dark_font: "Is your current terminal font light or dark?\nPlease enter l or d.\n\
+                                  (This will allow for the best display of the minimalist board.)" }.freeze
+
+  INPUT_FORMATS = { piece: %w[n b r q],
+                    number_of_players: %w[1 2],
+                    minimalist_or_checkerboard: %w[m c],
+                    bottom_color_one_player: %w[w b],
+                    bottom_color_two_player: %w[w b],
+                    light_or_dark_font: %w[l d] }.freeze
+
+  INVALID_MOVE_MESSAGES = { move: 'move',
+                            piece: 'piece',
+                            number_of_players: 'number of players',
+                            minimalist_or_checkerboard: 'design',
+                            bottom_color_one_player: 'color',
+                            bottom_color_two_player: 'color',
+                            light_or_dark_font: 'type' }.freeze
+
   # used by Game#play
   def intro_text
     'Intro text and Intro board'
@@ -21,7 +47,7 @@ class Player
   # and check it, prompting and re-obtaining if invalid input is entered
   def user_input(type)
     input = obtain_user_input(type)
-    until input_in_right_format?(input, type)
+    until input_in_correct_format?(input, type)
       puts invalid_move_message(type)
       input = obtain_user_input(type)
     end
@@ -30,66 +56,31 @@ class Player
 
   # used by #user_input to get the player's move before checking it
   def obtain_user_input(type)
-    if type == :move
-      puts 'Please enter your move.'
-    elsif type == :piece
-      puts "You can promote a pawn!\nPlease enter n, b, r or q to promote."
-    elsif type == :number_of_players
-      puts 'How many are playing? 1 or 2?'
-    elsif type == :minimalist_or_checkerboard
-      puts "Would you like a minimalist or checkerboard design?\nPlease enter m or c."
-    elsif type == :bottom_color_one_player
-      puts "Would you like to play as white or black?\nPlease enter w or b."
-    elsif type == :bottom_color_two_player
-      puts "Would you like white or black at the bottom of the board?\nPlease enter w or b."
-    elsif type == :light_or_dark_font
-      puts "Is your current terminal font light or dark?\nPlease enter l or d.\n\
-(This will allow for the best display of the minimalist board.)"
-    end
+    puts PROMPTS[type]
     gets.chomp
   end
 
   # used by #user_input to check if the move is in algebraic notation (e.g. a1a3),
   # or if type is :piece, to check that the piece is one of n, b, r, and q
-  def input_in_right_format?(input, type)
+  def input_in_correct_format?(input, type)
     if type == :move
-      move_in_right_format?(input)
-    elsif type == :piece
-      %w[n b r q].include?(input.downcase)
-    elsif type == :number_of_players
-      %w[1 2].include?(input)
-    elsif type == :minimalist_or_checkerboard
-      %w[m c].include?(input)
-    elsif type == :bottom_color_one_player || type == :bottom_color_two_player
-      %w[w b].include?(input)
-    elsif type == :light_or_dark_font
-      %w[l d].include?(input.downcase)
+      move_in_correct_format?(input)
+    else
+      INPUT_FORMATS[type].include?(input.downcase)
     end
   end
 
-  def move_in_right_format?(input)
+  def move_in_correct_format?(input)
     return true if %w[q s l].include?(input.downcase)
 
     return false if input.length != 4
 
-    (input =~ /[a-h][1-8][a-h][1-8]/) == 0
+    (input =~ /[a-h][1-8][a-h][1-8]/).zero?
   end
 
   # used by #user_input as the message for an invalid move
   def invalid_move_message(type)
-    entry = if type == :move
-              'move'
-            elsif type == :piece
-              'piece'
-            elsif type == :number_of_players
-              'number of players'
-            elsif type == :minimalist_or_checkerboard
-              'design'
-            elsif type == :bottom_color_one_player || type == :bottom_color_two_player
-              'color'
-            elsif type == :light_or_dark_font
-              'type'
-            end
+    entry = INVALID_MOVE_MESSAGES[type]
     "That is not a valid #{entry}! Please enter a valid #{entry}."
   end
 
