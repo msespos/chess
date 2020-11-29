@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/NumericPredicate
+
 # player class
 class Player
   PROMPTS = { move: 'Please enter your move.',
@@ -75,7 +77,7 @@ class Player
 
     return false if input.length != 4
 
-    (input =~ /[a-h][1-8][a-h][1-8]/).zero?
+    (input =~ /[a-h][1-8][a-h][1-8]/) == 0
   end
 
   # used by #user_input as the message for an invalid move
@@ -96,3 +98,5 @@ class Player
     end
   end
 end
+
+# rubocop:enable Style/NumericPredicate
