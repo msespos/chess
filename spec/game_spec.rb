@@ -20,6 +20,12 @@ RSpec.describe Game do
         game.send(:initialize)
       end
 
+      it 'sets @number_of_players to nil' do
+        number = game.instance_variable_get(:@number_of_players)
+        expect(number).to eq(nil)
+        game.send(:initialize)
+      end
+
       it 'sets @current_player to :white' do
         current_player = game.instance_variable_get(:@current_player)
         expect(current_player).to eq(:white)
@@ -77,6 +83,78 @@ RSpec.describe Game do
     end
   end
 
+  describe '#number_of_players' do
+    let(:player_number) { instance_double(Player) }
+    context 'when "1" is input' do
+      it 'sets @number_of_players to 1' do
+        game.instance_variable_set(:@player, player_number)
+        allow(player_number).to receive(:user_input).with(:number_of_players).and_return('1')
+        game.number_of_players
+        number = game.instance_variable_get(:@number_of_players)
+        expect(number).to eq(1)
+      end
+    end
+  end
+
+  describe '#bottom_color' do
+    let(:player_color) { instance_double(Player) }
+    context 'when @number_of_players is 1  and "w" is input' do
+      it 'returns :white' do
+        game.instance_variable_set(:@player, player_color)
+        allow(player_color).to receive(:user_input).with(:bottom_color_one_player).and_return('w')
+        game.instance_variable_set(:@number_of_players, 1)
+        color = game.bottom_color
+        expect(color).to eq(:white)
+      end
+    end
+
+    context 'when @number_of_players is 2  and "b" is input' do
+      it 'returns :black' do
+        game.instance_variable_set(:@player, player_color)
+        allow(player_color).to receive(:user_input).with(:bottom_color_two_player).and_return('b')
+        game.instance_variable_set(:@number_of_players, 2)
+        color = game.bottom_color
+        expect(color).to eq(:black)
+      end
+    end
+  end
+
+  describe '#minimalist_or_checkerboard' do
+    let(:player_design) { instance_double(Player) }
+    context 'when "m" is input' do
+      it 'sets @minimalist_or_checkerboard to :minimalist' do
+        game.instance_variable_set(:@player, player_design)
+        allow(player_design).to receive(:user_input).with(:minimalist_or_checkerboard).and_return('m')
+        game.minimalist_or_checkerboard
+        design = game.instance_variable_get(:@minimalist_or_checkerboard)
+        expect(design).to eq(:minimalist)
+      end
+    end
+  end
+
+  describe '#light_or_dark_font' do
+    let(:player_font) { instance_double(Player) }
+    context 'when it is a minimalist board and "l" is input' do
+      it 'sets @light_or_dark_font to :light' do
+        game.instance_variable_set(:@player, player_font)
+        game.instance_variable_set(:@minimalist_or_checkerboard, :minimalist)
+        allow(player_font).to receive(:user_input).with(:light_or_dark_font).and_return('l')
+        font = game.light_or_dark_font
+        expect(font).to eq(:light)
+      end
+    end
+
+    context 'when it is not minimalist board and "d" is input' do
+      it 'sets @light_or_dark_font to :light' do
+        game.instance_variable_set(:@player, player_font)
+        game.instance_variable_set(:@minimalist_or_checkerboard, :checkerboard)
+        allow(player_font).to receive(:user_input).with(:light_or_dark_font).and_return('l')
+        font = game.light_or_dark_font
+        expect(font).to eq(:light)
+      end
+    end
+  end
+
   describe '#display_board' do
     let(:board_field) { instance_double(Board) }
     context 'when a playing field is passed in' do
@@ -111,6 +189,48 @@ RSpec.describe Game do
     end
   end
 
+  describe 'invert_playing_field' do
+    context 'when it is passed a playing field' do
+      it 'returns an inverted playing field' do
+        playing_field = [[:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_queen, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_queen],
+                         [:w_king, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_king],
+                         [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
+                         [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
+                         [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
+        inverted_field = [[:b_rook, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_rook],
+                          [:b_knight, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_knight],
+                          [:b_bishop, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_bishop],
+                          [:b_king, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_king],
+                          [:b_queen, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_queen],
+                          [:b_bishop, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_bishop],
+                          [:b_knight, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_knight],
+                          [:b_rook, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_rook]]
+        inverted = game.invert_playing_field(playing_field)
+        expect(inverted).to eq(inverted_field)
+      end
+    end
+  end
+
+  describe 'invert_captured_pieces' do
+    context 'when it is passed a captured pieces array' do
+      it 'returns an inverted captured pieces array' do
+        captured_pieces = [[:b_queen, :b_pawn, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil],
+                           [:w_rook, :w_pawn, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil]]
+        inverted_pieces = [[:w_rook, :w_pawn, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil],
+                           [:b_queen, :b_pawn, nil, nil, nil, nil, nil, nil],
+                           [nil, nil, nil, nil, nil, nil, nil, nil]]
+        inverted = game.invert_captured_pieces(captured_pieces)
+        expect(inverted).to eq(inverted_pieces)
+      end
+    end
+  end
+
   describe '#resignation?' do
     context 'when "q" is entered' do
       it 'sets @resignation to true' do
@@ -133,6 +253,17 @@ RSpec.describe Game do
         game.resignation?('garbage')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(false)
+      end
+    end
+  end
+
+  describe '#save_or_load' do
+    context 'when "s" is entered' do
+      it 'calls save_game' do
+        allow(game).to receive(:save_game)
+        allow(game).to receive(:display_board)
+        expect(game).to receive(:save_game)
+        game.save_or_load('s')
       end
     end
   end
