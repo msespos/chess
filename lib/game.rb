@@ -57,6 +57,7 @@ class Game
     end_of_game_announcement
   end
 
+  # used by #play to get the initial input from the user at the start of the game
   def obtain_initial_player_input
     @number_of_players = number_of_players
     @bottom_color = bottom_color
@@ -64,10 +65,12 @@ class Game
     @light_or_dark_font = light_or_dark_font
   end
 
+  # used by obtain_initial_player_input to get the number of players
   def number_of_players
     @number_of_players = @player.user_input(:number_of_players).to_i
   end
 
+  # used by obtain_initial_player_input to get the bottom color in the display
   def bottom_color
     if @number_of_players == 1
       @player.user_input(:bottom_color_one_player) == 'w' ? :white : :black
@@ -76,6 +79,7 @@ class Game
     end
   end
 
+  # used by obtain_initial_player_input to determine which board design will be used
   def minimalist_or_checkerboard
     @minimalist_or_checkerboard = if @player.user_input(:minimalist_or_checkerboard) == 'm'
                                     :minimalist
@@ -84,6 +88,7 @@ class Game
                                   end
   end
 
+  # used by obtain_initial_player_input for aligning minimalist boards according to the terminal font
   def light_or_dark_font
     return :light unless @minimalist_or_checkerboard == :minimalist
 
@@ -99,6 +104,7 @@ class Game
     puts @board
   end
 
+  # used by #display_board to rotate the playing_field 180 degrees
   def invert_playing_field(playing_field)
     inverted = Array.new(8) { Array.new(8) { nil } }
     (0..7).each do |column|
@@ -109,6 +115,7 @@ class Game
     inverted
   end
 
+  # used by #display_board to flip the top and bottom displays of captured pieces
   def invert_captured_pieces(captured_pieces)
     inverted = Array.new(4) { Array.new(8) { nil } }
     (0..3).each do |row|
@@ -119,6 +126,7 @@ class Game
     inverted
   end
 
+  # used by #invert_captured_pieces to populate the inverted pieces array
   def fill_inverted_pieces_array(row, column, captured_pieces, inverted)
     if [0, 1].include?(row)
       inverted[row][column] = captured_pieces[row + 2][column]
@@ -145,6 +153,7 @@ class Game
     puts @player.current_player_announcement(@current_player)
   end
 
+  # used by #play_turn to implement a player turn
   def player_takes_a_turn
     move = player_move
     return :quit_turn if resignation?(move)
@@ -168,6 +177,7 @@ class Game
     @resignation = true if move.downcase == 'q'
   end
 
+  # used by #play_turn to save or load the game and then display the current board
   def save_or_load(move)
     return unless move.downcase == 's' || move.downcase == 'l'
 
