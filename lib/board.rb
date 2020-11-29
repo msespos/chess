@@ -164,19 +164,19 @@ class Board
   # used by #empty_square and #square_with_piece to generate the checkerboard squares
   def checkerboard_square(row, column, piece = '   ')
     if row.even? && column.odd? || row.odd? && column.even?
-      light_background_square(piece)
+      light_square(piece)
     else
-      dark_background_square(piece)
+      dark_square(piece)
     end
   end
 
   # used by #checkerboard_square to generate a light background square with piece
-  def light_background_square(piece)
+  def light_square(piece)
     "\033[46m#{piece}\033[0m"
   end
 
   # used by #checkerboard_square to generate a dark background square with piece
-  def dark_background_square(piece)
+  def dark_square(piece)
     "\033[45m#{piece}\033[0m"
   end
 
@@ -195,7 +195,19 @@ class Board
   def place_captured_pieces_on_board(captured_pieces, row, column)
     piece_as_string = captured_pieces[row][column].to_s
     piece = instance_variable_get("@#{piece_as_string}")
-    [0, 1].include?(row) ? @board[row + 3][column + 10] = piece : @board[12 - row][column + 10] = piece
+    if [0, 1].include?(row)
+      if row.even? && column.odd? || row.odd? && column.even?
+        @board[row + 3][column + 10] = light_square(piece)
+      else
+        @board[row + 3][column + 10] = dark_square(piece)
+      end
+    else
+      if row.even? && column.odd? || row.odd? && column.even?
+        @board[12 - row][column + 10] = dark_square(piece)
+      else
+        @board[12 - row][column + 10] = light_square(piece)
+      end
+    end
   end
 end
 
