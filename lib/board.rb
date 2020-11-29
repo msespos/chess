@@ -177,7 +177,7 @@ class Board
 
   # used by #checkerboard_square to generate a dark background square with piece
   def dark_background_square(piece)
-    "\033[44m#{piece}\033[0m"
+    "\033[45m#{piece}\033[0m"
   end
 
   # used by Game to add the pieces from the Game 4x8 array of captured pieces to the board
