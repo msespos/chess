@@ -164,20 +164,15 @@ class Board
   # used by #empty_square and #square_with_piece to generate the checkerboard squares
   def checkerboard_square(row, column, piece = '   ')
     if row.even? && column.odd? || row.odd? && column.even?
-      light_square(piece)
+      board_square(piece, :light)
     else
-      dark_square(piece)
+      board_square(piece, :dark)
     end
   end
 
   # used by #checkerboard_square to generate a light background square with piece
-  def light_square(piece)
-    "\033[46m#{piece}\033[0m"
-  end
-
-  # used by #checkerboard_square to generate a dark background square with piece
-  def dark_square(piece)
-    "\033[45m#{piece}\033[0m"
+  def board_square(piece, light_or_dark)
+    light_or_dark == :light ? "\033[46m#{piece}\033[0m" : "\033[45m#{piece}\033[0m"
   end
 
   # used by Game to add the pieces from the Game 4x8 array of captured pieces to the board
@@ -195,19 +190,29 @@ class Board
   def place_captured_pieces_on_board(captured_pieces, row, column)
     piece_as_string = captured_pieces[row][column].to_s
     piece = instance_variable_get("@#{piece_as_string}")
-    if [0, 1].include?(row)
-      if row.even? && column.odd? || row.odd? && column.even?
-        @board[row + 3][column + 10] = light_square(piece)
-      else
-        @board[row + 3][column + 10] = dark_square(piece)
-      end
-    else
-      if row.even? && column.odd? || row.odd? && column.even?
-        @board[12 - row][column + 10] = dark_square(piece)
-      else
-        @board[12 - row][column + 10] = light_square(piece)
-      end
+    [0, 1].include?(row) ? captured_rows(piece, row, column, :black) : captured_rows(piece, row, column, :white)
+  end
+
+  # used by #place_captured_pieces_on_board to set up the captured piece rows
+  def captured_rows(piece, row, column, piece_color)
+    row_shift = piece_color == :black ? row + 3 : 12 - row
+    square_order = row.even? && column.odd? || row.odd? && column.even? ? :first : :second
+    light_or_dark = light_or_dark_based_on_order_and_color(piece_color, square_order)
+    @board[row_shift][column + 10] = captured_square(piece, light_or_dark)
+  end
+
+  # used by #captured_rows to determine if the square will be light or dark
+  def light_or_dark_based_on_order_and_color(piece_color, square_order)
+    if square_order == :first
+      piece_color == :black ? :light : :dark
+    elsif square_order == :second
+      piece_color == :black ? :dark : :light
     end
+  end
+
+  # used by #captured_rows to set up each captured piece square
+  def captured_square(piece, light_or_dark)
+    @minimalist_or_checkerboard == :minimalist ? piece : board_square(piece, light_or_dark)
   end
 end
 
