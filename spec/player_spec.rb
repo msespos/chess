@@ -31,6 +31,7 @@ RSpec.describe Player do
     end
   end
 
+  # integration tests that test helper methods as well
   describe '#input_in_correct_format?' do
     context 'it is a move input in the right format' do
       it 'returns true' do
@@ -104,13 +105,41 @@ RSpec.describe Player do
 
     context 'it is a move input of the wrong length' do
       it 'returns false' do
-        correct_format_or_not = player.input_in_correct_format?('a1a3a5', :piece)
+        correct_format_or_not = player.input_in_correct_format?('a1a3a5', :move)
         expect(correct_format_or_not).to eq(false)
       end
 
       it 'returns false' do
-        correct_format_or_not = player.input_in_correct_format?('k', :piece)
+        correct_format_or_not = player.input_in_correct_format?('k', :move)
         expect(correct_format_or_not).to eq(false)
+      end
+    end
+
+    context 'it is a number of players input in the right format' do
+      it 'returns true' do
+        correct_format_or_not = player.input_in_correct_format?('1', :number_of_players)
+        expect(correct_format_or_not).to eq(true)
+      end
+    end
+
+    context 'it is a design input in the right format' do
+      it 'returns true' do
+        correct_format_or_not = player.input_in_correct_format?('m', :minimalist_or_checkerboard)
+        expect(correct_format_or_not).to eq(true)
+      end
+    end
+
+    context 'it is a bottom color input in the right format' do
+      it 'returns true' do
+        correct_format_or_not = player.input_in_correct_format?('b', :bottom_color_two_player)
+        expect(correct_format_or_not).to eq(true)
+      end
+    end
+
+    context 'it is a font input in the right format' do
+      it 'returns true' do
+        correct_format_or_not = player.input_in_correct_format?('l', :light_or_dark_font)
+        expect(correct_format_or_not).to eq(true)
       end
     end
   end
