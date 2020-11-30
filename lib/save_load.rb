@@ -31,6 +31,9 @@ module SaveLoad
 
   def to_yaml
     YAML.dump({ number_of_players: @number_of_players,
+                bottom_color: @bottom_color,
+                minimalist_or_checkerboard: @minimalist_or_checkerboard,
+                light_or_dark_font: @light_or_dark_font,
                 current_player: @current_player,
                 resignation: @resignation,
                 captured_pieces: @captured_pieces,
@@ -58,10 +61,14 @@ module SaveLoad
     status = YAML.safe_load(File.read(game), [Symbol])
     assign_all_but_castling_variables(status)
     assign_castling_variables(status)
+    @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
   end
 
   def assign_all_but_castling_variables(status)
     @number_of_players = status[:number_of_players]
+    @bottom_color = status[:bottom_color]
+    @minimalist_or_checkerboard = status[:minimalist_or_checkerboard]
+    @light_or_dark_font = status[:light_or_dark_font]
     @current_player = status[:current_player]
     @resignation = status[:resignation]
     @captured_pieces = status[:captured_pieces]
