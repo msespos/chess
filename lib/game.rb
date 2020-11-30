@@ -28,7 +28,6 @@ class Game
   def initialize
     @piece = Piece.new
     @player = Player.new
-    @number_of_players = nil
     @current_player = :white
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
