@@ -11,8 +11,9 @@ class Player
   include Intro
 
   # used by Game#play
-  def intro_text
-    'Intro text and Intro board'
+  def intro
+    puts intro_text
+    leave_intro
   end
 
   # used by Game#play_turn
