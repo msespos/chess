@@ -48,9 +48,9 @@ class Game
 
   # play the whole game
   def play
+    @player.intro
     obtain_initial_player_input
     @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
-    puts @player.intro_text
     display_board
     play_turn until game_over?
     end_of_game_announcement
