@@ -2,7 +2,6 @@
 
 # rubocop:disable Metrics/ClassLength
 
-require 'pry'
 require_relative 'move_validation'
 require_relative 'check_validation'
 require_relative 'checkmate_validation'
