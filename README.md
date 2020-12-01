@@ -23,10 +23,10 @@ There are various display options for the board:
 2) For two player mode, the player can choose which color will be displayed
     at the bottom of the board.
 3) There are two design options: a minimalist design and a checkerboard design.
-4) For the minimalist design, the player indicates whether their terminal has a dark
-    or light colored font. This allows for the ideal display of colors. (Since the
-    pieces are shaded and outlined, the shaded pieces are white or black depending
-    on whether the terminal has a dark or light colored font, necessitating this
+4) For the minimalist design, the player indicates whether their terminal has a light
+    or dark colored font. This allows for the ideal display of the design. (Since the
+    pieces are shaded or outlined, the shaded pieces appear white or black depending
+    on whether the terminal has a light or dark colored font, necessitating this
     selection.)
 
 Captured pieces are displayed along the side of the board in the order they were captured.
