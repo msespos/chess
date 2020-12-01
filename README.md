@@ -15,6 +15,7 @@ move validation, check validation, checkmate validation, and castling validation
 
 During a turn, besides moving, a player can quit and resign immediately.
 A player can also save a game at any point to one of three slots, or load a saved game.
+In addition, a help screen is available at any point.
 
 There are various display options for the board:
 
