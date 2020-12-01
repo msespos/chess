@@ -2,13 +2,15 @@
 
 # rubocop:disable Style/NumericPredicate
 
-require_relative 'type_hashes'
+require_relative 'type_info'
 require_relative 'intro'
+require_relative 'help'
 
 # player class
 class Player
-  include TypeHashes
+  include TypeInfo
   include Intro
+  include Help
 
   # used by Game#play
   def intro
@@ -57,7 +59,7 @@ class Player
 
   # used by #input_in_correct_format? to test the move for the correct format
   def move_in_correct_format?(input)
-    return true if %w[q s l].include?(input.downcase)
+    return true if %w[q s l h help].include?(input.downcase)
 
     return false if input.length != 4
 
@@ -68,6 +70,12 @@ class Player
   def invalid_move_message(type)
     entry = INVALID_MOVE_MESSAGES[type]
     "That is not a valid #{entry}! Please enter a valid #{entry}."
+  end
+
+  # used by Game#help
+  def help
+    puts help_text
+    leave_help
   end
 
   # used by Game#end_of_game_announcement
