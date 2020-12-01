@@ -24,7 +24,7 @@ There are various display options for the board:
     at the bottom of the board.
 3) There are two design options: a minimalist design and a checkerboard design.
 4) For the minimalist design, the player indicates whether their terminal has a light
-    or dark colored font. This allows for the ideal display of the design. (Since the
+    or dark colored font. This allows for ideal display of the board. (Since the
     pieces are shaded or outlined, the shaded pieces appear white or black depending
     on whether the terminal has a light or dark colored font, necessitating this
     selection.)
