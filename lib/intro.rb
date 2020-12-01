@@ -9,7 +9,7 @@ module Intro
     puts <<~HEREDOC
       Welcome to...
 
-                ____________       _____      _____      ________________        ______________       ______________
+                ____________       _____      _____      ________________        ______________        ______________
               /____________/|    /_____/|   /_____/|    /_______________/|      /_____________/|      /_____________/|
              /            | |   |     | |  |     | |   |               | |    /              | |    /              | |
             /    _________|/    |     | |__|     | |   |     __________|/    |      _________|/    |      _________|/
@@ -51,7 +51,7 @@ module Intro
   end
 
   def leave_intro
-    print '    ---> Press any key to go to the setup screen and start the game.'
+    print '    ---> Press any key to go to the setup screen and start the game!'
     STDIN.getch # gets the input
     print "\e[H\e[2J" # clears the screen
   end
