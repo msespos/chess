@@ -3,43 +3,53 @@
 # text for game intro
 module Intro
   def intro_text
-    print "\e[H\e[2J"
+    print "\e[H\e[2J" # clears the screen
     puts <<~HEREDOC
-Welcome to
-       ____________       _____      _____      ________________        ______________       ______________
-    /____________/|    /_____/|   /_____/|    /_______________/|      /_____________/|      /_____________/|
-   /            | |   |     | |  |     | |   |               | |    /              | |    /              | |
-  /    _________|/    |     | |__|     | |   |     __________|/    |      _________|/    |      _________|/
- /    / /             |     |/___|     | |   |    |/______/|       |      \\/_____/ \\     |      \\/_____/ \\
-|    | |              |                | |   |           | |        \\            \\  \\     \\            \\  \\
-|    | | _________    |      ____      | |   |     ______|/____      \\_______     \\  \\     \\_______     \\  \\
- \\    \\/_________/|   |     | |  |     | |   |    |/__________/|    /________/      | |   /________/      | |
-  \\             | |   |     | |  |     | |   |               | |   |               | /    |               | /
-   \\ ___________|/    |_____|/   |_____|/    |_______________|/    |_____________ //      |_____________ //
+      Welcome to...
 
-The classic game of strategy!
+                ____________       _____      _____      ________________        ______________       ______________
+              /____________/|    /_____/|   /_____/|    /_______________/|      /_____________/|      /_____________/|
+             /            | |   |     | |  |     | |   |               | |    /              | |    /              | |
+            /    _________|/    |     | |__|     | |   |     __________|/    |      _________|/    |      _________|/
+           /    / /             |     |/___|     | |   |    |/______/|       |      \\/_____/ \\     |      \\/_____/ \\
+          |    | |              |                | |   |           | |        \\            \\  \\     \\            \\  \\
+          |    | | _________    |      ____      | |   |     ______|/____      \\_______     \\  \\     \\_______     \\  \\
+           \\    \\/_________/|   |     | |  |     | |   |    |/__________/|    /________/     |  |   /________/     |  |
+            \\             | |   |     | |  |     | |   |               | |   |               | /    |               | /
+             \\ ___________|/    |_____|/   |_____|/    |_______________|/    |_____________ //      |_____________ //
 
-During the game, you will take turns for one or two players using algebraic notation, for example a2a4 or b8c6.
 
-During each turn, you can make a move for the indicated player using algebraic notation.
-You can also type q to resign and end the game immediately s to save the game in its current state, or l to load a  saved game.
+                                                                                          ...the classic game of strategy!
 
-At the beginning of the game there are up to four setup choices to make, on the next page:
 
-1) Number of players. You can play against the computer (computer plays randomly) or you can play a 2 player game.
-2) Position of the colors. If you play one player you can choose to play white or black, and that color will
-go on the bottom of the board. If you play two player you can choose which color goes on the bottom of the board.
-3) Minimalist or checkerboard design. Select your choice of design. Try each of them out in different games!
-4) If you choose the minimalist design, for best display of white and black correctly you need to enter whether your
-terminal window's font is light-colored (typically white) or dark-colored (typically black).
+          This version of chess uses algebraic notation, a four character format in which the first two characters
+          represent the square you are moving from, and the second two characters the square you are moving to.
 
-Type h or help during the game to see key commands again options.
-Have a great game!
-HEREDOC
+          For example, a first move of d2d4 moves a white pawn from the d2 square to the d4 square.
+          Similarly, a followup move of b8c6 moves a black knight from the b8 square to the c6 square.
+
+          The board is labeled with a-h and 1-8 for easy reference.
+          Please note that every move must be in algebraic notation, or it will be considered invalid.
+
+          To castle, assuming all the conditions for castling are met, just move the king two squares towards the rook.
+          When a pawn is eligible for promotion, you will be given the four options n, b, r, and q to select from.
+          And yes, you can capture en passant. :)
+
+          During your turn, besides making a move, you can also type q to resign and end the game immediately.
+          You can also type s to save the game in its current state, or l to load a saved game.
+
+          Type h or help during the game to see your options again.
+
+          Have a great game!
+
+          PS: for best display of this title screen, maximize your terminal window.
+          PPS: you may want to zoom in once you start the actual game for a better view of the board.
+
+    HEREDOC
   end
 
   def leave_intro
-    print 'Press any key to start the game!'
+    print '    ---> Press any key to go to the setup screen and start the game.'
     STDIN.getch # gets the input
     print "\e[H\e[2J" # clears the screen
   end
