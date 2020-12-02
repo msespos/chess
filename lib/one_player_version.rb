@@ -9,9 +9,14 @@ module OnePlayerVersion
       start = random_square
       finish = random_square
     end
+    @last_move = start_finish_to_move(start, finish)
   end
 
   def random_square
     [rand(8), rand(8)]
+  end
+
+  def start_finish_to_move(start, finish)
+    (start[0] + 97).chr + (start[1] + 1).to_s + (finish[0] + 97).chr + (finish[1] + 1).to_s
   end
 end
