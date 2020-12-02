@@ -9,7 +9,7 @@ module OnePlayerVersion
       start = random_square
       finish = random_square
     end
-    @last_move = start_finish_to_move(start, finish)
+    @previous_move = start_finish_to_move(start, finish)
   end
 
   def random_square
