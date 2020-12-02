@@ -159,6 +159,7 @@ class Game
     return :quit_turn if save_or_load(move)
 
     return :quit_turn if help(move)
+
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
     [start, finish]
@@ -173,12 +174,21 @@ class Game
   # used by #play_turn and #make_move_when_not_invalid
   # check if the player has resigned
   def resignation?(move)
-    @resignation = true if move.downcase == 'q'
+    return unless move.downcase == 'q'
+
+    if @player.user_input(:resignation) == 'y'
+      @resignation = true
+    else
+      @resignation = false
+      puts 'Back to the game!'
+      display_board
+    end
+    true
   end
 
   # used by #play_turn to save or load the game and then display the current board
   def save_or_load(move)
-    return unless ['s', 'l'].include?(move.downcase)
+    return unless %w[s l].include?(move.downcase)
 
     move.downcase == 's' ? save_game : load_game
     display_board
@@ -187,7 +197,8 @@ class Game
 
   # used by #play_turn to display the help screen and then display the current board
   def help(move)
-    return unless ['h', 'help'].include?(move.downcase)
+    return unless %w[h help].include?(move.downcase)
+
     @player.help
     display_board
     true
