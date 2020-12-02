@@ -19,7 +19,7 @@ module CheckmateValidation
 
   # used by #in_checkmate to check if the king can move out of check
   def can_move_out_of_check?
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = other_player
     accessible_squares.each do |accessible_square|
       return true if escape_squares_available?(accessible_square, attacking_color) == true
     end

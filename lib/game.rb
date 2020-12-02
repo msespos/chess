@@ -46,6 +46,11 @@ class Game
     @playing_field = @playing_field.transpose
   end
 
+  # used throughout the Game class and modules to define the other player from the current one
+  def other_player
+    @current_player == :white ? :black : :white
+  end
+
   # play the whole game
   def play
     intro
@@ -143,8 +148,7 @@ class Game
   end
 
   def previous_player_move
-    previous_player = @current_player == :white ? :black : :white
-    "#{previous_player.capitalize} has played #{@previous_move}."
+    "#{other_player.capitalize} has played #{@previous_move}."
   end
 
   # used by #play to implement a full turn
@@ -325,7 +329,7 @@ class Game
 
   # used by #play_turn
   def complete_turn
-    @current_player = @current_player == :white ? :black : :white
+    @current_player = other_player
     display_board
     promote_pawn if pawn_to_promote
   end

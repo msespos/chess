@@ -5,7 +5,7 @@ module CheckValidation
   # check if the king is in check
   def in_check?
     current_king_square = king_location
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = other_player
     under_attack?(current_king_square, attacking_color)
   end
 
@@ -61,7 +61,7 @@ module CheckValidation
   # used by #attacker_can_be_captured? and other methods in CheckmateValidation
   # to find the location(s) of the piece(s) attacking a square
   def attacker_squares(square)
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = other_player
     finish = [square[0], square[1]]
     squares = []
     @playing_field.each_with_index do |column, column_index|
@@ -78,7 +78,7 @@ module CheckValidation
   # uses fourth #valid_move? argument to tell it to use the color of the attacking piece
   # not of the current player
   def attacking_piece_protected?(attacking_piece_square)
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = other_player
     @playing_field.each_with_index do |column, column_index|
       column.each_index do |row_index|
         start = [column_index, row_index]

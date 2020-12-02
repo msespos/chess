@@ -54,7 +54,7 @@ module Castling
   end
 
   def no_castling_squares_in_check?(side)
-    attacking_color = @current_player == :white ? :black : :white
+    attacking_color = other_player
     row = @current_player == :white ? 0 : 7
     (4..6).each do |column|
       if side == :king
