@@ -47,12 +47,17 @@ class Game
 
   # play the whole game
   def play
-    @player.intro
+    intro
     obtain_initial_player_input
     @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
     display_board
     play_turn until game_over?
     end_of_game_announcement
+  end
+
+  # used by #play to make integration testing easier
+  def intro
+    @player.intro
   end
 
   # used by #play to get the initial input from the user at the start of the game
@@ -165,7 +170,7 @@ class Game
     [start, finish]
   end
 
-  # used by #play_turn
+  # used by #play_turn and to make integration testing easier
   # get the player's move using Player#player_move
   def player_move
     @player.user_input(:move)
@@ -176,7 +181,7 @@ class Game
   def resignation?(move)
     return unless move.downcase == 'q'
 
-    if @player.user_input(:resignation) == 'y'
+    if player_resignation_status == 'y'
       @resignation = true
     else
       @resignation = false
@@ -184,6 +189,11 @@ class Game
       display_board
     end
     true
+  end
+
+  # used by #resignation? and to make integration testing easier
+  def player_resignation_status
+    @player.user_input(:resignation)
   end
 
   # used by #play_turn to save or load the game and then display the current board
