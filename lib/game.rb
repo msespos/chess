@@ -28,6 +28,7 @@ class Game
     @piece = Piece.new
     @player = Player.new
     @current_player = :white
+    @previous_move = nil
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     @en_passant_column = nil
@@ -104,6 +105,8 @@ class Game
     @board.overwrite_playing_field(playing_field)
     captured_pieces = @bottom_color == :white ? @captured_pieces : invert_captured_pieces(@captured_pieces)
     @board.add_captured_pieces(captured_pieces)
+    print "\e[H\e[2J" # clear the screen
+    puts previous_player_move
     puts @board
   end
 
@@ -139,6 +142,11 @@ class Game
     inverted
   end
 
+  def previous_player_move
+    previous_player = @current_player == :white ? :black : :white
+    "#{previous_player.capitalize} has played #{@previous_move}."
+  end
+
   # used by #play to implement a full turn
   def play_turn
     intro_announcements
@@ -167,7 +175,7 @@ class Game
 
     start, finish = player_move_to_start_finish(move)
     make_move_when_not_invalid(start, finish)
-    [start, finish]
+    @previous_move = move
   end
 
   # used by #play_turn and to make integration testing easier
