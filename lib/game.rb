@@ -111,7 +111,7 @@ class Game
     captured_pieces = @bottom_color == :white ? @captured_pieces : invert_captured_pieces(@captured_pieces)
     @board.add_captured_pieces(captured_pieces)
     print "\e[H\e[2J" # clear the screen
-    puts previous_player_move
+    puts previous_player_move unless @previous_move.nil?
     puts @board
   end
 
