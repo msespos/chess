@@ -11,13 +11,14 @@ Please enter m or c.",
               bottom_color_two_player: "Would you like white or black at the bottom of the board?\n\
 Please enter w or b.",
               light_or_dark_font: "Is your current terminal font light or dark?\nPlease enter l or d.\n\
-(This will allow for the best display of the minimalist board.)" }.freeze
-
+(This will allow for the best display of the minimalist board.)",
+              resignation: 'Are you sure you want to resign? (y/n)' }.freeze
   INPUT_FORMATS = { piece: %w[n b r q],
                     minimalist_or_checkerboard: %w[m c],
                     bottom_color_one_player: %w[w b],
                     bottom_color_two_player: %w[w b],
-                    light_or_dark_font: %w[l d] }.freeze
+                    light_or_dark_font: %w[l d],
+                    resignation: %w[y n] }.freeze
 
   INVALID_MOVE_MESSAGES = { move: 'move',
                             piece: 'piece',
@@ -25,5 +26,6 @@ Please enter w or b.",
                             minimalist_or_checkerboard: 'design',
                             bottom_color_one_player: 'color',
                             bottom_color_two_player: 'color',
-                            light_or_dark_font: 'type' }.freeze
+                            light_or_dark_font: 'type',
+                            resignation: 'answer' }.freeze
 end
