@@ -35,6 +35,7 @@ module SaveLoad
                 minimalist_or_checkerboard: @minimalist_or_checkerboard,
                 light_or_dark_font: @light_or_dark_font,
                 current_player: @current_player,
+                previous_move: @previous_move,
                 resignation: @resignation,
                 captured_pieces: @captured_pieces,
                 en_passant_column: @en_passant_column,
@@ -70,6 +71,7 @@ module SaveLoad
     @minimalist_or_checkerboard = status[:minimalist_or_checkerboard]
     @light_or_dark_font = status[:light_or_dark_font]
     @current_player = status[:current_player]
+    @previous_move = status[:previous_move]
     @resignation = status[:resignation]
     @captured_pieces = status[:captured_pieces]
     @en_passant_column = status[:en_passant_column]
