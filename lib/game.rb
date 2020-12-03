@@ -348,7 +348,8 @@ class Game
                      else
                        :resignation
                      end
-    puts @player.end_of_game_announcement(@current_player, type_of_ending)
+    puts @player.ending_text(@current_player, type_of_ending)
+    puts 'Thanks for playing Chess! See you next time. :)'
   end
 end
 

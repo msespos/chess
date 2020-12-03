@@ -5,12 +5,14 @@
 require_relative 'type_info'
 require_relative 'intro'
 require_relative 'help'
+require_relative 'ending'
 
 # player class
 class Player
   include TypeInfo
   include Intro
   include Help
+  include Ending
 
   # used by Game#play
   def intro
@@ -76,18 +78,6 @@ class Player
   def help
     puts help_text
     leave_help
-  end
-
-  # used by Game#end_of_game_announcement
-  def end_of_game_announcement(current_player, type_of_ending)
-    winner = current_player == :white ? :black : :white
-    if type_of_ending == :checkmate
-      "Checkmate! #{winner.capitalize} wins!"
-    elsif type_of_ending == :stalemate
-      "#{current_player.capitalize} is in stalemate! It's a draw!"
-    else
-      "#{current_player.capitalize} resigns! #{winner.capitalize} wins!"
-    end
   end
 end
 
