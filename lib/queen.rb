@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'piece.rb'
-
-# queen class
-class Queen < Piece
+# queen module
+module Queen
   # determine if a path is legal for a queen using the start, finish and playing field
-  # uses methods in Piece
-  def path?(start, finish, playing_field)
+  # uses methods in piece.rb
+  def queen_path?(start, finish, playing_field)
     return false unless along_rank_or_file_or_diagonal?(start, finish)
     return rank_free?(start, finish, playing_field) if along_rank?(start, finish)
     return file_free?(start, finish, playing_field) if along_file?(start, finish)

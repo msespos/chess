@@ -7,11 +7,39 @@ require_relative '../lib/piece.rb'
 RSpec.describe Piece do
   subject(:piece) { described_class.new }
   describe '#rook_path?' do
-    context 'when it is called' do
-      it 'creates an instance of Rook' do
+    context 'when the potential path is neither along a rank nor along a file' do
+      before do
+        allow(piece).to receive(:along_rank?).and_return(false)
+        allow(piece).to receive(:along_file?).and_return(false)
+      end
+
+      it 'returns false' do
+        path_or_not = piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        expect(path_or_not).to eq(false)
+      end
+    end
+
+    context 'when the potential path is along a rank' do
+      before do
+        allow(piece).to receive(:along_rank?).and_return(true)
+        allow(piece).to receive(:along_file?).and_return(false)
+      end
+
+      it 'calls #rank_free?' do
+        expect(piece).to receive(:rank_free?)
         piece.rook_path?([0, 0], [5, 5], ['playing field'])
-        rook = piece.instance_variable_get(:@rook)
-        expect(rook).to be_a(Rook)
+      end
+    end
+
+    context 'when the potential path is along a file' do
+      before do
+        allow(piece).to receive(:along_rank?).and_return(false)
+        allow(piece).to receive(:along_file?).and_return(true)
+      end
+
+      it 'calls #file_free?' do
+        expect(piece).to receive(:file_free?)
+        piece.rook_path?([0, 0], [5, 5], ['playing field'])
       end
     end
 
@@ -95,11 +123,39 @@ RSpec.describe Piece do
   end
 
   describe '#bishop_path?' do
-    context 'when it is called' do
-      it 'creates an instance of Bishop' do
-        piece.bishop_path?([0, 0], [0, 5], ['playing field'])
-        bishop = piece.instance_variable_get(:@bishop)
-        expect(bishop).to be_a(Bishop)
+    context 'when the potential path is neither along a positive nor along a negative diagonal' do
+      before do
+        allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+        allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+      end
+
+      it 'returns false' do
+        path_or_not = piece.bishop_path?([1, 0], [1, 7], ['playing field'])
+        expect(path_or_not).to eq(false)
+      end
+    end
+
+    context 'when the potential path is along a positive diagonal' do
+      before do
+        allow(piece).to receive(:along_positive_diagonal?).and_return(true)
+        allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+      end
+
+      it 'calls #positive_diagonal_free?' do
+        expect(piece).to receive(:positive_diagonal_free?)
+        piece.bishop_path?([1, 1], [5, 5], ['playing field'])
+      end
+    end
+
+    context 'when the potential path is along a negative diagonal' do
+      before do
+        allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+        allow(piece).to receive(:along_negative_diagonal?).and_return(true)
+      end
+
+      it 'calls #negative_diagonal_free?' do
+        expect(piece).to receive(:negative_diagonal_free?)
+        piece.bishop_path?([1, 5], [5, 1], ['playing field'])
       end
     end
 
@@ -202,11 +258,119 @@ RSpec.describe Piece do
   end
 
   describe '#queen_path?' do
-    context 'when it is called' do
-      it 'creates an instance of Queen' do
-        piece.queen_path?([0, 0], [1, 2], ['playing field'])
-        queen = piece.instance_variable_get(:@queen)
-        expect(queen).to be_a(Queen)
+    context 'when the potential path is neither along a rank nor along a file nor along a diagonal' do
+      before do
+        allow(piece).to receive(:along_rank_or_file_or_diagonal?).and_return(false)
+      end
+
+      it 'returns false' do
+        path_or_not = piece.queen_path?([0, 0], [5, 5], ['playing field'])
+        expect(path_or_not).to eq(false)
+      end
+    end
+
+    context 'when the potential path is along a rank' do
+      before do
+        allow(piece).to receive(:along_rank?).and_return(true)
+        allow(piece).to receive(:along_file?).and_return(false)
+      end
+
+      it 'calls #rank_free?' do
+        expect(piece).to receive(:rank_free?)
+        piece.queen_path?([0, 0], [5, 5], ['playing field'])
+      end
+    end
+
+    context 'when the potential path is along a file' do
+      before do
+        allow(piece).to receive(:along_rank?).and_return(false)
+        allow(piece).to receive(:along_file?).and_return(true)
+      end
+
+      it 'calls #file_free?' do
+        expect(piece).to receive(:file_free?)
+        piece.queen_path?([0, 0], [5, 5], ['playing field'])
+      end
+    end
+
+    context 'when the potential path is along a positive diagonal' do
+      before do
+        allow(piece).to receive(:along_positive_diagonal?).and_return(true)
+        allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+      end
+
+      it 'calls #positive_diagonal_free?' do
+        expect(piece).to receive(:positive_diagonal_free?)
+        piece.queen_path?([1, 1], [5, 5], ['playing field'])
+      end
+    end
+
+    context 'when the potential path is along a negative diagonal' do
+      before do
+        allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+        allow(piece).to receive(:along_negative_diagonal?).and_return(true)
+      end
+
+      it 'calls #negative_diagonal_free?' do
+        expect(piece).to receive(:negative_diagonal_free?)
+        piece.queen_path?([1, 5], [5, 1], ['playing field'])
+      end
+    end
+
+    describe '#along_rank_or_file_or_diagonal?' do
+      context 'when the potential path is neither along a rank nor along a file nor along a diagonal' do
+        it 'returns false' do
+          allow(piece).to receive(:along_rank?).and_return(false)
+          allow(piece).to receive(:along_file?).and_return(false)
+          allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+          allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+          along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [1, 2])
+          expect(along_any_or_none).to eq(false)
+        end
+      end
+
+      context 'when the potential path is along a rank' do
+        it 'returns false' do
+          allow(piece).to receive(:along_rank?).and_return(true)
+          allow(piece).to receive(:along_file?).and_return(false)
+          allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+          allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+          along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [2, 0])
+          expect(along_any_or_none).to eq(true)
+        end
+      end
+
+      context 'when the potential path is along a file' do
+        it 'returns false' do
+          allow(piece).to receive(:along_rank?).and_return(false)
+          allow(piece).to receive(:along_file?).and_return(true)
+          allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+          allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+          along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [0, 3])
+          expect(along_any_or_none).to eq(true)
+        end
+      end
+
+      context 'when the potential path is along a positive slope diagonal' do
+        it 'returns false' do
+          allow(piece).to receive(:along_rank?).and_return(false)
+          allow(piece).to receive(:along_file?).and_return(false)
+          allow(piece).to receive(:along_positive_diagonal?).and_return(true)
+          allow(piece).to receive(:along_negative_diagonal?).and_return(false)
+          along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [5, 5])
+          expect(along_any_or_none).to eq(true)
+        end
+      end
+
+      context 'when the potential path is along a negative slope diagonal' do
+        it 'returns false' do
+          allow(piece).to receive(:along_rank?).and_return(false)
+          allow(piece).to receive(:along_file?).and_return(false)
+          allow(piece).to receive(:along_positive_diagonal?).and_return(false)
+          allow(piece).to receive(:along_negative_diagonal?).and_return(true)
+          along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 7], [3, 4])
+          expect(along_any_or_none).to eq(true)
+        end
       end
     end
 

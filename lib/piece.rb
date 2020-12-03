@@ -1,23 +1,14 @@
 # frozen_string_literal: true
 
+require_relative 'rook'
+require_relative 'bishop'
+require_relative 'queen'
+
 # piece class
 class Piece
-  # determines if a path is legal for a rook using the start, finish and playing field
-  # uses #along_rank?, #along_file?, #rank_free? and #file_free?
-  def rook_path?(start, finish, playing_field)
-    @rook = Rook.new
-    @rook.path?(start, finish, playing_field)
-  end
-
-  def bishop_path?(start, finish, playing_field)
-    @bishop = Bishop.new
-    @bishop.path?(start, finish, playing_field)
-  end
-
-  def queen_path?(start, finish, playing_field)
-    @queen = Queen.new
-    @queen.path?(start, finish, playing_field)
-  end
+  include Rook
+  include Bishop
+  include Queen
 
   def king_path?(start, finish, _playing_field)
     @king = King.new
