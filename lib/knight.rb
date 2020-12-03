@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-# knight class
-class Knight
+# knight module
+module Knight
   # determine if a path is legal for a knight using the start, finish and playing field
-  def path?(start, finish)
+  def knight_path?(start, finish, _playing_field)
     vertical_l?(start, finish) || horizontal_l?(start, finish)
   end
 

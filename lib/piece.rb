@@ -3,22 +3,16 @@
 require_relative 'rook'
 require_relative 'bishop'
 require_relative 'queen'
+require_relative 'king'
+require_relative 'knight'
 
 # piece class
 class Piece
   include Rook
   include Bishop
   include Queen
-
-  def king_path?(start, finish, _playing_field)
-    @king = King.new
-    @king.path?(start, finish)
-  end
-
-  def knight_path?(start, finish, _playing_field)
-    @knight = Knight.new
-    @knight.path?(start, finish)
-  end
+  include King
+  include Knight
 
   def white_pawn_path?(start, finish, playing_field, en_passant_column)
     @pawn = Pawn.new
