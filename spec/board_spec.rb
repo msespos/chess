@@ -24,7 +24,7 @@ RSpec.describe Board do
     context 'when :white is passed in and a light font has been selected' do
       it 'sets @w_pawn to " \u265F"' do
         board.instance_variable_set(:@light_or_dark_font, :light)
-        board.minimalist_pieces(:white)
+        board.send(:minimalist_pieces, :white)
         w_pawn = board.instance_variable_get(:@w_pawn)
         expect(w_pawn).to eq(" \u265F")
       end
@@ -33,7 +33,7 @@ RSpec.describe Board do
     context 'when :black is passed in and a dark font has been selected' do
       it 'sets @b_pawn to " \u265F"' do
         board.instance_variable_set(:@light_or_dark_font, :dark)
-        board.minimalist_pieces(:black)
+        board.send(:minimalist_pieces, :black)
         b_pawn = board.instance_variable_get(:@b_pawn)
         expect(b_pawn).to eq(" \u265F")
       end
@@ -43,7 +43,7 @@ RSpec.describe Board do
   describe '#checkerboard_pieces' do
     context 'when :white is passed in' do
       it 'sets @w_pawn to "\033[37m \u265F \033[0m"' do
-        board.checkerboard_pieces(:white)
+        board.send(:checkerboard_pieces, :white)
         w_pawn = board.instance_variable_get(:@w_pawn)
         expect(w_pawn).to eq("\033[37m \u265F \033[0m")
       end
@@ -51,7 +51,7 @@ RSpec.describe Board do
 
     context 'when :black is passed in' do
       it 'sets @b_pawn to "\033[30m \u265F \033[0m"' do
-        board.checkerboard_pieces(:black)
+        board.send(:checkerboard_pieces, :black)
         b_pawn = board.instance_variable_get(:@b_pawn)
         expect(b_pawn).to eq("\033[30m \u265F \033[0m")
       end
@@ -173,14 +173,14 @@ RSpec.describe Board do
   describe '#checkerboard_square' do
     context 'when it creates a light-colored background square' do
       it 'prints "\033[46m   \033[0m"' do
-        square = board.checkerboard_square(2, 3)
+        square = board.send(:checkerboard_square, 2, 3)
         expect(square).to eq("\033[46m   \033[0m")
       end
     end
 
     context 'when it creates a dark-colored square with a white pawn on it' do
       it "prints '\033[44m#{@w_pawn}\033[0m'" do
-        square = board.checkerboard_square(7, 7, @w_pawn)
+        square = board.send(:checkerboard_square, 7, 7, @w_pawn)
         expect(square).to eq("\033[45m#{@w_pawn}\033[0m")
       end
     end

@@ -29,6 +29,34 @@ class Board
     set_up_board
   end
 
+  # used by Game to overwrite the 8x8 playing field section of the board using an 8x8
+  # playing field input from Game by accessing either nil or a piece from the playing field,
+  # and converting nil or the piece symbols to Board constants that represent empty squares or the pieces
+  def overwrite_playing_field(playing_field)
+    (0..7).each do |column|
+      (0..7).each do |row|
+        @board[row + 3][column + 1] = if playing_field[column][row].nil?
+                                        empty_square(row, column)
+                                      else
+                                        square_with_piece(row, column, playing_field)
+                                      end
+      end
+    end
+  end
+
+  # used by Game to add the pieces from the Game 4x8 array of captured pieces to the board
+  def add_captured_pieces(captured_pieces)
+    (0..3).each do |row|
+      (0..7).each do |column|
+        next if captured_pieces[row][column].nil?
+
+        place_captured_pieces_on_board(captured_pieces, row, column)
+      end
+    end
+  end
+
+  private
+
   # used by #initialize to set up the codes for the pieces depending on the chosen style
   def set_up_pieces
     if @minimalist_or_checkerboard == :minimalist
@@ -134,21 +162,6 @@ class Board
     string
   end
 
-  # used by Game to overwrite the 8x8 playing field section of the board using an 8x8
-  # playing field input from Game by accessing either nil or a piece from the playing field,
-  # and converting nil or the piece symbols to Board constants that represent empty squares or the pieces
-  def overwrite_playing_field(playing_field)
-    (0..7).each do |column|
-      (0..7).each do |row|
-        @board[row + 3][column + 1] = if playing_field[column][row].nil?
-                                        empty_square(row, column)
-                                      else
-                                        square_with_piece(row, column, playing_field)
-                                      end
-      end
-    end
-  end
-
   # used by #overwrite_playing_field to generate a minimalist dash or checkerboard square
   def empty_square(row, column)
     @minimalist_or_checkerboard == :minimalist ? MINIMALIST_DASH : checkerboard_square(row, column)
@@ -173,17 +186,6 @@ class Board
   # used by #checkerboard_square to generate a light background square with piece
   def board_square(piece, light_or_dark)
     light_or_dark == :light ? "\033[46m#{piece}\033[0m" : "\033[45m#{piece}\033[0m"
-  end
-
-  # used by Game to add the pieces from the Game 4x8 array of captured pieces to the board
-  def add_captured_pieces(captured_pieces)
-    (0..3).each do |row|
-      (0..7).each do |column|
-        next if captured_pieces[row][column].nil?
-
-        place_captured_pieces_on_board(captured_pieces, row, column)
-      end
-    end
   end
 
   # used by #add_captured_pieces to place the pieces
