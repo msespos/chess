@@ -2,6 +2,8 @@
 
 # methods for testing for check
 module CheckValidation
+  private
+  
   # check if the king is in check
   def in_check?
     current_king_square = king_location

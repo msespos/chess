@@ -4,6 +4,8 @@
 
 # methods for testing for checkmate
 module CheckmateValidation
+  private
+
   # check if the king is in checkmate using helper methods
   def in_checkmate?
     return false unless in_check?

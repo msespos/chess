@@ -2,6 +2,8 @@
 
 # methods for implementing en passant
 module EnPassant
+  private
+  
   # used by #make_move_when_not_invalid to determine if and where en passant is possible
   # check to see if a pawn has just moved two squares and in which column
   # if so, set @en_passant_column to that column

@@ -875,7 +875,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][3] = :b_bishop
         game.instance_variable_set(:@current_player, :white)
-        check_or_not = game.in_check?
+        check_or_not = game.send(:in_check?)
         expect(check_or_not).to eq(true)
       end
     end
@@ -889,7 +889,7 @@ RSpec.describe Game do
     context 'when the white king is in check' do
       it 'returns true' do
         game.instance_variable_set(:@current_player, :white)
-        check_or_not = game.in_check?
+        check_or_not = game.send(:in_check?)
         expect(check_or_not).to eq(true)
       end
     end
@@ -905,7 +905,7 @@ RSpec.describe Game do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_set(:@current_player, :white)
-        current_square = game.king_location
+        current_square = game.send(:king_location)
         expect(current_square).to eq([4, 0])
       end
     end
@@ -914,7 +914,7 @@ RSpec.describe Game do
       it 'returns [4, 0]' do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_set(:@current_player, :white)
-        current_square = game.king_location
+        current_square = game.send(:king_location)
         expect(current_square).to eq([0, 0])
       end
     end
@@ -923,7 +923,7 @@ RSpec.describe Game do
       it 'returns [1, 6]' do
         game.instance_variable_get(:@playing_field)[1][6] = :b_king
         game.instance_variable_set(:@current_player, :black)
-        current_square = game.king_location
+        current_square = game.send(:king_location)
         expect(current_square).to eq([1, 6])
       end
     end
@@ -940,7 +940,7 @@ RSpec.describe Game do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        under_attack_or_not = game.under_attack?([4, 0], :black)
+        under_attack_or_not = game.send(:under_attack?, [4, 0], :black)
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -949,7 +949,7 @@ RSpec.describe Game do
       it 'returns true' do
         game.instance_variable_get(:@playing_field)[3][3] = :b_bishop
         game.instance_variable_get(:@playing_field)[3][0] = :w_rook
-        under_attack_or_not = game.under_attack?([3, 3], :white)
+        under_attack_or_not = game.send(:under_attack?, [3, 3], :white)
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -966,7 +966,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][4] = :w_king
         game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
         game.instance_variable_set(:@current_player, :white)
-        squares = game.attacker_squares([0, 4])
+        squares = game.send(:attacker_squares, [0, 4])
         expect(squares).to eq([])
       end
     end
@@ -976,7 +976,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
         game.instance_variable_set(:@current_player, :white)
-        squares = game.attacker_squares([0, 0])
+        squares = game.send(:attacker_squares, [0, 0])
         expect(squares).to eq([[4, 4]])
       end
     end
@@ -987,7 +987,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][4] = :b_bishop
         game.instance_variable_get(:@playing_field)[0][2] = :b_rook
         game.instance_variable_set(:@current_player, :white)
-        squares = game.attacker_squares([0, 0])
+        squares = game.send(:attacker_squares, [0, 0])
         expect(squares).to eq([[0, 2], [4, 4]])
       end
     end
@@ -998,7 +998,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][4] = :w_bishop
         game.instance_variable_get(:@playing_field)[0][2] = :w_rook
         game.instance_variable_set(:@current_player, :black)
-        squares = game.attacker_squares([0, 0])
+        squares = game.send(:attacker_squares, [0, 0])
         expect(squares).to eq([[0, 2], [4, 4]])
       end
     end
@@ -1016,7 +1016,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        protected_or_not = game.attacking_piece_protected?([0, 1])
+        protected_or_not = game.send(:attacking_piece_protected?, [0, 1])
         expect(protected_or_not).to eq(true)
       end
     end
@@ -1032,7 +1032,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        protected_or_not = game.attacking_piece_protected?([0, 2])
+        protected_or_not = game.send(:attacking_piece_protected?, [0, 2])
         expect(protected_or_not).to eq(true)
       end
     end
@@ -1047,7 +1047,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        protected_or_not = game.attacking_piece_protected?([0, 1])
+        protected_or_not = game.send(:attacking_piece_protected?, [0, 1])
         expect(protected_or_not).to eq(false)
       end
     end
@@ -1062,7 +1062,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        protected_or_not = game.attacking_piece_protected?([0, 2])
+        protected_or_not = game.send(:attacking_piece_protected?, [0, 2])
         expect(protected_or_not).to eq(false)
       end
     end
@@ -1075,7 +1075,7 @@ RSpec.describe Game do
         allow(game).to receive(:can_move_out_of_check?).and_return(false)
         allow(game).to receive(:attacker_can_be_captured?).and_return(false)
         allow(game).to receive(:attacker_can_be_blocked?).and_return(false)
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1086,7 +1086,7 @@ RSpec.describe Game do
         allow(game).to receive(:can_move_out_of_check?).and_return(true)
         allow(game).to receive(:attacker_can_be_captured?).and_return(false)
         allow(game).to receive(:attacker_can_be_blocked?).and_return(false)
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1097,7 +1097,7 @@ RSpec.describe Game do
         allow(game).to receive(:can_move_out_of_check?).and_return(false)
         allow(game).to receive(:attacker_can_be_captured?).and_return(true)
         allow(game).to receive(:attacker_can_be_blocked?).and_return(false)
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1108,7 +1108,7 @@ RSpec.describe Game do
         allow(game).to receive(:can_move_out_of_check?).and_return(false)
         allow(game).to receive(:attacker_can_be_captured?).and_return(false)
         allow(game).to receive(:attacker_can_be_blocked?).and_return(true)
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1119,7 +1119,7 @@ RSpec.describe Game do
         allow(game).to receive(:can_move_out_of_check?).and_return(false)
         allow(game).to receive(:attacker_can_be_captured?).and_return(false)
         allow(game).to receive(:attacker_can_be_blocked?).and_return(false)
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1138,7 +1138,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1153,7 +1153,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1168,7 +1168,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1184,7 +1184,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1200,7 +1200,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1215,7 +1215,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1231,7 +1231,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1247,7 +1247,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1263,7 +1263,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1279,7 +1279,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1296,7 +1296,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1313,7 +1313,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1330,7 +1330,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1348,7 +1348,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1368,7 +1368,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1388,7 +1388,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1407,7 +1407,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1429,7 +1429,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1447,7 +1447,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1470,7 +1470,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1489,7 +1489,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1511,7 +1511,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1537,7 +1537,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1562,7 +1562,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1581,7 +1581,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1599,7 +1599,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1617,7 +1617,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1635,7 +1635,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1653,7 +1653,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1671,7 +1671,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1689,7 +1689,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1707,7 +1707,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1725,7 +1725,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1744,7 +1744,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1764,7 +1764,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1785,7 +1785,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1811,7 +1811,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1831,7 +1831,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(true)
       end
     end
@@ -1851,7 +1851,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_checkmate_or_not = game.in_checkmate?
+        in_checkmate_or_not = game.send(:in_checkmate?)
         expect(in_checkmate_or_not).to eq(false)
       end
     end
@@ -1870,7 +1870,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(true)
       end
     end
@@ -1885,7 +1885,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(true)
       end
     end
@@ -1900,7 +1900,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(true)
       end
     end
@@ -1916,7 +1916,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(false)
       end
     end
@@ -1932,7 +1932,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(false)
       end
     end
@@ -1948,7 +1948,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(false)
       end
     end
@@ -1964,7 +1964,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_move_or_not = game.can_move_out_of_check?
+        can_move_or_not = game.send(:can_move_out_of_check?)
         expect(can_move_or_not).to eq(false)
       end
     end
@@ -1983,7 +1983,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[3][0] = :w_queen
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[5][0] = :w_rook
-        accessible = game.accessible_squares
+        accessible = game.send(:accessible_squares)
         expect(accessible).to eq([[3, 1], [4, 1], [5, 1]])
       end
     end
@@ -1993,17 +1993,17 @@ RSpec.describe Game do
         allow(game).to receive(:king_location).and_return([0, 0])
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][1] = :b_queen
-        accessible = game.accessible_squares
+        accessible = game.send(:accessible_squares)
         expect(accessible).to eq([[1, 0], [0, 1], [1, 1]])
       end
     end
   end
 
-  describe 'surrounding_squares' do
+  describe '#surrounding_squares' do
     context 'when the king is at a5' do
       it 'returns the eight squares around a5 and a5 (valid or not)' do
         around_a5 = [[3, -1], [4, -1], [5, -1], [3, 0], [4, 0], [5, 0], [3, 1], [4, 1], [5, 1]]
-        surrounding = game.surrounding_squares([4, 0])
+        surrounding = game.send(:surrounding_squares, [4, 0])
         expect(surrounding).to eq(around_a5)
       end
     end
@@ -2023,7 +2023,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(true)
       end
     end
@@ -2039,7 +2039,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(false)
       end
     end
@@ -2054,7 +2054,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(false)
       end
     end
@@ -2071,7 +2071,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(true)
       end
     end
@@ -2088,7 +2088,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(true)
       end
     end
@@ -2105,7 +2105,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(false)
       end
     end
@@ -2123,7 +2123,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_captured_or_not = game.attacker_can_be_captured?
+        can_be_captured_or_not = game.send(:attacker_can_be_captured?)
         expect(can_be_captured_or_not).to eq(false)
       end
     end
@@ -2143,7 +2143,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(true)
       end
     end
@@ -2159,7 +2159,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(true)
       end
     end
@@ -2175,7 +2175,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(false)
       end
     end
@@ -2193,7 +2193,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(false)
       end
     end
@@ -2209,7 +2209,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(true)
       end
     end
@@ -2225,7 +2225,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(false)
       end
     end
@@ -2240,7 +2240,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        can_be_blocked_or_not = game.attacker_can_be_blocked?
+        can_be_blocked_or_not = game.send(:attacker_can_be_blocked?)
         expect(can_be_blocked_or_not).to eq(false)
       end
     end
@@ -2253,7 +2253,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][4] = :b_rook
-        blockable_or_not = game.blockable_piece_type?([0, 4])
+        blockable_or_not = game.send(:blockable_piece_type?, [0, 4])
         expect(blockable_or_not).to eq(true)
       end
     end
@@ -2264,7 +2264,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[1][2] = :b_knight
-        blockable_or_not = game.blockable_piece_type?([1, 2])
+        blockable_or_not = game.send(:blockable_piece_type?, [1, 2])
         expect(blockable_or_not).to eq(false)
       end
     end
@@ -2281,7 +2281,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][4] = :b_rook
         game.instance_variable_get(:@playing_field)[2][2] = :w_rook
-        under_attack_or_not = game.possible_blocks_under_attack?([0, 4])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [0, 4])
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -2293,7 +2293,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[0][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][4] = :b_rook
-        under_attack_or_not = game.possible_blocks_under_attack?([0, 4])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [0, 4])
         expect(under_attack_or_not).to eq(false)
       end
     end
@@ -2306,7 +2306,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][4] = :w_king
         game.instance_variable_get(:@playing_field)[3][4] = :b_queen
         game.instance_variable_get(:@playing_field)[5][2] = :w_rook
-        under_attack_or_not = game.possible_blocks_under_attack?([3, 4])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [3, 4])
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -2318,7 +2318,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :white)
         game.instance_variable_get(:@playing_field)[6][4] = :w_king
         game.instance_variable_get(:@playing_field)[3][4] = :b_queen
-        under_attack_or_not = game.possible_blocks_under_attack?([3, 4])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [3, 4])
         expect(under_attack_or_not).to eq(false)
       end
     end
@@ -2331,7 +2331,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][4] = :b_king
         game.instance_variable_get(:@playing_field)[4][2] = :w_bishop
         game.instance_variable_get(:@playing_field)[5][2] = :b_rook
-        under_attack_or_not = game.possible_blocks_under_attack?([4, 2])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [4, 2])
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -2343,7 +2343,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_get(:@playing_field)[6][4] = :b_king
         game.instance_variable_get(:@playing_field)[4][2] = :w_bishop
-        under_attack_or_not = game.possible_blocks_under_attack?([4, 2])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [4, 2])
         expect(under_attack_or_not).to eq(false)
       end
     end
@@ -2357,7 +2357,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[6][6] = :w_rook
         game.instance_variable_get(:@playing_field)[2][4] = :b_bishop
         game.instance_variable_get(:@playing_field)[5][2] = :b_rook
-        under_attack_or_not = game.possible_blocks_under_attack?([6, 6])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [6, 6])
         expect(under_attack_or_not).to eq(true)
       end
     end
@@ -2369,7 +2369,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_get(:@playing_field)[2][6] = :b_king
         game.instance_variable_get(:@playing_field)[3][5] = :w_pawn
-        under_attack_or_not = game.possible_blocks_under_attack?([3, 5])
+        under_attack_or_not = game.send(:possible_blocks_under_attack?, [3, 5])
         expect(under_attack_or_not).to eq(false)
       end
     end
@@ -2381,7 +2381,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on a7' do
       it 'returns all the squares in between' do
         squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
-        end_squares = game.squares_between([0, 0], [0, 6])
+        end_squares = game.send(:squares_between, [0, 0], [0, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2389,7 +2389,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
-        end_squares = game.squares_between([0, 6], [0, 0])
+        end_squares = game.send(:squares_between, [0, 6], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2397,7 +2397,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on b7' do
       it 'returns the square in between' do
         squares_between = [[1, 5]]
-        end_squares = game.squares_between([1, 4], [1, 6])
+        end_squares = game.send(:squares_between, [1, 4], [1, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2405,7 +2405,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between([0, 1], [0, 0])
+        end_squares = game.send(:squares_between, [0, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2413,7 +2413,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on d2' do
       it 'returns all the squares in between' do
         squares_between = [[1, 1], [2, 1]]
-        end_squares = game.squares_between([0, 1], [3, 1])
+        end_squares = game.send(:squares_between, [0, 1], [3, 1])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2421,7 +2421,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on g1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0]]
-        end_squares = game.squares_between([0, 0], [6, 0])
+        end_squares = game.send(:squares_between, [0, 0], [6, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2429,7 +2429,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0]]
-        end_squares = game.squares_between([6, 0], [0, 0])
+        end_squares = game.send(:squares_between, [6, 0], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2437,7 +2437,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on d5' do
       it 'returns the square in between' do
         squares_between = [[2, 4]]
-        end_squares = game.squares_between([1, 4], [3, 4])
+        end_squares = game.send(:squares_between, [1, 4], [3, 4])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2445,7 +2445,7 @@ RSpec.describe Game do
     context 'the first piece is on b1 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between([1, 0], [0, 0])
+        end_squares = game.send(:squares_between, [1, 0], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2453,7 +2453,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on a4' do
       it 'returns all the squares in between' do
         squares_between = [[0, 2]]
-        end_squares = game.squares_between([0, 1], [0, 3])
+        end_squares = game.send(:squares_between, [0, 1], [0, 3])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2461,7 +2461,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on g7' do
       it 'returns all the squares in between' do
         squares_between = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
-        end_squares = game.squares_between([0, 0], [6, 6])
+        end_squares = game.send(:squares_between, [0, 0], [6, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2469,7 +2469,7 @@ RSpec.describe Game do
     context 'the first piece is on g7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
-        end_squares = game.squares_between([6, 6], [0, 0])
+        end_squares = game.send(:squares_between, [6, 6], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2477,7 +2477,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on e7' do
       it 'returns the square in between' do
         squares_between = [[2, 5]]
-        end_squares = game.squares_between([1, 4], [3, 6])
+        end_squares = game.send(:squares_between, [1, 4], [3, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2485,7 +2485,7 @@ RSpec.describe Game do
     context 'the first piece is on b2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between([1, 1], [0, 0])
+        end_squares = game.send(:squares_between, [1, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2493,7 +2493,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on g1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]]
-        end_squares = game.squares_between([0, 6], [6, 0])
+        end_squares = game.send(:squares_between, [0, 6], [6, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2501,7 +2501,7 @@ RSpec.describe Game do
     context 'the first piece is on g1 and the second is on a7' do
       it 'returns all the squares in between' do
         squares_between = [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]]
-        end_squares = game.squares_between([6, 0], [0, 6])
+        end_squares = game.send(:squares_between, [6, 0], [0, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2509,7 +2509,7 @@ RSpec.describe Game do
     context 'the first piece is on d5 and the second is on f3' do
       it 'returns the square in between' do
         squares_between = [[4, 3]]
-        end_squares = game.squares_between([3, 4], [5, 2])
+        end_squares = game.send(:squares_between, [3, 4], [5, 2])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2517,7 +2517,7 @@ RSpec.describe Game do
     context 'the first piece is on b2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between([1, 1], [0, 0])
+        end_squares = game.send(:squares_between, [1, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2527,7 +2527,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on a7' do
       it 'returns all the squares in between' do
         squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
-        end_squares = game.squares_between_on_file([0, 0], [0, 6])
+        end_squares = game.send(:squares_between_on_file, [0, 0], [0, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2535,7 +2535,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5]]
-        end_squares = game.squares_between_on_file([0, 6], [0, 0])
+        end_squares = game.send(:squares_between_on_file, [0, 6], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2543,7 +2543,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on b7' do
       it 'returns the square in between' do
         squares_between = [[1, 5]]
-        end_squares = game.squares_between_on_file([1, 4], [1, 6])
+        end_squares = game.send(:squares_between_on_file, [1, 4], [1, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2551,7 +2551,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_file([0, 1], [0, 0])
+        end_squares = game.send(:squares_between_on_file, [0, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2559,7 +2559,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on d2' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_file([0, 1], [3, 1])
+        end_squares = game.send(:squares_between_on_file, [0, 1], [3, 1])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2569,7 +2569,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on g1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0]]
-        end_squares = game.squares_between_on_rank([0, 0], [6, 0])
+        end_squares = game.send(:squares_between_on_rank, [0, 0], [6, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2577,7 +2577,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0]]
-        end_squares = game.squares_between_on_rank([6, 0], [0, 0])
+        end_squares = game.send(:squares_between_on_rank, [6, 0], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2585,7 +2585,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on d5' do
       it 'returns the square in between' do
         squares_between = [[2, 4]]
-        end_squares = game.squares_between_on_rank([1, 4], [3, 4])
+        end_squares = game.send(:squares_between_on_rank, [1, 4], [3, 4])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2593,7 +2593,7 @@ RSpec.describe Game do
     context 'the first piece is on b1 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_rank([1, 0], [0, 0])
+        end_squares = game.send(:squares_between_on_rank, [1, 0], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2601,7 +2601,7 @@ RSpec.describe Game do
     context 'the first piece is on a2 and the second is on a4' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_rank([0, 1], [0, 3])
+        end_squares = game.send(:squares_between_on_rank, [0, 1], [0, 3])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2611,7 +2611,7 @@ RSpec.describe Game do
     context 'the first piece is on a1 and the second is on g7' do
       it 'returns all the squares in between' do
         squares_between = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
-        end_squares = game.squares_between_on_diagonal([0, 0], [6, 6])
+        end_squares = game.send(:squares_between_on_diagonal, [0, 0], [6, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2619,7 +2619,7 @@ RSpec.describe Game do
     context 'the first piece is on g7 and the second is on a1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
-        end_squares = game.squares_between_on_diagonal([6, 6], [0, 0])
+        end_squares = game.send(:squares_between_on_diagonal, [6, 6], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2627,7 +2627,7 @@ RSpec.describe Game do
     context 'the first piece is on b5 and the second is on e7' do
       it 'returns the square in between' do
         squares_between = [[2, 5]]
-        end_squares = game.squares_between_on_diagonal([1, 4], [3, 6])
+        end_squares = game.send(:squares_between_on_diagonal, [1, 4], [3, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2635,7 +2635,7 @@ RSpec.describe Game do
     context 'the first piece is on b2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_diagonal([1, 1], [0, 0])
+        end_squares = game.send(:squares_between_on_diagonal, [1, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2643,7 +2643,7 @@ RSpec.describe Game do
     context 'the first piece is on a7 and the second is on g1' do
       it 'returns all the squares in between' do
         squares_between = [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]]
-        end_squares = game.squares_between_on_diagonal([0, 6], [6, 0])
+        end_squares = game.send(:squares_between_on_diagonal, [0, 6], [6, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2651,7 +2651,7 @@ RSpec.describe Game do
     context 'the first piece is on g1 and the second is on a7' do
       it 'returns all the squares in between' do
         squares_between = [[1, 5], [2, 4], [3, 3], [4, 2], [5, 1]]
-        end_squares = game.squares_between_on_diagonal([6, 0], [0, 6])
+        end_squares = game.send(:squares_between_on_diagonal, [6, 0], [0, 6])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2659,7 +2659,7 @@ RSpec.describe Game do
     context 'the first piece is on d5 and the second is on f3' do
       it 'returns the square in between' do
         squares_between = [[4, 3]]
-        end_squares = game.squares_between_on_diagonal([3, 4], [5, 2])
+        end_squares = game.send(:squares_between_on_diagonal, [3, 4], [5, 2])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -2667,7 +2667,7 @@ RSpec.describe Game do
     context 'the first piece is on b2 and the second is on a1' do
       it 'returns an empty array' do
         squares_between = []
-        end_squares = game.squares_between_on_diagonal([1, 1], [0, 0])
+        end_squares = game.send(:squares_between_on_diagonal, [1, 1], [0, 0])
         expect(end_squares).to eq(squares_between)
       end
     end
@@ -3102,7 +3102,7 @@ RSpec.describe Game do
   describe '#update_en_passant_column' do
     context 'when [0, 0] and [0, 1] are passed in' do
       it 'sets @en_passant_column to nil' do
-        game.update_en_passant_column([0, 0], [0, 1])
+        game.send(:update_en_passant_column, [0, 0], [0, 1])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(nil)
       end
@@ -3113,7 +3113,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[0][3] = :w_pawn
-        game.update_en_passant_column([0, 1], [0, 3])
+        game.send(:update_en_passant_column, [0, 1], [0, 3])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(0)
       end
@@ -3124,7 +3124,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][4] = :b_pawn
-        game.update_en_passant_column([5, 6], [5, 4])
+        game.send(:update_en_passant_column, [5, 6], [5, 4])
         column = game.instance_variable_get(:@en_passant_column)
         expect(column).to eq(5)
       end
@@ -3134,13 +3134,13 @@ RSpec.describe Game do
   describe '#update_castling_piece_states' do
     context 'when called at the start' do
       it 'sets @white_kingside_rook_moved to false' do
-        game.update_castling_piece_states(:start)
+        game.send(:update_castling_piece_states, :start)
         rook_moved = game.instance_variable_get(:@white_kingside_rook_moved)
         expect(rook_moved).to eq(false)
       end
 
       it 'sets @black_king_moved to false' do
-        game.update_castling_piece_states(:start)
+        game.send(:update_castling_piece_states, :start)
         king_moved = game.instance_variable_get(:@black_king_moved)
         expect(king_moved).to eq(false)
       end
@@ -3148,7 +3148,7 @@ RSpec.describe Game do
 
     context 'when called during a game at a0' do
       it 'sets @white_queenside_rook_moved to true' do
-        game.update_castling_piece_states(:during, [0, 0])
+        game.send(:update_castling_piece_states, :during, [0, 0])
         rook_moved = game.instance_variable_get(:@white_queenside_rook_moved)
         expect(rook_moved).to eq(true)
       end
@@ -3156,7 +3156,7 @@ RSpec.describe Game do
 
     context 'when called during a game at a8' do
       it 'sets @black_queenside_rook_moved to true' do
-        game.update_castling_piece_states(:during, [0, 7])
+        game.send(:update_castling_piece_states, :during, [0, 7])
         rook_moved = game.instance_variable_get(:@black_queenside_rook_moved)
         expect(rook_moved).to eq(true)
       end
@@ -3169,7 +3169,7 @@ RSpec.describe Game do
         allow(game).to receive(:move_is_castle?).and_return(true)
         allow(game).to receive(:can_castle?).and_return(true)
         allow(game).to receive(:castle)
-        castled_or_not = game.check_for_and_castle('start', 'finish')
+        castled_or_not = game.send(:check_for_and_castle, 'start', 'finish')
         expect(castled_or_not).to eq(:castled)
       end
     end
@@ -3178,14 +3178,14 @@ RSpec.describe Game do
   describe '#move_is_castle?' do
     context 'when all conditions are met' do
       it 'returns true' do
-        move_is_castle_or_not = game.move_is_castle?([4, 0], [2, 0], :queen)
+        move_is_castle_or_not = game.send(:move_is_castle?, [4, 0], [2, 0], :queen)
         expect(move_is_castle_or_not).to eq(true)
       end
     end
 
     context 'when the side is wrong' do
       it 'returns false' do
-        move_is_castle_or_not = game.move_is_castle?([4, 0], [2, 0], :king)
+        move_is_castle_or_not = game.send(:move_is_castle?, [4, 0], [2, 0], :king)
         expect(move_is_castle_or_not).to eq(false)
       end
     end
@@ -3195,7 +3195,7 @@ RSpec.describe Game do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3203,7 +3203,7 @@ RSpec.describe Game do
     context 'when the white kingside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3213,7 +3213,7 @@ RSpec.describe Game do
     context 'when the white king has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_king_moved, true)
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3221,7 +3221,7 @@ RSpec.describe Game do
     context 'when the white queenside rook has moved already' do
       it 'returns false' do
         game.instance_variable_set(:@white_queenside_rook_moved, true)
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3231,7 +3231,7 @@ RSpec.describe Game do
     context 'when the kingside rook has moved already' do
       it 'returns true' do
         game.instance_variable_set(:@white_kingside_rook_moved, true)
-        moved_or_not = game.rook_moved?(:king)
+        moved_or_not = game.send(:rook_moved?, :king)
         expect(moved_or_not).to eq(true)
       end
     end
@@ -3248,7 +3248,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3262,7 +3262,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[5][2] = :b_rook
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3276,7 +3276,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3290,7 +3290,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3307,7 +3307,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][2] = :b_bishop
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3321,7 +3321,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[3][2] = :b_rook
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3335,7 +3335,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3349,7 +3349,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[0][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3359,7 +3359,7 @@ RSpec.describe Game do
     context 'when none of the castling squares are in check' do
       it 'returns true' do
         allow(game).to receive(:under_attack?).and_return(false, false, false)
-        squares_not_in_check = game.no_castling_squares_in_check?(:king)
+        squares_not_in_check = game.send(:no_castling_squares_in_check?, :king)
         expect(squares_not_in_check).to eq(true)
       end
     end
@@ -3367,7 +3367,7 @@ RSpec.describe Game do
     context 'when one of the castling squares is in check' do
       it 'returns false' do
         allow(game).to receive(:under_attack?).and_return(false, true, false)
-        squares_not_in_check = game.no_castling_squares_in_check?(:king)
+        squares_not_in_check = game.send(:no_castling_squares_in_check?, :king)
         expect(squares_not_in_check).to eq(false)
       end
     end
@@ -3378,7 +3378,7 @@ RSpec.describe Game do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.castling_squares_empty?(:king)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3388,7 +3388,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][0] = :w_bishop
-        squares_empty_or_not = game.castling_squares_empty?(:king)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :king)
         expect(squares_empty_or_not).to eq(false)
       end
     end
@@ -3399,7 +3399,7 @@ RSpec.describe Game do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.castling_squares_empty?(:king)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3409,7 +3409,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[2][0] = :w_bishop
-        squares_empty_or_not = game.castling_squares_empty?(:queen)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :queen)
         expect(squares_empty_or_not).to eq(false)
       end
     end
@@ -3419,7 +3419,7 @@ RSpec.describe Game do
     context 'when all conditions are met' do
       it 'returns true' do
         game.instance_variable_set(:@current_player, :black)
-        black_castle_or_not = game.move_is_castle?([4, 7], [2, 7], :queen)
+        black_castle_or_not = game.send(:move_is_castle?, [4, 7], [2, 7], :queen)
         expect(black_castle_or_not).to eq(true)
       end
     end
@@ -3427,7 +3427,7 @@ RSpec.describe Game do
     context 'when the side is wrong' do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
-        black_castle_or_not = game.move_is_castle?([4, 7], [2, 7], :king)
+        black_castle_or_not = game.send(:move_is_castle?, [4, 7], [2, 7], :king)
         expect(black_castle_or_not).to eq(false)
       end
     end
@@ -3438,7 +3438,7 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_set(:@black_king_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3447,7 +3447,7 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_set(:@black_kingside_rook_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3458,7 +3458,7 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_set(:@black_king_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3467,7 +3467,7 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
         game.instance_variable_set(:@black_queenside_rook_moved, true)
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3485,7 +3485,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3500,7 +3500,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[5][5] = :b_rook
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3515,7 +3515,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[7][7] = :w_rook
         game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3529,7 +3529,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][0] = :w_king
         game.instance_variable_get(:@playing_field)[7][0] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :w_rook
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3547,7 +3547,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[6][5] = :b_bishop
-        can_castle_or_not = game.can_castle?(:king)
+        can_castle_or_not = game.send(:can_castle?, :king)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3562,7 +3562,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[3][5] = :b_rook
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3577,7 +3577,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :w_king
         game.instance_variable_get(:@playing_field)[0][7] = :w_rook
         game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(false)
       end
     end
@@ -3592,7 +3592,7 @@ RSpec.describe Game do
         game.instance_variable_get(:@playing_field)[4][7] = :b_king
         game.instance_variable_get(:@playing_field)[0][7] = :b_rook
         game.instance_variable_get(:@playing_field)[6][5] = :b_rook
-        can_castle_or_not = game.can_castle?(:queen)
+        can_castle_or_not = game.send(:can_castle?, :queen)
         expect(can_castle_or_not).to eq(true)
       end
     end
@@ -3603,7 +3603,7 @@ RSpec.describe Game do
       it 'returns true' do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:under_attack?).and_return(false, false, false)
-        squares_not_in_check = game.no_castling_squares_in_check?(:king)
+        squares_not_in_check = game.send(:no_castling_squares_in_check?, :king)
         expect(squares_not_in_check).to eq(true)
       end
     end
@@ -3612,7 +3612,7 @@ RSpec.describe Game do
       it 'returns false' do
         game.instance_variable_set(:@current_player, :black)
         allow(game).to receive(:under_attack?).and_return(false, true, false)
-        squares_not_in_check = game.no_castling_squares_in_check?(:king)
+        squares_not_in_check = game.send(:no_castling_squares_in_check?, :king)
         expect(squares_not_in_check).to eq(false)
       end
     end
@@ -3623,7 +3623,7 @@ RSpec.describe Game do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.castling_squares_empty?(:king)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :king)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3634,7 +3634,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[5][7] = :w_bishop
-        squares_empty_or_not = game.castling_squares_empty?(:king)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :king)
         expect(squares_empty_or_not).to eq(false)
       end
     end
@@ -3645,7 +3645,7 @@ RSpec.describe Game do
       it 'returns true' do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
-        squares_empty_or_not = game.castling_squares_empty?(:queen)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :queen)
         expect(squares_empty_or_not).to eq(true)
       end
     end
@@ -3656,7 +3656,7 @@ RSpec.describe Game do
         blank_playing_field = Array.new(8) { Array.new(8) { nil } }
         game.instance_variable_set(:@playing_field, blank_playing_field)
         game.instance_variable_get(:@playing_field)[2][7] = :w_bishop
-        squares_empty_or_not = game.castling_squares_empty?(:queen)
+        squares_empty_or_not = game.send(:castling_squares_empty?, :queen)
         expect(squares_empty_or_not).to eq(false)
       end
     end
@@ -3666,7 +3666,7 @@ RSpec.describe Game do
     context 'when black castles kingside' do
       it 'moves the pieces appropriately' do
         game.instance_variable_set(:@current_player, :black)
-        game.castle(:king)
+        game.send(:castle, :king)
         castled_rook = game.instance_variable_get(:@playing_field)[5][7]
         expect(castled_rook).to eq(:b_rook)
       end
