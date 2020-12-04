@@ -7,6 +7,7 @@ require 'yaml'
 # methods for saving and loading the game
 # adapted from my Snowman game file at ../../snowman/lib/game.rb
 module SaveLoad
+  # used by #save_or_load
   def save_game
     puts save_text
     file = File.open("saved_games/chess_save_#{slot}.yml", 'w')
@@ -15,11 +16,21 @@ module SaveLoad
     puts "Game saved! Let's get back to the game."
   end
 
+  # used by #save_or_load
+  def load_game
+    puts load_text
+    from_yaml("saved_games/chess_save_#{slot}.yml")
+  end
+
+  private
+
+  # used by #save_game
   def save_text
     "There are 3 slots to save in, labeled 1, 2, and 3.\n"\
       'Please select a number. You will overwrite any already saved game in that slot.'
   end
 
+  # used by #save_game and #load_game for the user to select a slot for saving or loading to or from
   def slot
     slot = gets.chomp.to_i
     until [1, 2, 3].include?(slot)
@@ -29,6 +40,7 @@ module SaveLoad
     slot
   end
 
+  # used by #save_game
   def to_yaml
     YAML.dump({ number_of_players: @number_of_players,
                 bottom_color: @bottom_color,
@@ -48,16 +60,13 @@ module SaveLoad
                 playing_field: @playing_field })
   end
 
-  def load_game
-    puts load_text
-    from_yaml("saved_games/chess_save_#{slot}.yml")
-  end
-
+  # used by #load_game
   def load_text
     "There are 3 slots that a game could be saved in, labeled 1, 2, and 3.\n"\
       'Please select a number. You should have saved a game in that slot already.'
   end
 
+  # used by #load_game
   def from_yaml(game)
     status = YAML.safe_load(File.read(game), [Symbol])
     assign_all_but_castling_variables(status)
@@ -65,6 +74,7 @@ module SaveLoad
     @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
   end
 
+  # used by from_yaml
   def assign_all_but_castling_variables(status)
     @number_of_players = status[:number_of_players]
     @bottom_color = status[:bottom_color]
@@ -78,6 +88,7 @@ module SaveLoad
     @playing_field = status[:playing_field]
   end
 
+  # used by from_yaml
   def assign_castling_variables(status)
     @white_king_moved = status[:white_king_moved]
     @white_kingside_rook_moved = status[:white_kingside_rook_moved]

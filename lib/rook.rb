@@ -2,6 +2,8 @@
 
 # rook module
 module Rook
+  private
+
   # determine if a path is legal for a rook using the start, finish and playing field
   # uses methods in piece.rb
   def rook_path?(start, finish, playing_field)

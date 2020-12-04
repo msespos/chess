@@ -2,6 +2,9 @@
 
 # methods for testing for stalemate
 module StalemateValidation
+  private
+
+  # used by #game_over?
   # check if a player is in stalemate by checking if they have any valid moves
   def in_stalemate?
     return false if in_checkmate?
@@ -16,6 +19,7 @@ module StalemateValidation
     true
   end
 
+  # used by #in_stalemate?
   def no_valid_moves_on_board?(playing_field_before_move)
     @playing_field.each_with_index do |column, column_index|
       column.each_index do |row_index|
@@ -29,6 +33,7 @@ module StalemateValidation
     true
   end
 
+  # used by #in_stalemate?
   def no_valid_moves_for_piece?(playing_field_before_move, column_index, row_index)
     @playing_field.each_with_index do |inner_column, inner_column_index|
       inner_column.each_index do |inner_row_index|

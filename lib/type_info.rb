@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# hashes to use for Player methods based on type
+# hashes to use for Player methods based on type of user input requested
 module TypeInfo
   PROMPTS = { move: 'Please enter your move.',
               piece: "You can promote a pawn!\nPlease enter n, b, r or q to promote.",

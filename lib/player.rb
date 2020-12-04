@@ -41,6 +41,20 @@ class Player
     input
   end
 
+  # used by #make_move_when_not_invalid
+  def invalid_move_message(type)
+    entry = INVALID_MOVE_MESSAGES[type]
+    "That is not a valid #{entry}! Please enter a valid #{entry}."
+  end
+
+  # used by Game#help
+  def help
+    puts help_text
+    leave_help
+  end
+
+  private
+
   # used by #user_input to get the player's move before checking it
   def obtain_user_input(type)
     puts PROMPTS[type]
@@ -66,18 +80,6 @@ class Player
     return false if input.length != 4
 
     (input =~ /[a-h][1-8][a-h][1-8]/) == 0
-  end
-
-  # used by #user_input as the message for an invalid move
-  def invalid_move_message(type)
-    entry = INVALID_MOVE_MESSAGES[type]
-    "That is not a valid #{entry}! Please enter a valid #{entry}."
-  end
-
-  # used by Game#help
-  def help
-    puts help_text
-    leave_help
   end
 end
 

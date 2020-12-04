@@ -2,6 +2,8 @@
 
 # queen module
 module Queen
+  private
+
   # determine if a path is legal for a queen using the start, finish and playing field
   # uses methods in piece.rb
   def queen_path?(start, finish, playing_field)

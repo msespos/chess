@@ -2688,7 +2688,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        stalemate_or_not = game.in_stalemate?
+        stalemate_or_not = game.send(:in_stalemate?)
         expect(stalemate_or_not).to eq(true)
       end
     end
@@ -2707,7 +2707,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        stalemate_or_not = game.in_stalemate?
+        stalemate_or_not = game.send(:in_stalemate?)
         expect(stalemate_or_not).to eq(false)
       end
     end
@@ -2723,7 +2723,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        stalemate_or_not = game.in_stalemate?
+        stalemate_or_not = game.send(:in_stalemate?)
         expect(stalemate_or_not).to eq(true)
       end
     end
@@ -2739,7 +2739,7 @@ RSpec.describe Game do
       end
 
       it 'returns false' do
-        stalemate_or_not = game.in_stalemate?
+        stalemate_or_not = game.send(:in_stalemate?)
         expect(stalemate_or_not).to eq(false)
       end
     end
@@ -2755,7 +2755,7 @@ RSpec.describe Game do
       end
 
       it 'returns true' do
-        stalemate_or_not = game.in_stalemate?
+        stalemate_or_not = game.send(:in_stalemate?)
         expect(stalemate_or_not).to eq(false)
       end
     end
@@ -2782,7 +2782,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_stalemate_or_not = game.in_stalemate?
+        in_stalemate_or_not = game.send(:in_stalemate?)
         expect(in_stalemate_or_not).to eq(true)
       end
     end
@@ -2806,7 +2806,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_stalemate_or_not = game.in_stalemate?
+        in_stalemate_or_not = game.send(:in_stalemate?)
         expect(in_stalemate_or_not).to eq(true)
       end
     end
@@ -2830,7 +2830,7 @@ RSpec.describe Game do
 
       it 'returns false' do
         game.play
-        in_stalemate_or_not = game.in_stalemate?
+        in_stalemate_or_not = game.send(:in_stalemate?)
         expect(in_stalemate_or_not).to eq(false)
       end
     end
@@ -2854,7 +2854,7 @@ RSpec.describe Game do
 
       it 'returns true' do
         game.play
-        in_stalemate_or_not = game.in_stalemate?
+        in_stalemate_or_not = game.send(:in_stalemate?)
         expect(in_stalemate_or_not).to eq(true)
       end
     end

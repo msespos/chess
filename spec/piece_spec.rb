@@ -14,7 +14,7 @@ RSpec.describe Piece do
       end
 
       it 'returns false' do
-        path_or_not = piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        path_or_not = piece.send(:rook_path?, [0, 0], [5, 5], ['playing field'])
         expect(path_or_not).to eq(false)
       end
     end
@@ -27,7 +27,7 @@ RSpec.describe Piece do
 
       it 'calls #rank_free?' do
         expect(piece).to receive(:rank_free?)
-        piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        piece.send(:rook_path?, [0, 0], [5, 5], ['playing field'])
       end
     end
 
@@ -39,14 +39,14 @@ RSpec.describe Piece do
 
       it 'calls #file_free?' do
         expect(piece).to receive(:file_free?)
-        piece.rook_path?([0, 0], [5, 5], ['playing field'])
+        piece.send(:rook_path?, [0, 0], [5, 5], ['playing field'])
       end
     end
 
     # integration test for the second line of #rook_path? and Rook#path? and related methods
     context 'when it is called with a diagonal path' do
       it 'returns false' do
-        path_or_not = piece.rook_path?([0, 0], [1, 1], ['playing field'])
+        path_or_not = piece.send(:rook_path?, [0, 0], [1, 1], ['playing field'])
         expect(path_or_not).to eq(false)
       end
     end
@@ -57,7 +57,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][0] = :w_rook
         playing_field[4][0] = :b_bishop
-        path_or_not = piece.rook_path?([0, 0], [4, 0], playing_field)
+        path_or_not = piece.send(:rook_path?, [0, 0], [4, 0], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -69,7 +69,7 @@ RSpec.describe Piece do
         playing_field[0][1] = :w_rook
         playing_field[2][1] = :w_rook
         playing_field[4][1] = :b_bishop
-        path_or_not = piece.rook_path?([0, 1], [4, 1], playing_field)
+        path_or_not = piece.send(:rook_path?, [0, 1], [4, 1], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -81,7 +81,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :b_bishop
         playing_field[6][0] = :w_rook
         playing_field[7][0] = :w_rook
-        path_or_not = piece.rook_path?([7, 0], [5, 0], playing_field)
+        path_or_not = piece.send(:rook_path?, [7, 0], [5, 0], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -92,7 +92,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[7][5] = :b_bishop
         playing_field[7][7] = :w_rook
-        path_or_not = piece.rook_path?([7, 7], [7, 5], playing_field)
+        path_or_not = piece.send(:rook_path?, [7, 7], [7, 5], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -104,7 +104,7 @@ RSpec.describe Piece do
         playing_field[7][5] = :b_bishop
         playing_field[7][6] = :w_pawn
         playing_field[7][7] = :w_rook
-        path_or_not = piece.rook_path?([7, 7], [7, 5], playing_field)
+        path_or_not = piece.send(:rook_path?, [7, 7], [7, 5], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -116,7 +116,7 @@ RSpec.describe Piece do
         playing_field[7][0] = :w_rook
         playing_field[7][1] = :w_pawn
         playing_field[7][3] = :w_rook
-        path_or_not = piece.rook_path?([7, 0], [7, 3], playing_field)
+        path_or_not = piece.send(:rook_path?, [7, 0], [7, 3], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -264,7 +264,7 @@ RSpec.describe Piece do
       end
 
       it 'returns false' do
-        path_or_not = piece.queen_path?([0, 0], [5, 5], ['playing field'])
+        path_or_not = piece.send(:queen_path?, [0, 0], [5, 5], ['playing field'])
         expect(path_or_not).to eq(false)
       end
     end
@@ -277,7 +277,7 @@ RSpec.describe Piece do
 
       it 'calls #rank_free?' do
         expect(piece).to receive(:rank_free?)
-        piece.queen_path?([0, 0], [5, 5], ['playing field'])
+        piece.send(:queen_path?, [0, 0], [5, 5], ['playing field'])
       end
     end
 
@@ -289,7 +289,7 @@ RSpec.describe Piece do
 
       it 'calls #file_free?' do
         expect(piece).to receive(:file_free?)
-        piece.queen_path?([0, 0], [5, 5], ['playing field'])
+        piece.send(:queen_path?, [0, 0], [5, 5], ['playing field'])
       end
     end
 
@@ -301,7 +301,7 @@ RSpec.describe Piece do
 
       it 'calls #positive_diagonal_free?' do
         expect(piece).to receive(:positive_diagonal_free?)
-        piece.queen_path?([1, 1], [5, 5], ['playing field'])
+        piece.send(:queen_path?, [1, 1], [5, 5], ['playing field'])
       end
     end
 
@@ -313,7 +313,7 @@ RSpec.describe Piece do
 
       it 'calls #negative_diagonal_free?' do
         expect(piece).to receive(:negative_diagonal_free?)
-        piece.queen_path?([1, 5], [5, 1], ['playing field'])
+        piece.send(:queen_path?, [1, 5], [5, 1], ['playing field'])
       end
     end
   end
@@ -325,7 +325,7 @@ RSpec.describe Piece do
         allow(piece).to receive(:along_file?).and_return(false)
         allow(piece).to receive(:along_positive_diagonal?).and_return(false)
         allow(piece).to receive(:along_negative_diagonal?).and_return(false)
-        along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [1, 2])
+        along_any_or_none = piece.send(:along_rank_or_file_or_diagonal?, [0, 0], [1, 2])
         expect(along_any_or_none).to eq(false)
       end
     end
@@ -336,7 +336,7 @@ RSpec.describe Piece do
         allow(piece).to receive(:along_file?).and_return(false)
         allow(piece).to receive(:along_positive_diagonal?).and_return(false)
         allow(piece).to receive(:along_negative_diagonal?).and_return(false)
-        along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [2, 0])
+        along_any_or_none = piece.send(:along_rank_or_file_or_diagonal?, [0, 0], [2, 0])
         expect(along_any_or_none).to eq(true)
       end
     end
@@ -347,7 +347,7 @@ RSpec.describe Piece do
         allow(piece).to receive(:along_file?).and_return(true)
         allow(piece).to receive(:along_positive_diagonal?).and_return(false)
         allow(piece).to receive(:along_negative_diagonal?).and_return(false)
-        along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [0, 3])
+        along_any_or_none = piece.send(:along_rank_or_file_or_diagonal?, [0, 0], [0, 3])
         expect(along_any_or_none).to eq(true)
       end
     end
@@ -358,7 +358,7 @@ RSpec.describe Piece do
         allow(piece).to receive(:along_file?).and_return(false)
         allow(piece).to receive(:along_positive_diagonal?).and_return(true)
         allow(piece).to receive(:along_negative_diagonal?).and_return(false)
-        along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 0], [5, 5])
+        along_any_or_none = piece.send(:along_rank_or_file_or_diagonal?, [0, 0], [5, 5])
         expect(along_any_or_none).to eq(true)
       end
     end
@@ -369,15 +369,17 @@ RSpec.describe Piece do
         allow(piece).to receive(:along_file?).and_return(false)
         allow(piece).to receive(:along_positive_diagonal?).and_return(false)
         allow(piece).to receive(:along_negative_diagonal?).and_return(true)
-        along_any_or_none = piece.along_rank_or_file_or_diagonal?([0, 7], [3, 4])
+        along_any_or_none = piece.send(:along_rank_or_file_or_diagonal?, [0, 7], [3, 4])
         expect(along_any_or_none).to eq(true)
       end
     end
+  end
 
+  describe '#queen_path?' do
     # integration test for the second line of #queen_path? and Queen#path? and related methods
     context 'when it is called with an impossible path' do
       it 'returns false' do
-        path_or_not = piece.queen_path?([0, 0], [1, 2], ['playing field'])
+        path_or_not = piece.send(:queen_path?, [0, 0], [1, 2], ['playing field'])
         expect(path_or_not).to eq(false)
       end
     end
@@ -388,7 +390,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][0] = :w_queen
         playing_field[4][0] = :b_bishop
-        path_or_not = piece.queen_path?([0, 0], [4, 0], playing_field)
+        path_or_not = piece.send(:queen_path?, [0, 0], [4, 0], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -400,7 +402,7 @@ RSpec.describe Piece do
         playing_field[0][1] = :w_queen
         playing_field[2][1] = :w_queen
         playing_field[4][1] = :b_bishop
-        path_or_not = piece.queen_path?([0, 1], [4, 1], playing_field)
+        path_or_not = piece.send(:queen_path?, [0, 1], [4, 1], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -412,7 +414,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :b_bishop
         playing_field[6][0] = :w_queen
         playing_field[7][0] = :w_queen
-        path_or_not = piece.queen_path?([7, 0], [5, 0], playing_field)
+        path_or_not = piece.send(:queen_path?, [7, 0], [5, 0], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -423,7 +425,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[7][5] = :b_bishop
         playing_field[7][7] = :w_queen
-        path_or_not = piece.queen_path?([7, 7], [7, 5], playing_field)
+        path_or_not = piece.send(:queen_path?, [7, 7], [7, 5], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -435,7 +437,7 @@ RSpec.describe Piece do
         playing_field[7][5] = :b_bishop
         playing_field[7][6] = :w_pawn
         playing_field[7][7] = :w_queen
-        path_or_not = piece.queen_path?([7, 7], [7, 5], playing_field)
+        path_or_not = piece.send(:queen_path?, [7, 7], [7, 5], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -447,7 +449,7 @@ RSpec.describe Piece do
         playing_field[7][0] = :w_queen
         playing_field[7][1] = :w_pawn
         playing_field[7][3] = :w_queen
-        path_or_not = piece.queen_path?([7, 0], [7, 3], playing_field)
+        path_or_not = piece.send(:queen_path?, [7, 0], [7, 3], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -457,7 +459,7 @@ RSpec.describe Piece do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[5][0] = :w_queen
-        path_or_not = piece.queen_path?([5, 0], [7, 2], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 0], [7, 2], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -469,7 +471,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :w_queen
         playing_field[6][1] = :w_pawn
         playing_field[7][2] = :w_rook
-        path_or_not = piece.queen_path?([5, 0], [7, 2], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 0], [7, 2], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -480,7 +482,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[5][7] = :w_queen
         playing_field[2][4] = :b_queen
-        path_or_not = piece.queen_path?([5, 7], [2, 4], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 7], [2, 4], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -492,7 +494,7 @@ RSpec.describe Piece do
         playing_field[5][7] = :w_queen
         playing_field[4][6] = :w_pawn
         playing_field[2][4] = :b_queen
-        path_or_not = piece.queen_path?([5, 7], [2, 4], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 7], [2, 4], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -503,7 +505,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[2][7] = :w_queen
         playing_field[5][4] = :b_queen
-        path_or_not = piece.queen_path?([2, 7], [5, 4], playing_field)
+        path_or_not = piece.send(:queen_path?, [2, 7], [5, 4], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -515,7 +517,7 @@ RSpec.describe Piece do
         playing_field[2][7] = :w_queen
         playing_field[3][6] = :w_pawn
         playing_field[5][4] = :b_queen
-        path_or_not = piece.queen_path?([2, 7], [5, 4], playing_field)
+        path_or_not = piece.send(:queen_path?, [2, 7], [5, 4], playing_field)
         expect(path_or_not).to eq(false)
       end
     end
@@ -525,7 +527,7 @@ RSpec.describe Piece do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[5][0] = :w_queen
-        path_or_not = piece.queen_path?([5, 0], [3, 2], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 0], [3, 2], playing_field)
         expect(path_or_not).to eq(true)
       end
     end
@@ -537,7 +539,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :w_queen
         playing_field[4][3] = :w_pawn
         playing_field[2][1] = :b_queen
-        path_or_not = piece.queen_path?([5, 0], [2, 1], playing_field)
+        path_or_not = piece.send(:queen_path?, [5, 0], [2, 1], playing_field)
         expect(path_or_not).to eq(false)
       end
     end

@@ -6,6 +6,7 @@
 module CheckmateValidation
   private
 
+  # used by #game_over?
   # check if the king is in checkmate using helper methods
   def in_checkmate?
     return false unless in_check?
