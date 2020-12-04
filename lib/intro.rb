@@ -39,7 +39,7 @@ module Intro
           When a pawn is eligible for promotion, you will be given the four options n, b, r, and q to select from.
           And yes, you can capture en passant. :)
 
-          During your turn, besides making a move, you can also type q to resign and end the game immediately.
+          During your turn, besides making a move, you can also type q to resign and end the game.
           You can also type s to save the game in its current state, or l to load a saved game.
 
           Type h or help during the game to see your options again.
