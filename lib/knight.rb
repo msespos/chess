@@ -2,6 +2,8 @@
 
 # knight module
 module Knight
+  private
+
   # determine if a path is legal for a knight using the start, finish and playing field
   def knight_path?(start, finish, _playing_field)
     vertical_l?(start, finish) || horizontal_l?(start, finish)

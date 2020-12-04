@@ -4,6 +4,8 @@ require 'io/console'
 
 # text for game intro
 module Intro
+  private
+
   def intro_text
     print "\e[H\e[2J" # clears the screen
     puts <<~HEREDOC

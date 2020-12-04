@@ -78,7 +78,7 @@ RSpec.describe Game do
                              [:w_bishop, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_bishop],
                              [:w_knight, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_knight],
                              [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]])
-        game.initial_playing_field
+        game.send(:initial_playing_field)
       end
     end
   end
@@ -89,7 +89,7 @@ RSpec.describe Game do
       it 'sets @number_of_players to 1' do
         game.instance_variable_set(:@player, player_number)
         allow(player_number).to receive(:user_input).with(:number_of_players).and_return('1')
-        game.number_of_players
+        game.send(:number_of_players)
         number = game.instance_variable_get(:@number_of_players)
         expect(number).to eq(1)
       end
@@ -103,7 +103,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@player, player_color)
         allow(player_color).to receive(:user_input).with(:bottom_color_one_player).and_return('w')
         game.instance_variable_set(:@number_of_players, 1)
-        color = game.bottom_color
+        color = game.send(:bottom_color)
         expect(color).to eq(:white)
       end
     end
@@ -113,7 +113,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@player, player_color)
         allow(player_color).to receive(:user_input).with(:bottom_color_two_player).and_return('b')
         game.instance_variable_set(:@number_of_players, 2)
-        color = game.bottom_color
+        color = game.send(:bottom_color)
         expect(color).to eq(:black)
       end
     end
@@ -125,7 +125,7 @@ RSpec.describe Game do
       it 'sets @minimalist_or_checkerboard to :minimalist' do
         game.instance_variable_set(:@player, player_design)
         allow(player_design).to receive(:user_input).with(:minimalist_or_checkerboard).and_return('m')
-        game.minimalist_or_checkerboard
+        game.send(:minimalist_or_checkerboard)
         design = game.instance_variable_get(:@minimalist_or_checkerboard)
         expect(design).to eq(:minimalist)
       end
@@ -139,7 +139,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@player, player_font)
         game.instance_variable_set(:@minimalist_or_checkerboard, :minimalist)
         allow(player_font).to receive(:user_input).with(:light_or_dark_font).and_return('l')
-        font = game.light_or_dark_font
+        font = game.send(:light_or_dark_font)
         expect(font).to eq(:light)
       end
     end
@@ -149,7 +149,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@player, player_font)
         game.instance_variable_set(:@minimalist_or_checkerboard, :checkerboard)
         allow(player_font).to receive(:user_input).with(:light_or_dark_font).and_return('l')
-        font = game.light_or_dark_font
+        font = game.send(:light_or_dark_font)
         expect(font).to eq(:light)
       end
     end
@@ -171,7 +171,7 @@ RSpec.describe Game do
                          [:w_rook, :w_pawn, nil, nil, nil, nil, :b_pawn, :b_rook]]
         expect(board_field).to receive(:overwrite_playing_field).with(playing_field)
         expect(board_field).to receive(:add_captured_pieces)
-        game.display_board
+        game.send(:display_board)
       end
     end
 
@@ -184,7 +184,7 @@ RSpec.describe Game do
                            [nil, nil, nil, nil, nil, nil, nil, nil]]
         expect(board_field).to receive(:overwrite_playing_field)
         expect(board_field).to receive(:add_captured_pieces).with(captured_pieces)
-        game.display_board
+        game.send(:display_board)
       end
     end
   end
@@ -208,7 +208,7 @@ RSpec.describe Game do
                           [:b_bishop, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_bishop],
                           [:b_knight, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_knight],
                           [:b_rook, :b_pawn, nil, nil, nil, nil, :w_pawn, :w_rook]]
-        inverted = game.invert_playing_field(playing_field)
+        inverted = game.send(:invert_playing_field, playing_field)
         expect(inverted).to eq(inverted_field)
       end
     end
@@ -225,7 +225,7 @@ RSpec.describe Game do
                            [nil, nil, nil, nil, nil, nil, nil, nil],
                            [:b_queen, :b_pawn, nil, nil, nil, nil, nil, nil],
                            [nil, nil, nil, nil, nil, nil, nil, nil]]
-        inverted = game.invert_captured_pieces(captured_pieces)
+        inverted = game.send(:invert_captured_pieces, captured_pieces)
         expect(inverted).to eq(inverted_pieces)
       end
     end
@@ -235,7 +235,7 @@ RSpec.describe Game do
     context 'when "q" is entered' do
       it 'sets @resignation to true' do
         allow(game).to receive(:player_resignation_status).and_return('y')
-        game.resignation?('q')
+        game.send(:resignation?, 'q')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(true)
       end
@@ -244,7 +244,7 @@ RSpec.describe Game do
     context 'when "Q" is entered' do
       it 'sets @resignation to true' do
         allow(game).to receive(:player_resignation_status).and_return('y')
-        game.resignation?('Q')
+        game.send(:resignation?, 'Q')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(true)
       end
@@ -252,7 +252,7 @@ RSpec.describe Game do
 
     context 'when "garbage" is entered' do
       it 'does not set resignation to true' do
-        game.resignation?('garbage')
+        game.send(:resignation?, 'garbage')
         resignation_or_not = game.instance_variable_get(:@resignation)
         expect(resignation_or_not).to eq(false)
       end
@@ -265,7 +265,7 @@ RSpec.describe Game do
         allow(game).to receive(:save_game)
         allow(game).to receive(:display_board)
         expect(game).to receive(:save_game)
-        game.save_or_load('s')
+        game.send(:save_or_load, 's')
       end
     end
   end
@@ -273,14 +273,14 @@ RSpec.describe Game do
   describe '#player_move_to_start_finish' do
     context 'when "a1a3" is passed in' do
       it 'returns [[0, 0], [0, 2]]' do
-        start_finish = game.player_move_to_start_finish('a1a3')
+        start_finish = game.send(:player_move_to_start_finish, 'a1a3')
         expect(start_finish).to eq([[0, 0], [0, 2]])
       end
     end
 
     context 'when "h7f5" is passed in' do
       it 'returns [[7, 6], [5, 4]]' do
-        start_finish = game.player_move_to_start_finish('h7f5')
+        start_finish = game.send(:player_move_to_start_finish, 'h7f5')
         expect(start_finish).to eq([[7, 6], [5, 4]])
       end
     end
@@ -295,7 +295,7 @@ RSpec.describe Game do
       end
 
       it 'returns nil' do
-        move = game.move_piece([0, 0], [0, 3])
+        move = game.send(:move_piece, [0, 0], [0, 3])
         expect(move).to eq(nil)
       end
     end
@@ -303,7 +303,7 @@ RSpec.describe Game do
     context 'when a white rook attempts to move from a1 to a4 illegally' do
       it 'returns :invalid' do
         allow(game).to receive(:valid_move?).and_return(false)
-        move = game.move_piece([0, 0], [0, 3])
+        move = game.send(:move_piece, [0, 0], [0, 3])
         expect(move).to eq(:invalid)
       end
     end
@@ -317,18 +317,18 @@ RSpec.describe Game do
       end
 
       it 'returns nil' do
-        move = game.move_piece([6, 6], [7, 5])
+        move = game.send(:move_piece, [6, 6], [7, 5])
         expect(move).to eq(nil)
       end
 
       it 'leaves g7 empty' do
-        game.move_piece([6, 6], [7, 5])
+        game.send(:move_piece, [6, 6], [7, 5])
         space = game.instance_variable_get(:@playing_field)[6][6]
         expect(space).to eq(nil)
       end
 
       it 'puts a black pawn in h6' do
-        game.move_piece([6, 6], [7, 5])
+        game.send(:move_piece, [6, 6], [7, 5])
         space = game.instance_variable_get(:@playing_field)[7][5]
         expect(space).to eq(:b_pawn)
       end
@@ -343,12 +343,12 @@ RSpec.describe Game do
       end
 
       it 'returns :invalid' do
-        move = game.move_piece([6, 6], [7, 5])
+        move = game.send(:move_piece, [6, 6], [7, 5])
         expect(move).to eq(:invalid)
       end
 
       it 'resets the board' do
-        game.move_piece([6, 6], [7, 5])
+        game.send(:move_piece, [6, 6], [7, 5])
         original_king_spot = game.instance_variable_get(:@playing_field)[6][6]
         expect(original_king_spot).to eq(:b_king)
       end
@@ -360,7 +360,7 @@ RSpec.describe Game do
       it 'calls #move_and_capture' do
         game.instance_variable_set(:@en_passant_column, nil)
         expect(game).to receive(:move_and_capture)
-        game.reassign_squares('start', 'finish')
+        game.send(:reassign_squares, 'start', 'finish')
       end
     end
 
@@ -369,7 +369,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@en_passant_column, 3)
         allow(game).to receive(:meets_en_passant_conditions?).and_return(false)
         expect(game).to receive(:move_and_capture)
-        game.reassign_squares('start', 'finish')
+        game.send(:reassign_squares, 'start', 'finish')
       end
     end
 
@@ -378,7 +378,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@en_passant_column, 3)
         allow(game).to receive(:meets_en_passant_conditions?).and_return(true)
         expect(game).to receive(:move_and_capture)
-        game.reassign_squares('start', 'finish')
+        game.send(:reassign_squares, 'start', 'finish')
       end
     end
   end
@@ -387,18 +387,18 @@ RSpec.describe Game do
   describe '#reassign_squares' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       it 'returns nil' do
-        reassign = game.reassign_squares([0, 0], [0, 3])
+        reassign = game.send(:reassign_squares, [0, 0], [0, 3])
         expect(reassign).to eq(nil)
       end
 
       it 'leaves a1 empty' do
-        game.reassign_squares([0, 0], [0, 3])
+        game.send(:reassign_squares, [0, 0], [0, 3])
         space = game.instance_variable_get(:@playing_field)[0][0]
         expect(space).to eq(nil)
       end
 
       it 'puts a white rook in a4' do
-        game.reassign_squares([0, 0], [0, 3])
+        game.send(:reassign_squares, [0, 0], [0, 3])
         space = game.instance_variable_get(:@playing_field)[0][3]
         expect(space).to eq(:w_rook)
       end
@@ -407,18 +407,18 @@ RSpec.describe Game do
     context 'when a black pawn is moved from g7 to h6 legally and captures a rook' do
       it 'returns :w_rook' do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-        reassign = game.reassign_squares([6, 6], [7, 5])
+        reassign = game.send(:reassign_squares, [6, 6], [7, 5])
         expect(reassign).to eq(:w_rook)
       end
 
       it 'leaves g7 empty' do
-        game.reassign_squares([6, 6], [7, 5])
+        game.send(:reassign_squares, [6, 6], [7, 5])
         space = game.instance_variable_get(:@playing_field)[6][6]
         expect(space).to eq(nil)
       end
 
       it 'puts a black pawn in h6' do
-        game.reassign_squares([6, 6], [7, 5])
+        game.send(:reassign_squares, [6, 6], [7, 5])
         space = game.instance_variable_get(:@playing_field)[7][5]
         expect(space).to eq(:b_pawn)
       end
@@ -430,7 +430,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@en_passant_column, 7)
         game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
         game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
-        reassign = game.reassign_squares([6, 3], [7, 2])
+        reassign = game.send(:reassign_squares, [6, 3], [7, 2])
         expect(reassign).to eq(:w_pawn)
       end
 
@@ -438,7 +438,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@en_passant_column, 7)
         game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
         game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
-        game.reassign_squares([6, 3], [7, 2])
+        game.send(:reassign_squares, [6, 3], [7, 2])
         space = game.instance_variable_get(:@playing_field)[6][3]
         expect(space).to eq(nil)
       end
@@ -447,7 +447,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@en_passant_column, 7)
         game.instance_variable_get(:@playing_field)[6][3] = :b_pawn
         game.instance_variable_get(:@playing_field)[7][3] = :w_pawn
-        game.reassign_squares([6, 3], [7, 2])
+        game.send(:reassign_squares, [6, 3], [7, 2])
         space = game.instance_variable_get(:@playing_field)[7][2]
         expect(space).to eq(:b_pawn)
       end
@@ -458,7 +458,7 @@ RSpec.describe Game do
   describe '#move_and_capture' do
     context 'when a white rook is moved from a1 to a4 legally and does not capture' do
       it 'returns nil' do
-        captured = game.move_and_capture([0, 0], [0, 3])
+        captured = game.send(:move_and_capture, [0, 0], [0, 3])
         expect(captured).to eq(nil)
       end
     end
@@ -466,7 +466,7 @@ RSpec.describe Game do
     context 'when a white rook is moved from a1 to a4 legally and captures a black rook' do
       it 'returns :b_rook' do
         game.instance_variable_get(:@playing_field)[0][3] = :b_rook
-        captured = game.move_and_capture([0, 0], [0, 3])
+        captured = game.send(:move_and_capture, [0, 0], [0, 3])
         expect(captured).to eq(:b_rook)
       end
     end
@@ -475,7 +475,7 @@ RSpec.describe Game do
       it 'returns :b_pawn' do
         game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
         game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
-        captured = game.move_and_capture([0, 4], [1, 5], true)
+        captured = game.send(:move_and_capture, [0, 4], [1, 5], true)
         expect(captured).to eq(:b_pawn)
       end
     end
@@ -484,7 +484,7 @@ RSpec.describe Game do
       it 'returns nil' do
         game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
         game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
-        captured = game.move_and_capture([0, 4], [1, 5])
+        captured = game.send(:move_and_capture, [0, 4], [1, 5])
         expect(captured).to eq(nil)
       end
     end
@@ -495,7 +495,7 @@ RSpec.describe Game do
       it 'returns the piece in the next square over' do
         game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
         game.instance_variable_get(:@playing_field)[1][4] = :b_pawn
-        captured = game.en_passant_or_standard_capture([0, 4], [1, 5], true)
+        captured = game.send(:en_passant_or_standard_capture, [0, 4], [1, 5], true)
         expect(captured).to eq(:b_pawn)
       end
     end
@@ -504,14 +504,14 @@ RSpec.describe Game do
       it 'returns the captured piece' do
         game.instance_variable_get(:@playing_field)[0][4] = :w_pawn
         game.instance_variable_get(:@playing_field)[1][5] = :b_pawn
-        captured = game.en_passant_or_standard_capture([0, 4], [1, 5], false)
+        captured = game.send(:en_passant_or_standard_capture, [0, 4], [1, 5], false)
         expect(captured).to eq(:b_pawn)
       end
     end
 
     context 'when en passant is not true and a white rook is moved from a1 to a4 without capturing' do
       it 'returns nil' do
-        captured = game.en_passant_or_standard_capture([0, 0], [0, 3], false)
+        captured = game.send(:en_passant_or_standard_capture, [0, 0], [0, 3], false)
         expect(captured).to eq(nil)
       end
     end
@@ -519,7 +519,7 @@ RSpec.describe Game do
     context 'when en passant is not true and a white rook is moved from a1 to a4 and captures a black rook' do
       it 'returns :b_rook' do
         game.instance_variable_get(:@playing_field)[0][3] = :b_rook
-        captured = game.en_passant_or_standard_capture([0, 0], [0, 3], false)
+        captured = game.send(:en_passant_or_standard_capture, [0, 0], [0, 3], false)
         expect(captured).to eq(:b_rook)
       end
     end
@@ -529,7 +529,7 @@ RSpec.describe Game do
     context 'when the finish square is empty' do
       it 'returns nil' do
         game.instance_variable_get(:@playing_field)[7][5] = nil
-        standard_capture_or_none = game.standard_capture([7, 5])
+        standard_capture_or_none = game.send(:standard_capture, [7, 5])
         expect(standard_capture_or_none).to eq(nil)
       end
     end
@@ -537,7 +537,7 @@ RSpec.describe Game do
     context 'when the finish square has a white rook on it' do
       it 'returns :w_rook' do
         game.instance_variable_get(:@playing_field)[7][5] = :w_rook
-        standard_capture_or_none = game.standard_capture([7, 5])
+        standard_capture_or_none = game.send(:standard_capture, [7, 5])
         expect(standard_capture_or_none).to eq(:w_rook)
       end
     end
@@ -551,7 +551,7 @@ RSpec.describe Game do
                           [:w_queen, nil, nil, nil, nil, nil, nil, nil],
                           [nil, nil, nil, nil, nil, nil, nil, nil]]
         captured_pieces = game.instance_variable_get(:@captured_pieces)
-        game.add_to_captured_pieces(:w_queen)
+        game.send(:add_to_captured_pieces, :w_queen)
         expect(captured_pieces).to eq(capture_update)
       end
     end
@@ -563,7 +563,7 @@ RSpec.describe Game do
                           [nil, nil, nil, nil, nil, nil, nil, nil],
                           [nil, nil, nil, nil, nil, nil, nil, nil]]
         captured_pieces = game.instance_variable_get(:@captured_pieces)
-        game.add_to_captured_pieces(:b_rook)
+        game.send(:add_to_captured_pieces, :b_rook)
         expect(captured_pieces).to eq(capture_update)
       end
     end
@@ -579,7 +579,7 @@ RSpec.describe Game do
                           [nil, nil, nil, nil, nil, nil, nil, nil],
                           %i[w_pawn w_pawn w_pawn w_knight w_pawn w_pawn w_pawn w_knight],
                           [:w_bishop, :w_rook, nil, nil, nil, nil, nil]]
-        game.add_to_captured_pieces(:w_bishop)
+        game.send(:add_to_captured_pieces, :w_bishop)
         expect(captured_pieces).to eq(capture_update)
       end
     end

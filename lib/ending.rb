@@ -2,6 +2,7 @@
 
 # text for game ending
 module Ending
+  # used by Game#end_of_game_announcement
   def ending_text(current_player, type_of_ending)
     winner = current_player == :white ? :black : :white
     winner_congratulations = "#{winner.capitalize} wins.\nCongratulations #{winner.capitalize}!\n\n"

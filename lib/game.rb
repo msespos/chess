@@ -36,6 +36,18 @@ class Game
     initial_playing_field
   end
 
+  # play the whole game
+  def play
+    intro
+    obtain_initial_player_input
+    @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
+    display_board
+    play_turn until game_over?
+    end_of_game_announcement
+  end
+
+  private
+
   # set up the playing field for the start of the game
   def initial_playing_field
     @playing_field = Array.new(8) { Array.new(8) { nil } }
@@ -49,16 +61,6 @@ class Game
   # used throughout the Game class and modules to define the other player from the current one
   def other_player
     @current_player == :white ? :black : :white
-  end
-
-  # play the whole game
-  def play
-    intro
-    obtain_initial_player_input
-    @board = Board.new(@bottom_color, @minimalist_or_checkerboard, @light_or_dark_font)
-    display_board
-    play_turn until game_over?
-    end_of_game_announcement
   end
 
   # used by #play to make integration testing easier
@@ -147,6 +149,7 @@ class Game
     inverted
   end
 
+  # used by #display_board to show the previous player's move
   def previous_player_move
     "#{other_player.capitalize} has played #{@previous_move}."
   end
@@ -249,15 +252,14 @@ class Game
 
   # used by #make_move_when_not_invalid
   # move a piece or a pawn (capturing or not) given start and finish coordinates
-  # castling, en passant and pawn promotion still need to be incorporated
   # make a copy of the playing field in case the king is in check and revert
   # to that copy if the king is in check as we do not want the king to actually move
-  # except that the third parameter used by #escape_squares_available? to indicate
+  # unless the the third parameter is true - used by #escape_squares_available? to indicate
   # that the method is being used to check a king moving out of check,
-  # in which case we do want the king to actually move in this method
+  # in which case we do want the king to actually move in this method -
   # (another copy of the playing field is similarly made and used in #escape_squares_available?)
-  # and the fourth parameter is used to turn adding to captured pieces off for when
-  # this method is used just to test moves (for checking stalemate and checkmate) to avoid
+  # the fourth parameter is used to turn adding to captured pieces off for when this
+  # method is used just to test moves (for checking stalemate and checkmate), to avoid
   # pieces being accidentally displayed that have only been checked and not actually captured
   def move_piece(start, finish, checking_move_out_of_check = false, not_adding_captures = false)
     return if check_for_and_castle(start, finish) == :castled
