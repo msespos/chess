@@ -16,7 +16,6 @@ class Player
 
   # used by Game#play
   def intro
-    pre_intro_for_repl_it # in place until repl.it fixes full screen
     puts intro_text
     leave_intro
   end

@@ -6,14 +6,6 @@ require 'io/console'
 module Intro
   private
 
-  # in place until repl.it fixes its full screen
-  def pre_intro_for_repl_it
-    print "\e[H\e[2J" # clears the screen
-    print "Please maximize your terminal window and then press any key."
-    STDIN.getch # gets the input
-    print "\e[H\e[2J" # clears the screen
-  end
-
   def intro_text
     print "\e[H\e[2J" # clears the screen
     puts <<~HEREDOC
