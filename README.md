@@ -1,6 +1,8 @@
 A command line implementation of the classic game, for one or two players.
 
-Play it here: ADD REPL.IT LINK HERE
+Play it here:
+
+https://repl.it/@msespos/chess
 
 This is a fully functional version of chess for the command line.
 
