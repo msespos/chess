@@ -665,7 +665,7 @@ RSpec.describe Piece do
   describe '#white_pawn_path?' do
     context 'when it is called' do
       it 'creates an instance of Pawn' do
-        piece.white_pawn_path?([0, 1], [0, 2], ['playing field'], 'column')
+        piece.send(:white_pawn_path?, [0, 1], [0, 2], ['playing field'], 'column')
         pawn = piece.instance_variable_get(:@pawn)
         expect(pawn).to be_a(Pawn)
       end
@@ -675,7 +675,7 @@ RSpec.describe Piece do
   describe '#black_pawn_path?' do
     context 'when it is called' do
       it 'creates an instance of Pawn' do
-        piece.black_pawn_path?([0, 7], [0, 6], ['playing field'], 'column')
+        piece.send(:black_pawn_path?, [0, 7], [0, 6], ['playing field'], 'column')
         pawn = piece.instance_variable_get(:@pawn)
         expect(pawn).to be_a(Pawn)
       end
@@ -688,7 +688,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][0] = :w_rook
         playing_field[1][0] = :b_rook
-        rank_free_or_not = piece.rank_free?([4, 0], [1, 0], playing_field)
+        rank_free_or_not = piece.send(:rank_free?, [4, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(true)
       end
     end
@@ -699,7 +699,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :w_rook
         playing_field[3][0] = :w_pawn
         playing_field[1][0] = :b_bishop
-        rank_free_or_not = piece.rank_free?([5, 0], [1, 0], playing_field)
+        rank_free_or_not = piece.send(:rank_free?, [5, 0], [1, 0], playing_field)
         expect(rank_free_or_not).to eq(false)
       end
     end
@@ -710,7 +710,7 @@ RSpec.describe Piece do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][1] = :w_rook
-        file_free_or_not = piece.file_free?([0, 1], [0, 5], playing_field)
+        file_free_or_not = piece.send(:file_free?, [0, 1], [0, 5], playing_field)
         expect(file_free_or_not).to eq(true)
       end
     end
@@ -720,7 +720,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][1] = :w_rook
         playing_field[0][3] = :w_pawn
-        file_free_or_not = piece.file_free?([0, 1], [0, 7], playing_field)
+        file_free_or_not = piece.send(:file_free?, [0, 1], [0, 7], playing_field)
         expect(file_free_or_not).to eq(false)
       end
     end
@@ -729,14 +729,14 @@ RSpec.describe Piece do
   describe '#along_rank?' do
     context 'when the potential path is along a rank' do
       it 'returns true' do
-        along_rank_or_not = piece.along_rank?([1, 0], [5, 0])
+        along_rank_or_not = piece.send(:along_rank?, [1, 0], [5, 0])
         expect(along_rank_or_not).to eq(true)
       end
     end
 
     context 'when the potential path is not along a rank' do
       it 'returns false' do
-        along_rank_or_not = piece.along_rank?([1, 3], [1, 1])
+        along_rank_or_not = piece.send(:along_rank?, [1, 3], [1, 1])
         expect(along_rank_or_not).to eq(false)
       end
     end
@@ -745,14 +745,14 @@ RSpec.describe Piece do
   describe '#along_file?' do
     context 'when the potential path is along a file' do
       it 'returns true' do
-        along_file_or_not = piece.along_file?([0, 3], [0, 4])
+        along_file_or_not = piece.send(:along_file?, [0, 3], [0, 4])
         expect(along_file_or_not).to eq(true)
       end
     end
 
     context 'when the potential path is not along a file' do
       it 'returns false' do
-        along_file_or_not = piece.along_file?([1, 1], [3, 1])
+        along_file_or_not = piece.send(:along_file?, [1, 1], [3, 1])
         expect(along_file_or_not).to eq(false)
       end
     end
@@ -764,7 +764,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][0] = :w_bishop
         playing_field[7][3] = :b_rook
-        positive_diagonal_free_or_not = piece.positive_diagonal_free?([4, 0], [7, 3], playing_field)
+        positive_diagonal_free_or_not = piece.send(:positive_diagonal_free?, [4, 0], [7, 3], playing_field)
         expect(positive_diagonal_free_or_not).to eq(true)
       end
     end
@@ -775,7 +775,7 @@ RSpec.describe Piece do
         playing_field[5][0] = :w_bishop
         playing_field[6][1] = :w_pawn
         playing_field[7][2] = :b_bishop
-        positive_diagonal_free_or_not = piece.positive_diagonal_free?([5, 0], [7, 2], playing_field)
+        positive_diagonal_free_or_not = piece.send(:positive_diagonal_free?, [5, 0], [7, 2], playing_field)
         expect(positive_diagonal_free_or_not).to eq(false)
       end
     end
@@ -786,7 +786,7 @@ RSpec.describe Piece do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[5][1] = :w_bishop
-        negative_diagonal_free_or_not = piece.negative_diagonal_free?([5, 1], [0, 6], playing_field)
+        negative_diagonal_free_or_not = piece.send(:negative_diagonal_free?, [5, 1], [0, 6], playing_field)
         expect(negative_diagonal_free_or_not).to eq(true)
       end
     end
@@ -796,7 +796,7 @@ RSpec.describe Piece do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[5][1] = :w_bishop
         playing_field[4][2] = :w_pawn
-        negative_diagonal_free_or_not = piece.negative_diagonal_free?([5, 1], [0, 6], playing_field)
+        negative_diagonal_free_or_not = piece.send(:negative_diagonal_free?, [5, 1], [0, 6], playing_field)
         expect(negative_diagonal_free_or_not).to eq(false)
       end
     end
@@ -805,14 +805,14 @@ RSpec.describe Piece do
   describe '#along_positive_diagonal?' do
     context 'when the potential path is along a positive_diagonal' do
       it 'returns true' do
-        along_positive_diagonal_or_not = piece.along_positive_diagonal?([1, 0], [4, 3])
+        along_positive_diagonal_or_not = piece.send(:along_positive_diagonal?, [1, 0], [4, 3])
         expect(along_positive_diagonal_or_not).to eq(true)
       end
     end
 
     context 'when the potential path is not along a positive_diagonal' do
       it 'returns false' do
-        along_positive_diagonal_or_not = piece.along_positive_diagonal?([1, 3], [3, 3])
+        along_positive_diagonal_or_not = piece.send(:along_positive_diagonal?, [1, 3], [3, 3])
         expect(along_positive_diagonal_or_not).to eq(false)
       end
     end
@@ -821,14 +821,14 @@ RSpec.describe Piece do
   describe '#along_negative_diagonal?' do
     context 'when the potential path is along a negative_diagonal' do
       it 'returns true' do
-        along_negative_diagonal_or_not = piece.along_negative_diagonal?([1, 5], [5, 1])
+        along_negative_diagonal_or_not = piece.send(:along_negative_diagonal?, [1, 5], [5, 1])
         expect(along_negative_diagonal_or_not).to eq(true)
       end
     end
 
     context 'when the potential path is not along a negative_diagonal' do
       it 'returns false' do
-        along_negative_diagonal_or_not = piece.along_negative_diagonal?([1, 5], [4, 1])
+        along_negative_diagonal_or_not = piece.send(:along_negative_diagonal?, [1, 5], [4, 1])
         expect(along_negative_diagonal_or_not).to eq(false)
       end
     end

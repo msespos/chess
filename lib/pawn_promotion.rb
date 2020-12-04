@@ -7,6 +7,9 @@ module PawnPromotion
                      r: 'rook',
                      q: 'queen' }.freeze
 
+  private
+
+  # used by #complete_turn
   def pawn_to_promote
     (0..7).each do |column|
       return [:black, column] if @playing_field[column][0] == :b_pawn
@@ -16,6 +19,7 @@ module PawnPromotion
     false
   end
 
+  # used by #complete_turn
   def promote_pawn
     color, column = pawn_to_promote
     input = @player.user_input(:piece)
@@ -24,6 +28,7 @@ module PawnPromotion
     display_board
   end
 
+  # used by #promote_pawn
   def input_to_piece(input, color)
     input = input.downcase.to_sym
     new_piece_without_color = INPUT_TO_PIECE[input]

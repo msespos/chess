@@ -58,28 +58,28 @@ RSpec.describe Pawn do
   describe '#on_starting_rank?' do
     context 'when it is a white pawn on the starting rank' do
       it 'returns true' do
-        starting_rank_or_not = pawn.on_starting_rank?([6, 1], :white)
+        starting_rank_or_not = pawn.send(:on_starting_rank?, [6, 1], :white)
         expect(starting_rank_or_not).to eq(true)
       end
     end
 
     context 'when it is a black pawn on the starting rank' do
       it 'returns true' do
-        starting_rank_or_not = pawn.on_starting_rank?([6, 6], :black)
+        starting_rank_or_not = pawn.send(:on_starting_rank?, [6, 6], :black)
         expect(starting_rank_or_not).to eq(true)
       end
     end
 
     context 'when it is a white pawn not on the starting rank' do
       it 'returns false' do
-        starting_rank_or_not = pawn.on_starting_rank?([7, 6], :white)
+        starting_rank_or_not = pawn.send(:on_starting_rank?, [7, 6], :white)
         expect(starting_rank_or_not).to eq(false)
       end
     end
 
     context 'when it is a black pawn not on the starting rank' do
       it 'returns false' do
-        starting_rank_or_not = pawn.on_starting_rank?([4, 1], :black)
+        starting_rank_or_not = pawn.send(:on_starting_rank?, [4, 1], :black)
         expect(starting_rank_or_not).to eq(false)
       end
     end
@@ -89,14 +89,14 @@ RSpec.describe Pawn do
     context 'when the pawn is a white pawn' do
       it 'calls #white_two_squares?' do
         expect(pawn).to receive(:white_two_squares?)
-        pawn.two_squares_ahead_free?('start', 'finish', 'playing field', :white)
+        pawn.send(:two_squares_ahead_free?, 'start', 'finish', 'playing field', :white)
       end
     end
 
     context 'when the pawn is a black pawn' do
       it 'calls #black_two_squares?' do
         expect(pawn).to receive(:black_two_squares?)
-        pawn.two_squares_ahead_free?('start', 'finish', 'playing field', :black)
+        pawn.send(:two_squares_ahead_free?, 'start', 'finish', 'playing field', :black)
       end
     end
   end
@@ -107,7 +107,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
-        free_or_not = pawn.two_squares_ahead_free?([3, 1], [3, 3], playing_field, :white)
+        free_or_not = pawn.send(:two_squares_ahead_free?, [3, 1], [3, 3], playing_field, :white)
         expect(free_or_not).to eq(true)
       end
     end
@@ -117,7 +117,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][6] = :b_pawn
         playing_field[3][4] = :w_pawn
-        free_or_not = pawn.two_squares_ahead_free?([3, 6], [3, 4], playing_field, :black)
+        free_or_not = pawn.send(:two_squares_ahead_free?, [3, 6], [3, 4], playing_field, :black)
         expect(free_or_not).to eq(false)
       end
     end
@@ -128,7 +128,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][1] = :w_pawn
-        white_two_squares_or_not = pawn.white_two_squares?([0, 1], [0, 3], playing_field)
+        white_two_squares_or_not = pawn.send(:white_two_squares?, [0, 1], [0, 3], playing_field)
         expect(white_two_squares_or_not).to eq(true)
       end
     end
@@ -138,7 +138,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         playing_field[3][2] = :w_pawn
-        white_two_squares_or_not = pawn.white_two_squares?([3, 1], [3, 3], playing_field)
+        white_two_squares_or_not = pawn.send(:white_two_squares?, [3, 1], [3, 3], playing_field)
         expect(white_two_squares_or_not).to eq(false)
       end
     end
@@ -148,7 +148,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][1] = :w_pawn
         playing_field[3][3] = :w_pawn
-        white_two_squares_or_not = pawn.white_two_squares?([3, 1], [3, 3], playing_field)
+        white_two_squares_or_not = pawn.send(:white_two_squares?, [3, 1], [3, 3], playing_field)
         expect(white_two_squares_or_not).to eq(false)
       end
     end
@@ -159,7 +159,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[0][6] = :b_pawn
-        black_two_squares_or_not = pawn.black_two_squares?([0, 6], [0, 4], playing_field)
+        black_two_squares_or_not = pawn.send(:black_two_squares?, [0, 6], [0, 4], playing_field)
         expect(black_two_squares_or_not).to eq(true)
       end
     end
@@ -169,7 +169,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][6] = :b_pawn
         playing_field[3][5] = :b_pawn
-        black_two_squares_or_not = pawn.black_two_squares?([3, 6], [3, 4], playing_field)
+        black_two_squares_or_not = pawn.send(:black_two_squares?, [3, 6], [3, 4], playing_field)
         expect(black_two_squares_or_not).to eq(false)
       end
     end
@@ -179,7 +179,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[3][6] = :b_pawn
         playing_field[3][4] = :b_pawn
-        black_two_squares_or_not = pawn.black_two_squares?([3, 6], [3, 4], playing_field)
+        black_two_squares_or_not = pawn.send(:black_two_squares?, [3, 6], [3, 4], playing_field)
         expect(black_two_squares_or_not).to eq(false)
       end
     end
@@ -189,7 +189,7 @@ RSpec.describe Pawn do
     context 'when it has one square ahead free' do
       it 'returns true' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(true)
-        standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
+        standard_or_not = pawn.send(:standard_conditions_met?, 'start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(true)
       end
     end
@@ -198,7 +198,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
         allow(pawn).to receive(:diagonal_capture?).and_return(true)
-        standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
+        standard_or_not = pawn.send(:standard_conditions_met?, 'start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(true)
       end
     end
@@ -207,7 +207,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         allow(pawn).to receive(:one_square_ahead_free?).and_return(false)
         allow(pawn).to receive(:diagonal_capture?).and_return(false)
-        standard_or_not = pawn.standard_conditions_met?('start', 'finish,', 'playing field', 'color')
+        standard_or_not = pawn.send(:standard_conditions_met?, 'start', 'finish,', 'playing field', 'color')
         expect(standard_or_not).to eq(false)
       end
     end
@@ -219,7 +219,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [4, 5], playing_field, :white)
+        conditions_met_or_not = pawn.send(:standard_conditions_met?, [4, 4], [4, 5], playing_field, :white)
         expect(conditions_met_or_not).to eq(true)
       end
     end
@@ -229,7 +229,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[4][5] = :b_pawn
-        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [4, 5], playing_field, :white)
+        conditions_met_or_not = pawn.send(:standard_conditions_met?, [4, 4], [4, 5], playing_field, :white)
         expect(conditions_met_or_not).to eq(false)
       end
     end
@@ -240,7 +240,7 @@ RSpec.describe Pawn do
         playing_field[4][4] = :b_pawn
         playing_field[4][3] = :w_pawn
         playing_field[3][3] = :w_pawn
-        conditions_met_or_not = pawn.standard_conditions_met?([4, 4], [3, 3], playing_field, :black)
+        conditions_met_or_not = pawn.send(:standard_conditions_met?, [4, 4], [3, 3], playing_field, :black)
         expect(conditions_met_or_not).to eq(true)
       end
     end
@@ -251,7 +251,7 @@ RSpec.describe Pawn do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        one_ahead_or_not = pawn.one_square_ahead_free?([4, 4], [4, 5], playing_field, :white)
+        one_ahead_or_not = pawn.send(:one_square_ahead_free?, [4, 4], [4, 5], playing_field, :white)
         expect(one_ahead_or_not).to eq(true)
       end
     end
@@ -261,7 +261,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[4][5] = :b_pawn
-        one_ahead_or_not = pawn.one_square_ahead_free?([4, 4], [4, 5], playing_field, :white)
+        one_ahead_or_not = pawn.send(:one_square_ahead_free?, [4, 4], [4, 5], playing_field, :white)
         expect(one_ahead_or_not).to eq(false)
       end
     end
@@ -273,7 +273,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :b_pawn
         playing_field[3][3] = :w_pawn
-        capture_or_not = pawn.diagonal_capture?([4, 4], [3, 3], playing_field, :black)
+        capture_or_not = pawn.send(:diagonal_capture?, [4, 4], [3, 3], playing_field, :black)
         expect(capture_or_not).to eq(true)
       end
     end
@@ -283,7 +283,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :b_pawn
         playing_field[5][3] = :w_pawn
-        capture_or_not = pawn.diagonal_capture?([4, 4], [5, 3], playing_field, :black)
+        capture_or_not = pawn.send(:diagonal_capture?, [4, 4], [5, 3], playing_field, :black)
         expect(capture_or_not).to eq(true)
       end
     end
@@ -292,7 +292,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :b_pawn
-        capture_or_not = pawn.diagonal_capture?([4, 4], [3, 3], playing_field, :black)
+        capture_or_not = pawn.send(:diagonal_capture?, [4, 4], [3, 3], playing_field, :black)
         expect(capture_or_not).to eq(false)
       end
     end
@@ -302,8 +302,8 @@ RSpec.describe Pawn do
     context 'when it is not on the en passant starting rank' do
       it 'returns false' do
         allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
-                                                            'color', 'column')
+        en_passant_or_not = pawn.send(:en_passant_conditions_met?, 'start', 'finish,', 'playing field',
+                                      'color', 'column')
         expect(en_passant_or_not).to eq(false)
       end
     end
@@ -315,8 +315,8 @@ RSpec.describe Pawn do
         allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(true)
         allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
         allow(pawn).to receive(:square_empty?).and_return(true)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
-                                                            'color', 'column')
+        en_passant_or_not = pawn.send(:en_passant_conditions_met?, 'start', 'finish,', 'playing field',
+                                      'color', 'column')
         expect(en_passant_or_not).to eq(true)
       end
     end
@@ -328,8 +328,8 @@ RSpec.describe Pawn do
         allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(true)
         allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
         allow(pawn).to receive(:square_empty?).and_return(false)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
-                                                            'color', 'column')
+        en_passant_or_not = pawn.send(:en_passant_conditions_met?, 'start', 'finish,', 'playing field',
+                                      'color', 'column')
         expect(en_passant_or_not).to eq(false)
       end
     end
@@ -341,8 +341,8 @@ RSpec.describe Pawn do
         allow(pawn).to receive(:en_passant_vertical_shift_correct?).and_return(false)
         allow(pawn).to receive(:next_to_en_passant_column?).and_return(true)
         allow(pawn).to receive(:square_empty?).and_return(false)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,', 'playing field',
-                                                            'color', 'column')
+        en_passant_or_not = pawn.send(:en_passant_conditions_met?, 'start', 'finish,', 'playing field',
+                                      'color', 'column')
         expect(en_passant_or_not).to eq(false)
       end
     end
@@ -353,8 +353,8 @@ RSpec.describe Pawn do
     context 'when it is not on an en passant starting rank' do
       it 'returns false' do
         allow(pawn).to receive(:on_en_passant_starting_rank?).and_return(false)
-        en_passant_or_not = pawn.en_passant_conditions_met?('start', 'finish,',
-                                                            'playing field', 'color', 'column')
+        en_passant_or_not = pawn.send(:en_passant_conditions_met?, 'start', 'finish,',
+                                      'playing field', 'color', 'column')
         expect(en_passant_or_not).to eq(false)
       end
     end
@@ -364,7 +364,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][4] = :b_pawn
-        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 3)
+        left_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [3, 5], playing_field, :white, 3)
         expect(left_en_passant_or_not).to eq(true)
       end
     end
@@ -374,7 +374,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][3] = :b_pawn
         playing_field[5][3] = :w_pawn
-        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 3], [5, 2], playing_field, :black, 5)
+        left_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 3], [5, 2], playing_field, :black, 5)
         expect(left_en_passant_or_not).to eq(true)
       end
     end
@@ -384,7 +384,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][4] = :b_pawn
-        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 2)
+        left_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [3, 5], playing_field, :white, 2)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
@@ -394,7 +394,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[3][5] = :b_pawn
-        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, 2)
+        left_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [3, 5], playing_field, :white, 2)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
@@ -403,7 +403,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        left_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [3, 5], playing_field, :white, nil)
+        left_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [3, 5], playing_field, :white, nil)
         expect(left_en_passant_or_not).to eq(false)
       end
     end
@@ -413,7 +413,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 5)
+        right_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [5, 5], playing_field, :white, 5)
         expect(right_en_passant_or_not).to eq(true)
       end
     end
@@ -423,7 +423,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][3] = :b_pawn
         playing_field[3][3] = :w_pawn
-        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 3], [3, 2], playing_field, :black, 3)
+        right_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 3], [3, 2], playing_field, :black, 3)
         expect(right_en_passant_or_not).to eq(true)
       end
     end
@@ -433,7 +433,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 2)
+        right_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [5, 5], playing_field, :white, 2)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
@@ -443,7 +443,7 @@ RSpec.describe Pawn do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
         playing_field[5][4] = :b_pawn
-        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, 2)
+        right_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [5, 5], playing_field, :white, 2)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
@@ -452,7 +452,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][4] = :w_pawn
-        right_en_passant_or_not = pawn.en_passant_conditions_met?([4, 4], [5, 5], playing_field, :white, nil)
+        right_en_passant_or_not = pawn.send(:en_passant_conditions_met?, [4, 4], [5, 5], playing_field, :white, nil)
         expect(right_en_passant_or_not).to eq(false)
       end
     end
@@ -493,7 +493,7 @@ RSpec.describe Pawn do
       it 'returns false' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
         playing_field[4][2] = :b_pawn
-        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        empty_or_not = pawn.send(:square_empty?, [4, 2], playing_field)
         expect(empty_or_not).to eq(false)
       end
     end
@@ -501,7 +501,7 @@ RSpec.describe Pawn do
     context 'when the square is empty' do
       it 'returns true' do
         playing_field = Array.new(8) { Array.new(8) { nil } }
-        empty_or_not = pawn.square_empty?([4, 2], playing_field)
+        empty_or_not = pawn.send(:square_empty?, [4, 2], playing_field)
         expect(empty_or_not).to eq(true)
       end
     end

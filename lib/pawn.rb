@@ -2,6 +2,7 @@
 
 # pawn class
 class Pawn
+  # used by Piece#white_pawn_path? and Piece#black_pawn_path?
   # determine if a standard path is legal for a pawn using the start, finish, playing field and color
   # an en passant path is handled in #en_passant_path? below
   def path?(start, finish, playing_field, color, en_passant_column)
@@ -16,7 +17,20 @@ class Pawn
     false
   end
 
-  # used by #standard_path? to determine if a pawn is on the second rank
+  # used by #en_passant_conditions_met? to determine if a pawn is on the rank required
+  # to make an en passant capture
+  # also used by Game#on_en_passant_starting_rank?
+  def on_en_passant_starting_rank?(start, color)
+    start[1] == if color == :white
+                  4
+                else
+                  3
+                end
+  end
+
+  private
+
+  # used by #path? to determine if a pawn is on the second rank
   # (starting position for white pawns)
   def on_starting_rank?(start, color)
     start[1] == if color == :white
@@ -26,7 +40,7 @@ class Pawn
                 end
   end
 
-  # used by #standard_path? to determine if the two squares in front of a
+  # used by #path? to determine if the two squares in front of a
   # starting position pawn are free
   def two_squares_ahead_free?(start, finish, playing_field, color)
     if color == :white
@@ -50,7 +64,7 @@ class Pawn
       playing_field[start[0]][5].nil? && playing_field[start[0]][4].nil?
   end
 
-  # used by #standard_path? to determine if the standard (not moving two spaces) conditions
+  # used by #path? to determine if the standard (not moving two spaces) conditions
   # are met for a pawn to make a move
   def standard_conditions_met?(start, finish, playing_field, color)
     one_square_ahead_free?(start, finish, playing_field, color) ||
@@ -83,16 +97,6 @@ class Pawn
       en_passant_vertical_shift_correct?(start, finish, en_passant_increment) &&
       next_to_en_passant_column?(start, finish, en_passant_column, en_passant_increment) &&
       square_empty?(finish, playing_field)
-  end
-
-  # used by #en_passant_conditions_met? to determine if a pawn is on the rank required
-  # to make an en passant capture
-  def on_en_passant_starting_rank?(start, color)
-    start[1] == if color == :white
-                  4
-                else
-                  3
-                end
   end
 
   # used by #en_passant_conditions_met? to check if the horizontal shift is correct

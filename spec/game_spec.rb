@@ -588,12 +588,12 @@ RSpec.describe Game do
   describe '#valid_move?' do
     context 'when the start and finish square are the same' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 0], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 0], [0, 0], 'color')
         expect(valid_or_not).to eq(false)
       end
 
       it 'returns false' do
-        valid_or_not = game.valid_move?([4, 5], [4, 5], 'color')
+        valid_or_not = game.send(:valid_move?, [4, 5], [4, 5], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -601,7 +601,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when the start coordinates are not on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, -1], [0, 5], 'color')
+        valid_or_not = game.send(:valid_move?, [0, -1], [0, 5], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -609,7 +609,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when the end coordinates are not on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 1], [0, 8], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 1], [0, 8], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -617,7 +617,7 @@ RSpec.describe Game do
     # integration test - tests #on_playing_field? as well
     context 'when neither the start nor the end coordinates are on the playing field' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, -1], [0, 8], 'color')
+        valid_or_not = game.send(:valid_move?, [0, -1], [0, 8], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -625,7 +625,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the pieces are the same color' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -633,7 +633,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the start piece is nil' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 2], [0, 1], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 2], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -641,7 +641,7 @@ RSpec.describe Game do
     # integration test - tests #start_and_finish_squares_valid? as well
     context 'when the finish piece is nil' do
       it 'returns false' do
-        valid_or_not = game.valid_move?([0, 0], [0, 2], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 0], [0, 2], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -654,7 +654,7 @@ RSpec.describe Game do
         game.instance_variable_set(:@piece, piece_valid)
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(false)
-        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -668,7 +668,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:rook_path?).and_return(true)
-        valid_or_not = game.valid_move?([0, 0], [0, 1], 'color')
+        valid_or_not = game.send(:valid_move?, [0, 0], [0, 1], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -682,7 +682,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:knight_path?).and_return(true)
-        valid_or_not = game.valid_move?([1, 0], [2, 2], 'color')
+        valid_or_not = game.send(:valid_move?, [1, 0], [2, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -696,7 +696,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:queen_path?).and_return(true)
-        valid_or_not = game.valid_move?([3, 0], [4, 0], 'color')
+        valid_or_not = game.send(:valid_move?, [3, 0], [4, 0], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -710,7 +710,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:white_pawn_path?).and_return(true)
-        valid_or_not = game.valid_move?([3, 1], [3, 2], 'color')
+        valid_or_not = game.send(:valid_move?, [3, 1], [3, 2], 'color')
         expect(valid_or_not).to eq(true)
       end
     end
@@ -724,7 +724,7 @@ RSpec.describe Game do
         allow(game).to receive(:start_and_finish_squares_valid?).and_return(true)
         allow(game).to receive(:correct_color?).and_return(true)
         allow(piece_valid).to receive(:king_path?).and_return(false)
-        valid_or_not = game.valid_move?([4, 0], [1, 0], 'color')
+        valid_or_not = game.send(:valid_move?, [4, 0], [1, 0], 'color')
         expect(valid_or_not).to eq(false)
       end
     end
@@ -733,14 +733,14 @@ RSpec.describe Game do
   describe '#correct_color?' do
     context 'when the start piece is white and white is passed in' do
       it 'returns true' do
-        correct_color_or_not = game.correct_color?([0, 1], :white)
+        correct_color_or_not = game.send(:correct_color?, [0, 1], :white)
         expect(correct_color_or_not).to eq(true)
       end
     end
 
     context 'when the start piece is white and black is passed in' do
       it 'returns false' do
-        correct_color_or_not = game.correct_color?([0, 1], :black)
+        correct_color_or_not = game.send(:correct_color?, [0, 1], :black)
         expect(correct_color_or_not).to eq(false)
       end
     end
@@ -749,28 +749,28 @@ RSpec.describe Game do
   describe '#on_playing_field?' do
     context 'when [-1, -1] is passed' do
       it 'returns false' do
-        is_not_on_playing_field = game.on_playing_field?([-1, -1])
+        is_not_on_playing_field = game.send(:on_playing_field?, [-1, -1])
         expect(is_not_on_playing_field).to eq(false)
       end
     end
 
     context 'when [3, 1] is passed' do
       it 'returns true' do
-        is_on_playing_field = game.on_playing_field?([3, 1])
+        is_on_playing_field = game.send(:on_playing_field?, [3, 1])
         expect(is_on_playing_field).to eq(true)
       end
     end
 
     context 'when [8, 9] is passed' do
       it 'returns false' do
-        is_not_on_playing_field = game.on_playing_field?([8, 9])
+        is_not_on_playing_field = game.send(:on_playing_field?, [8, 9])
         expect(is_not_on_playing_field).to eq(false)
       end
     end
 
     context 'when [7, 7] is passed' do
       it 'returns true' do
-        is_on_playing_field = game.on_playing_field?([7, 7])
+        is_on_playing_field = game.send(:on_playing_field?, [7, 7])
         expect(is_on_playing_field).to eq(true)
       end
     end
@@ -780,7 +780,7 @@ RSpec.describe Game do
     context 'when the start piece is nil and the finish space is valid' do
       it 'returns false' do
         allow(game).to receive(:finish_square_valid?).and_return(true)
-        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 2], [0, 3])
+        start_and_finish_squares_valid_or_not = game.send(:start_and_finish_squares_valid?, [0, 2], [0, 3])
         expect(start_and_finish_squares_valid_or_not).to eq(false)
       end
     end
@@ -788,7 +788,7 @@ RSpec.describe Game do
     context 'when the start piece is not nil and the finish space is valid' do
       it 'returns true' do
         allow(game).to receive(:finish_square_valid?).and_return(true)
-        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 1], [0, 3])
+        start_and_finish_squares_valid_or_not = game.send(:start_and_finish_squares_valid?, [0, 1], [0, 3])
         expect(start_and_finish_squares_valid_or_not).to eq(true)
       end
     end
@@ -796,7 +796,7 @@ RSpec.describe Game do
     context 'when the start piece is not nil and the finish space is not valid' do
       it 'returns false' do
         allow(game).to receive(:finish_square_valid?).and_return(false)
-        start_and_finish_squares_valid_or_not = game.start_and_finish_squares_valid?([0, 1], [0, 3])
+        start_and_finish_squares_valid_or_not = game.send(:start_and_finish_squares_valid?, [0, 1], [0, 3])
         expect(start_and_finish_squares_valid_or_not).to eq(false)
       end
     end
@@ -805,51 +805,51 @@ RSpec.describe Game do
   describe '#finish_square_valid?' do
     context 'when the finish piece is nil' do
       it 'returns true' do
-        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, nil)
+        finish_square_valid_or_not = game.send(:finish_square_valid?, :b_rook, nil)
         expect(finish_square_valid_or_not).to eq(true)
       end
     end
 
     context 'when the pieces are the same color' do
       it 'returns false' do
-        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, :b_rook)
+        finish_square_valid_or_not = game.send(:finish_square_valid?, :b_rook, :b_rook)
         expect(finish_square_valid_or_not).to eq(false)
       end
     end
 
     context 'when the pieces are different colors' do
       it 'returns true' do
-        finish_square_valid_or_not = game.finish_square_valid?(:b_rook, :w_rook)
+        finish_square_valid_or_not = game.send(:finish_square_valid?, :b_rook, :w_rook)
         expect(finish_square_valid_or_not).to eq(true)
       end
     end
   end
 
-  describe 'path_method_from_piece' do
+  describe '#path_method_from_piece' do
     context 'when a white pawn is passed in' do
       it 'returns "white_pawn_path?"' do
-        method = game.path_method_from_piece(:w_pawn)
+        method = game.send(:path_method_from_piece, :w_pawn)
         expect(method).to eq('white_pawn_path?')
       end
     end
 
     context 'when a black pawn is passed in' do
       it 'returns "black_pawn_path?"' do
-        method = game.path_method_from_piece(:b_pawn)
+        method = game.send(:path_method_from_piece, :b_pawn)
         expect(method).to eq('black_pawn_path?')
       end
     end
 
     context 'when a white rook is passed in' do
       it 'returns "rook_path?"' do
-        method = game.path_method_from_piece(:w_rook)
+        method = game.send(:path_method_from_piece, :w_rook)
         expect(method).to eq('rook_path?')
       end
     end
 
     context 'when a black king is passed in' do
       it 'returns "king_path?"' do
-        method = game.path_method_from_piece(:b_king)
+        method = game.send(:path_method_from_piece, :b_king)
         expect(method).to eq('king_path?')
       end
     end
@@ -857,7 +857,7 @@ RSpec.describe Game do
     # integration test - tests #path_method_from_pawn as well
     context 'when a white pawn is passed in and it is not en passant' do
       it 'returns "white_pawn_path?"' do
-        method = game.path_method_from_piece(:w_pawn)
+        method = game.send(:path_method_from_piece, :w_pawn)
         expect(method).to eq('white_pawn_path?')
       end
     end
@@ -3026,7 +3026,7 @@ RSpec.describe Game do
       end
 
       it 'returns [:white, [0, 7]]' do
-        color_and_space = game.pawn_to_promote
+        color_and_space = game.send(:pawn_to_promote)
         expect(color_and_space).to eq([:white, 0])
       end
     end
@@ -3039,14 +3039,14 @@ RSpec.describe Game do
       end
 
       it 'returns [:black, [3, 0]]' do
-        color_and_space = game.pawn_to_promote
+        color_and_space = game.send(:pawn_to_promote)
         expect(color_and_space).to eq([:black, 3])
       end
     end
 
     context 'when there is no pawn to promote' do
       it 'returns false' do
-        color_and_space = game.pawn_to_promote
+        color_and_space = game.send(:pawn_to_promote)
         expect(color_and_space).to eq(false)
       end
     end
@@ -3062,7 +3062,7 @@ RSpec.describe Game do
         allow(player_pawn).to receive(:user_input)
         allow(game).to receive(:display_board)
         allow(game).to receive(:input_to_piece).and_return(:b_queen)
-        game.promote_pawn
+        game.send(:promote_pawn)
         new_piece = game.instance_variable_get(:@playing_field)[3][0]
         expect(new_piece).to eq(:b_queen)
       end
@@ -3076,7 +3076,7 @@ RSpec.describe Game do
         allow(player_pawn).to receive(:user_input)
         allow(game).to receive(:display_board)
         allow(game).to receive(:input_to_piece).and_return(:w_rook)
-        game.promote_pawn
+        game.send(:promote_pawn)
         new_piece = game.instance_variable_get(:@playing_field)[2][7]
         expect(new_piece).to eq(:w_rook)
       end
@@ -3086,14 +3086,14 @@ RSpec.describe Game do
   describe '#input_to_piece' do
     context 'when "n" and :black are passed in' do
       it 'returns :b_knight' do
-        new_piece = game.input_to_piece('n', :black)
+        new_piece = game.send(:input_to_piece, 'n', :black)
         expect(new_piece).to eq(:b_knight)
       end
     end
 
     context 'when "B" and :white are passed in' do
       it 'returns :w_bishop' do
-        new_piece = game.input_to_piece('B', :white)
+        new_piece = game.send(:input_to_piece, 'B', :white)
         expect(new_piece).to eq(:w_bishop)
       end
     end

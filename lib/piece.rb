@@ -14,17 +14,21 @@ class Piece
   include King
   include Knight
 
+  private
+
+  # used by #call_path_method_in_piece_class
   def white_pawn_path?(start, finish, playing_field, en_passant_column)
     @pawn = Pawn.new
     @pawn.path?(start, finish, playing_field, :white, en_passant_column)
   end
 
+  # used by #call_path_method_in_piece_class
   def black_pawn_path?(start, finish, playing_field, en_passant_column)
     @pawn = Pawn.new
     @pawn.path?(start, finish, playing_field, :black, en_passant_column)
   end
 
-  # used by Rook#path? and Queen#path? to determine if all spots on a rank
+  # used by #rook_path? and #queen_path? to determine if all spots on a rank
   # between the start and finish are free
   def rank_free?(start, finish, playing_field)
     if start[0] < finish[0]
@@ -42,7 +46,7 @@ class Piece
     true
   end
 
-  # used by #Rook#path? and Queen#path? to determine if all spaces on a file
+  # used by #rook_path? and #queen_path? to determine if all spaces on a file
   # between the start and finish are free
   def file_free?(start, finish, playing_field)
     if start[1] < finish[1]
@@ -60,17 +64,17 @@ class Piece
     true
   end
 
-  # used by #Rook#path? and #Queen#path? to determine if the potential path is along a rank
+  # used by #rook_path? and #queen_path? to determine if the potential path is along a rank
   def along_rank?(start, finish)
     start[1] == finish[1]
   end
 
-  # used by #Rook#path? and #Queen#path? to determine if the potential path is along a file
+  # used by #rook_path? and #queen_path? to determine if the potential path is along a file
   def along_file?(start, finish)
     start[0] == finish[0]
   end
 
-  # used by #Bishop#path? and Queen#path? to determine if all spaces on a positive diagonal
+  # used by #bishop_path? and #queen_path? to determine if all spaces on a positive diagonal
   # between the start and finish are free
   def positive_diagonal_free?(start, finish, playing_field)
     if start[0] < finish[0]
@@ -88,7 +92,7 @@ class Piece
     true
   end
 
-  # used by #Bishop#path? and Queen#path? to determine if all spaces on a negative diagonal
+  # used by #bishop_path? and #queen_path? to determine if all spaces on a negative diagonal
   # between the start and finish are free
   def negative_diagonal_free?(start, finish, playing_field)
     if start[0] < finish[0]
@@ -106,12 +110,12 @@ class Piece
     true
   end
 
-  # used by #Bishop#path? and #Queen#path? to determine if the potential path is along a positive diagonal
+  # used by #bishop_path? and #queen_path? to determine if the potential path is along a positive diagonal
   def along_positive_diagonal?(start, finish)
     finish[0] - start[0] == finish[1] - start[1]
   end
 
-  # used by #Bishop#path? and #Queen#path? to determine if the potential path is along a negative diagonal
+  # used by #bishop_path? and #queen_path? to determine if the potential path is along a negative diagonal
   def along_negative_diagonal?(start, finish)
     finish[0] - start[1] == start[0] - finish[1]
   end
