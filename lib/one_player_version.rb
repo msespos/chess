@@ -8,10 +8,12 @@ module OnePlayerVersion
   def computer_takes_a_turn
     start = random_square
     finish = random_square
-    while move_piece(start, finish, false, true) == :invalid
+    while move_piece(start, finish) == :invalid
       start = random_square
       finish = random_square
     end
+    update_castling_piece_states(:during, start)
+    update_en_passant_column(start, finish)
     @previous_move = start_finish_to_move(start, finish)
   end
 
