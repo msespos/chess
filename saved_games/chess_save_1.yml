@@ -1,10 +1,10 @@
 ---
 :number_of_players: 2
 :bottom_color: :white
-:minimalist_or_checkerboard: :minimalist
+:minimalist_or_checkerboard: :checkerboard
 :light_or_dark_font: :light
 :current_player: :black
-:previous_move: d2d3
+:previous_move: b1c3
 :resignation: false
 :captured_pieces:
 - - 
@@ -55,7 +55,7 @@
   - 
   - :b_pawn
   - :b_rook
-- - :w_knight
+- - 
   - :w_pawn
   - 
   - 
@@ -65,15 +65,15 @@
   - :b_knight
 - - :w_bishop
   - :w_pawn
-  - 
+  - :w_knight
   - 
   - 
   - 
   - :b_pawn
   - :b_bishop
 - - :w_queen
-  - 
   - :w_pawn
+  - 
   - 
   - 
   - 

@@ -2,15 +2,15 @@
 
 # rubocop:disable Metrics/ClassLength
 
-require_relative 'move_validation'
-require_relative 'check_validation'
-require_relative 'checkmate_validation'
-require_relative 'stalemate_validation'
-require_relative 'pawn_promotion'
-require_relative 'en_passant'
-require_relative 'castling'
-require_relative 'save_load'
-require_relative 'one_player_version'
+require_relative 'game_modules/move_validation'
+require_relative 'game_modules/check_validation'
+require_relative 'game_modules/checkmate_validation'
+require_relative 'game_modules/stalemate_validation'
+require_relative 'game_modules/pawn_promotion'
+require_relative 'game_modules/en_passant'
+require_relative 'game_modules/castling'
+require_relative 'game_modules/save_load'
+require_relative 'game_modules/one_player_version'
 
 # game class
 class Game

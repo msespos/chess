@@ -2,10 +2,10 @@
 
 # rubocop:disable Style/NumericPredicate
 
-require_relative 'type_info'
-require_relative 'intro'
-require_relative 'help'
-require_relative 'ending'
+require_relative 'player_modules/type_info'
+require_relative 'player_modules/intro'
+require_relative 'player_modules/help'
+require_relative 'player_modules/ending'
 
 # player class
 class Player

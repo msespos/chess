@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative 'rook'
-require_relative 'bishop'
-require_relative 'queen'
-require_relative 'king'
-require_relative 'knight'
+require_relative 'piece_modules/rook'
+require_relative 'piece_modules/bishop'
+require_relative 'piece_modules/queen'
+require_relative 'piece_modules/king'
+require_relative 'piece_modules/knight'
 
 # piece class
 class Piece
