@@ -12,13 +12,10 @@ module Castling
   private
 
   # used by #initialize
-  def update_castling_piece_states(point_in_game, start_square = nil)
-    CASTLING_START_SQUARES.each do |piece, square|
-      piece_moved = piece.to_s + '_moved'
-      if point_in_game == :initial
-        instance_variable_set("@#{piece_moved}", false)
-      elsif start_square == square
-        instance_variable_set("@#{piece_moved}", true)
+  def update_moved_castling_pieces(square)
+    CASTLING_START_SQUARES.each do |piece, start_square|
+      if start_square == square
+        @moved_castling_pieces.push(piece)
       end
     end
   end
@@ -51,14 +48,14 @@ module Castling
 
   # used by can_castle?
   def king_moved?
-    king_moved = @current_player.to_s + '_king_moved'
-    instance_variable_get("@#{king_moved}")
+    king_moved = (@current_player.to_s + '_king').to_sym
+    @moved_castling_pieces.include?(king_moved)
   end
 
   # used by can_castle?
   def rook_moved?(side)
-    rook_moved = @current_player.to_s + '_' + side.to_s + 'side_rook_moved'
-    instance_variable_get("@#{rook_moved}")
+    rook_moved = (@current_player.to_s + '_' + side.to_s + 'side_rook').to_sym
+    @moved_castling_pieces.include?(rook_moved)
   end
 
   # used by can_castle?
