@@ -32,7 +32,7 @@ class Game
     @resignation = false
     @captured_pieces = Array.new(4) { Array.new(8) { nil } }
     @en_passant_column = nil
-    update_castling_piece_states(:initial)
+    @moved_castling_pieces = []
     initial_playing_field
   end
 
@@ -245,7 +245,7 @@ class Game
 
       start, finish = player_move_to_start_finish(move)
     end
-    update_castling_piece_states(:during, start)
+    update_moved_castling_pieces(start)
     update_en_passant_column(start, finish)
     [start, finish]
   end
