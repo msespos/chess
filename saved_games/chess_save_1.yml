@@ -3,20 +3,12 @@
 :bottom_color: :white
 :minimalist_or_checkerboard: :checkerboard
 :light_or_dark_font: :light
-:current_player: :black
-:previous_move: b1c3
+:current_player: :white
+:previous_move: e8d8
 :resignation: false
 :captured_pieces:
-- - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-- - 
-  - 
+- - :b_queen
+  - :b_pawn
   - 
   - 
   - 
@@ -24,6 +16,14 @@
   - 
   - 
 - - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+- - :w_queen
   - 
   - 
   - 
@@ -43,7 +43,7 @@
 :white_king_moved: false
 :white_kingside_rook_moved: false
 :white_queenside_rook_moved: false
-:black_king_moved: false
+:black_king_moved: true
 :black_kingside_rook_moved: false
 :black_queenside_rook_moved: false
 :playing_field:
@@ -52,41 +52,41 @@
   - 
   - 
   - 
-  - 
+  - :b_knight
   - :b_pawn
   - :b_rook
-- - 
+- - :w_knight
   - :w_pawn
   - 
   - 
-  - 
-  - 
   - :b_pawn
-  - :b_knight
+  - 
+  - 
+  - 
 - - :w_bishop
   - :w_pawn
-  - :w_knight
   - 
   - 
   - 
-  - :b_pawn
+  - 
+  - 
   - :b_bishop
 - - :w_queen
-  - :w_pawn
   - 
-  - 
-  - 
-  - 
-  - :b_pawn
-  - :b_queen
-- - :w_king
-  - :w_pawn
   - 
   - 
   - 
   - 
   - :b_pawn
   - :b_king
+- - :w_king
+  - :w_pawn
+  - 
+  - 
+  - :b_pawn
+  - 
+  - 
+  - 
 - - :w_bishop
   - :w_pawn
   - 
