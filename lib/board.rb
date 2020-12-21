@@ -25,6 +25,7 @@ class Board
     @bottom_color = bottom_color
     @minimalist_or_checkerboard = minimalist_or_checkerboard
     @light_or_dark_font = light_or_dark_font
+    @pieces = {}
     set_up_pieces
     set_up_board
   end
@@ -75,22 +76,22 @@ class Board
     elsif color == :black
       pieces = @light_or_dark_font == :light ? OUTLINED_PIECES : SHADED_PIECES
     end
-    prefix = color == :white ? '@w_' : '@b_'
+    prefix = color == :white ? 'w_' : 'b_'
     pieces.each do |piece_as_symbol, code|
       piece = prefix + piece_as_symbol.to_s
-      instance_variable_set(piece, code)
+      @pieces[piece] = code
     end
   end
 
   # used by #set_up_pieces to set up the codes for the pieces in a checkerboard board
   def checkerboard_pieces(color)
-    piece_prefix = color == :white ? '@w_' : '@b_'
+    piece_prefix = color == :white ? 'w_' : 'b_'
     code_prefix = color == :white ? "\033[37m" : "\033[30m"
     code_suffix = " \033[0m"
     SHADED_PIECES.each do |piece_as_symbol, code|
       piece = piece_prefix + piece_as_symbol.to_s
       full_code = code_prefix + code + code_suffix
-      instance_variable_set(piece, full_code)
+      @pieces[piece] = full_code
     end
   end
 
@@ -170,7 +171,7 @@ class Board
   # used by #overwrite_playing_field to generate a minimalist or checkerboard square with a piece
   def square_with_piece(row, column, playing_field)
     piece_as_string = playing_field[column][row].to_s
-    piece = instance_variable_get("@#{piece_as_string}")
+    piece = @pieces[piece_as_string]
     @minimalist_or_checkerboard == :minimalist ? piece : checkerboard_square(row, column, piece)
   end
 
@@ -191,7 +192,7 @@ class Board
   # used by #add_captured_pieces to place the pieces
   def place_captured_pieces_on_board(captured_pieces, row, column)
     piece_as_string = captured_pieces[row][column].to_s
-    piece = instance_variable_get("@#{piece_as_string}")
+    piece = @pieces[piece_as_string]
     [0, 1].include?(row) ? captured_rows(piece, row, column, :black) : captured_rows(piece, row, column, :white)
   end
 
