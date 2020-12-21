@@ -12,7 +12,7 @@ module OnePlayerVersion
       start = random_square
       finish = random_square
     end
-    update_castling_piece_states(:during, start)
+    update_moved_castling_pieces(start)
     update_en_passant_column(start, finish)
     @previous_move = start_finish_to_move(start, finish)
   end
