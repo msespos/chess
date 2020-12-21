@@ -22,19 +22,19 @@ RSpec.describe Board do
 
   describe '#minimalist_pieces' do
     context 'when :white is passed in and a light font has been selected' do
-      it 'sets @w_pawn to " \u265F"' do
+      it 'sets @pieces["w_pawn"] to " \u265F"' do
         board.instance_variable_set(:@light_or_dark_font, :light)
         board.send(:minimalist_pieces, :white)
-        w_pawn = board.instance_variable_get(:@w_pawn)
+        w_pawn = board.instance_variable_get(:@pieces)['w_pawn']
         expect(w_pawn).to eq(" \u265F")
       end
     end
 
     context 'when :black is passed in and a dark font has been selected' do
-      it 'sets @b_pawn to " \u265F"' do
+      it 'sets @pieces["b_pawn"] to " \u265F"' do
         board.instance_variable_set(:@light_or_dark_font, :dark)
         board.send(:minimalist_pieces, :black)
-        b_pawn = board.instance_variable_get(:@b_pawn)
+        b_pawn = board.instance_variable_get(:@pieces)['b_pawn']
         expect(b_pawn).to eq(" \u265F")
       end
     end
@@ -42,17 +42,17 @@ RSpec.describe Board do
 
   describe '#checkerboard_pieces' do
     context 'when :white is passed in' do
-      it 'sets @w_pawn to "\033[37m \u265F \033[0m"' do
+      it 'sets @pieces["w_pawn"] to "\033[37m \u265F \033[0m"' do
         board.send(:checkerboard_pieces, :white)
-        w_pawn = board.instance_variable_get(:@w_pawn)
+        w_pawn = board.instance_variable_get(:@pieces)['w_pawn']
         expect(w_pawn).to eq("\033[37m \u265F \033[0m")
       end
     end
 
     context 'when :black is passed in' do
-      it 'sets @b_pawn to "\033[30m \u265F \033[0m"' do
+      it 'sets @pieces["b_pawn"] to "\033[30m \u265F \033[0m"' do
         board.send(:checkerboard_pieces, :black)
-        b_pawn = board.instance_variable_get(:@b_pawn)
+        b_pawn = board.instance_variable_get(:@pieces)['b_pawn']
         expect(b_pawn).to eq("\033[30m \u265F \033[0m")
       end
     end
