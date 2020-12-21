@@ -8,6 +8,17 @@ class Board
   BLANK_SPOT = '    '
   BOARD_HEIGHT = 14
   BOARD_WIDTH = 18
+  PLAYING_FIELD_SIDE = 8
+  BOARD_V_SHIFT = 3
+  BOARD_H_SHIFT = 1
+  CAPTURED_PIECES_HEIGHT = 4
+  CAPTURED_PIECES_WIDTH = 8
+  BOTTOM_LETTER_ROW = 1
+  TOP_LETTER_ROW = 12
+  LEFT_NUMBER_COLUMN = 0
+  RIGHT_NUMBER_COLUMN = 9
+  RIGHTWARDS_LETTER_SHIFT = 97
+  LEFTWARDS_LETTER_SHIFT = 104
   SHADED_PIECES = { pawn: " \u265F",
                     knight: " \u265E",
                     bishop: " \u265D",
@@ -34,9 +45,9 @@ class Board
   # playing field input from Game by accessing either nil or a piece from the playing field,
   # and converting nil or the piece symbols to Board constants that represent empty squares or the pieces
   def overwrite_playing_field(playing_field)
-    (0..7).each do |column|
-      (0..7).each do |row|
-        @board[row + 3][column + 1] = if playing_field[column][row].nil?
+    (0..PLAYING_FIELD_SIDE - 1).each do |column|
+      (0..PLAYING_FIELD_SIDE - 1).each do |row|
+        @board[row + BOARD_V_SHIFT][column + BOARD_H_SHIFT] = if playing_field[column][row].nil?
                                         empty_square(row, column)
                                       else
                                         square_with_piece(row, column, playing_field)
@@ -47,8 +58,8 @@ class Board
 
   # used by Game to add the pieces from the Game 4x8 array of captured pieces to the board
   def add_captured_pieces(captured_pieces)
-    (0..3).each do |row|
-      (0..7).each do |column|
+    (0..CAPTURED_PIECES_HEIGHT - 1).each do |row|
+      (0..CAPTURED_PIECES_WIDTH - 1).each do |column|
         next if captured_pieces[row][column].nil?
 
         place_captured_pieces_on_board(captured_pieces, row, column)
@@ -107,8 +118,8 @@ class Board
   # and bottom of the board, with direction depending on the bottom color
   def letter_rows
     spacing = @minimalist_or_checkerboard == :minimalist ? nil : ' '
-    [1, 12].each do |row|
-      (0..7).each do |column|
+    [BOTTOM_LETTER_ROW, TOP_LETTER_ROW].each do |row|
+      (0..PLAYING_FIELD_SIDE - 1).each do |column|
         @board[row][0] = BLANK_SPOT
         @bottom_color == :white ? rightwards_letters(spacing, row, column) : leftwards_letters(spacing, row, column)
       end
@@ -117,12 +128,12 @@ class Board
 
   # used by #letter_rows to print the letters if white is at the bottom
   def rightwards_letters(spacing, row, column)
-    @board[row][column + 1] = ' ' + (column + 97).chr + spacing.to_s
+    @board[row][column + 1] = ' ' + (column + RIGHTWARDS_LETTER_SHIFT).chr + spacing.to_s
   end
 
   # used by #letter_rows to print the letters if black is at the bottom
   def leftwards_letters(spacing, row, column)
-    @board[row][column + 1] = ' ' + (104 - column).chr + spacing.to_s
+    @board[row][column + 1] = ' ' + (LEFTWARDS_LETTER_SHIFT - column).chr + spacing.to_s
   end
 
   # used by #set_up_board to generate the minimalist dashes in the middle of the board
@@ -140,17 +151,17 @@ class Board
 
   # used by #number_columns to print the numbers if white is at the bottom
   def upwards_numbers
-    (3..10).each do |row|
-      @board[row][0] = ' ' + (row - 2).to_s + '  '
-      @board[row][9] = '   ' + (row - 2).to_s + '  '
+    (BOARD_V_SHIFT..PLAYING_FIELD_SIDE - 1 + BOARD_V_SHIFT).each do |row|
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (row - BOARD_V_SHIFT + 1).to_s + '  '
+      @board[row][RIGHT_NUMBER_COLUMN] = '   ' + (row - BOARD_V_SHIFT + 1).to_s + '  '
     end
   end
 
   # used by #number_columns to print the numbers if black is at the bottom
   def downwards_numbers
-    (3..10).each do |row|
-      @board[row][0] = ' ' + (11 - row).to_s + '  '
-      @board[row][9] = '   ' + (11 - row).to_s + '  '
+    (BOARD_V_SHIFT..PLAYING_FIELD_SIDE - 1 + BOARD_V_SHIFT).each do |row|
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (PLAYING_FIELD_SIDE + BOARD_V_SHIFT - row).to_s + '  '
+      @board[row][RIGHT_NUMBER_COLUMN] = '   ' + (PLAYING_FIELD_SIDE + BOARD_V_SHIFT - row).to_s + '  '
     end
   end
 
