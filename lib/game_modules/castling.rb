@@ -14,9 +14,7 @@ module Castling
   # used by #initialize
   def update_moved_castling_pieces(square)
     CASTLING_START_SQUARES.each do |piece, start_square|
-      if start_square == square
-        @moved_castling_pieces.push(piece)
-      end
+      @moved_castling_pieces.push(piece) if start_square == square
     end
   end
 
