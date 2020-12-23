@@ -6,8 +6,6 @@
 class Board
   MINIMALIST_DASH = ' -'
   BLANK_SPOT = '    '
-  BOARD_HEIGHT = 14
-  BOARD_WIDTH = 18
   PLAYING_FIELD_SIDE = 8
   BOARD_V_SHIFT = 3
   BOARD_H_SHIFT = 1
@@ -16,9 +14,7 @@ class Board
   BOTTOM_LETTER_ROW = 1
   TOP_LETTER_ROW = 12
   LEFT_NUMBER_COLUMN = 0
-  RIGHT_NUMBER_COLUMN = 9
   RIGHTWARDS_LETTER_SHIFT = 97
-  LEFTWARDS_LETTER_SHIFT = 104
   SHADED_PIECES = { pawn: " \u265F",
                     knight: " \u265E",
                     bishop: " \u265D",
@@ -48,10 +44,10 @@ class Board
     (0..PLAYING_FIELD_SIDE - 1).each do |column|
       (0..PLAYING_FIELD_SIDE - 1).each do |row|
         @board[row + BOARD_V_SHIFT][column + BOARD_H_SHIFT] = if playing_field[column][row].nil?
-                                        empty_square(row, column)
-                                      else
-                                        square_with_piece(row, column, playing_field)
-                                      end
+                                                                empty_square(row, column)
+                                                              else
+                                                                square_with_piece(row, column, playing_field)
+                                                              end
       end
     end
   end
@@ -108,7 +104,9 @@ class Board
 
   # used by #initialize to build a board with the initial setup
   def set_up_board
-    @board = Array.new(BOARD_HEIGHT) { Array.new(BOARD_WIDTH) { nil } }
+    @board = Array.new(PLAYING_FIELD_SIDE + 2 * BOARD_V_SHIFT) do
+      Array.new(PLAYING_FIELD_SIDE + CAPTURED_PIECES_WIDTH + 2 * BOARD_H_SHIFT) { nil }
+    end
     letter_rows
     initial_minimalist_dashes
     number_columns
@@ -133,13 +131,17 @@ class Board
 
   # used by #letter_rows to print the letters if black is at the bottom
   def leftwards_letters(spacing, row, column)
-    @board[row][column + 1] = ' ' + (LEFTWARDS_LETTER_SHIFT - column).chr + spacing.to_s
+    @board[row][column + 1] = ' ' +
+                              (RIGHTWARDS_LETTER_SHIFT + PLAYING_FIELD_SIDE - 1 - column).chr +
+                              spacing.to_s
   end
 
   # used by #set_up_board to generate the minimalist dashes in the middle of the board
   # these will be overwritten at the beginning of the game if a checkerboard board is chosen
   def initial_minimalist_dashes
-    (5..8).each { |row| @board[row] = Array.new(10) { MINIMALIST_DASH } }
+    (BOARD_V_SHIFT + 2..BOARD_V_SHIFT + PLAYING_FIELD_SIDE - 2).each do |row|
+      @board[row] = Array.new(10) { MINIMALIST_DASH }
+    end
   end
 
   # used by #set_up_board to generate the numbers bordering the playing field rows
@@ -151,24 +153,36 @@ class Board
 
   # used by #number_columns to print the numbers if white is at the bottom
   def upwards_numbers
-    (BOARD_V_SHIFT..PLAYING_FIELD_SIDE - 1 + BOARD_V_SHIFT).each do |row|
-      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (row - BOARD_V_SHIFT + 1).to_s + '  '
-      @board[row][RIGHT_NUMBER_COLUMN] = '   ' + (row - BOARD_V_SHIFT + 1).to_s + '  '
+    (BOARD_V_SHIFT..playing_field_and_v_shift - 1).each do |row|
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (row - 2).to_s + '  '
+      @board[row][right_number_column] = '   ' + (row - 2).to_s + '  '
     end
+  end
+
+  # used by #upwards_numbers and #downwards_numbers
+  def right_number_column
+    LEFT_NUMBER_COLUMN + PLAYING_FIELD_SIDE + 1
+  end
+
+  # used by #upwards_numbers and #downwards_numbers and #to_s
+  def playing_field_and_v_shift
+    PLAYING_FIELD_SIDE + BOARD_V_SHIFT
   end
 
   # used by #number_columns to print the numbers if black is at the bottom
   def downwards_numbers
-    (BOARD_V_SHIFT..PLAYING_FIELD_SIDE - 1 + BOARD_V_SHIFT).each do |row|
-      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (PLAYING_FIELD_SIDE + BOARD_V_SHIFT - row).to_s + '  '
-      @board[row][RIGHT_NUMBER_COLUMN] = '   ' + (PLAYING_FIELD_SIDE + BOARD_V_SHIFT - row).to_s + '  '
+    (BOARD_V_SHIFT..playing_field_and_v_shift - 1).each do |row|
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (11 - row).to_s + '  '
+      @board[row][right_number_column] = '   ' + (11 - row).to_s + '  '
     end
   end
 
   def to_s
     string = ''
-    (0..BOARD_HEIGHT - 1).each do |row|
-      (0..BOARD_WIDTH - 1).each { |column| string += @board[BOARD_HEIGHT - 1 - row][column].to_s }
+    (0..playing_field_and_v_shift + 1).each do |row|
+      (0..PLAYING_FIELD_SIDE + CAPTURED_PIECES_WIDTH + 2 * BOARD_H_SHIFT - 1).each do |column|
+        string += @board[playing_field_and_v_shift + 1 - row][column].to_s
+      end
       string += "\n"
     end
     string
