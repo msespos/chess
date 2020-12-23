@@ -139,9 +139,14 @@ class Board
   # used by #set_up_board to generate the minimalist dashes in the middle of the board
   # these will be overwritten at the beginning of the game if a checkerboard board is chosen
   def initial_minimalist_dashes
-    (BOARD_V_SHIFT + 2..BOARD_V_SHIFT + PLAYING_FIELD_SIDE - 2).each do |row|
+    (BOARD_V_SHIFT + 2..playing_field_and_v_shift - 3).each do |row|
       @board[row] = Array.new(10) { MINIMALIST_DASH }
     end
+  end
+
+  # used by #initial_minimalist_dashes and #upwards_numbers and #downwards_numbers and #to_s
+  def playing_field_and_v_shift
+    PLAYING_FIELD_SIDE + BOARD_V_SHIFT
   end
 
   # used by #set_up_board to generate the numbers bordering the playing field rows
@@ -164,11 +169,6 @@ class Board
     LEFT_NUMBER_COLUMN + PLAYING_FIELD_SIDE + 1
   end
 
-  # used by #upwards_numbers and #downwards_numbers and #to_s
-  def playing_field_and_v_shift
-    PLAYING_FIELD_SIDE + BOARD_V_SHIFT
-  end
-
   # used by #number_columns to print the numbers if black is at the bottom
   def downwards_numbers
     (BOARD_V_SHIFT..playing_field_and_v_shift - 1).each do |row|
@@ -178,7 +178,7 @@ class Board
   end
 
   def to_s
-    string = ''
+    string = "\n"
     (0..playing_field_and_v_shift + 1).each do |row|
       (0..PLAYING_FIELD_SIDE + CAPTURED_PIECES_WIDTH + 2 * BOARD_H_SHIFT - 1).each do |column|
         string += @board[playing_field_and_v_shift + 1 - row][column].to_s
