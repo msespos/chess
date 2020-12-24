@@ -5,10 +5,6 @@
 # board class
 class Board
   MINIMALIST_DASH = ' -'
-  ONE_SPACE = ' '
-  TWO_SPACES = '  '
-  THREE_SPACES = '   '
-  FOUR_SPACES = '    '
   PLAYING_FIELD_SIDE = 8
   BOARD_V_SHIFT = 3
   BOARD_H_SHIFT = 1
@@ -117,10 +113,10 @@ class Board
   # used by #initial_board to generate the rows of letters at the top
   # and bottom of the board, with direction depending on the bottom color
   def letter_rows
-    spacing = @minimalist_or_checkerboard == :minimalist ? nil : ONE_SPACE
+    spacing = @minimalist_or_checkerboard == :minimalist ? nil : ' '
     [BOTTOM_LETTER_ROW, TOP_LETTER_ROW].each do |row|
       (0..PLAYING_FIELD_SIDE - 1).each do |column|
-        @board[row][0] = FOUR_SPACES
+        @board[row][0] = '    '
         @bottom_color == :white ? rightwards_letters(spacing, row, column) : leftwards_letters(spacing, row, column)
       end
     end
@@ -128,12 +124,12 @@ class Board
 
   # used by #letter_rows to print the letters if white is at the bottom
   def rightwards_letters(spacing, row, column)
-    @board[row][column + 1] = ONE_SPACE + (column + RIGHTWARDS_LETTER_SHIFT).chr + spacing.to_s
+    @board[row][column + 1] = ' ' + (column + RIGHTWARDS_LETTER_SHIFT).chr + spacing.to_s
   end
 
   # used by #letter_rows to print the letters if black is at the bottom
   def leftwards_letters(spacing, row, column)
-    @board[row][column + 1] = ONE_SPACE +
+    @board[row][column + 1] = ' ' +
                               (RIGHTWARDS_LETTER_SHIFT + PLAYING_FIELD_SIDE - 1 - column).chr +
                               spacing.to_s
   end
@@ -152,8 +148,8 @@ class Board
   # used by #number_columns to print the numbers if white is at the bottom
   def upwards_numbers
     (BOARD_V_SHIFT..playing_field_and_v_shift - 1).each do |row|
-      @board[row][LEFT_NUMBER_COLUMN] = ONE_SPACE + (row - 2).to_s + TWO_SPACES
-      @board[row][right_number_column] = THREE_SPACES + (row - 2).to_s + TWO_SPACES
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + (row - 2).to_s + '  '
+      @board[row][right_number_column] = '   ' + (row - 2).to_s + '  '
     end
   end
 
@@ -165,8 +161,9 @@ class Board
   # used by #number_columns to print the numbers if black is at the bottom
   def downwards_numbers
     (BOARD_V_SHIFT..playing_field_and_v_shift - 1).each do |row|
-      @board[row][LEFT_NUMBER_COLUMN] = ONE_SPACE + (11 - row).to_s + TWO_SPACES
-      @board[row][right_number_column] = THREE_SPACES + (11 - row).to_s + TWO_SPACES
+      label = PLAYING_FIELD_SIDE + BOARD_V_SHIFT - row
+      @board[row][LEFT_NUMBER_COLUMN] = ' ' + label.to_s + '  '
+      @board[row][right_number_column] = '   ' + label.to_s + '  '
     end
   end
 
@@ -194,7 +191,7 @@ class Board
   end
 
   # used by #empty_square and #square_with_piece to generate the checkerboard squares
-  def checkerboard_square(row, column, piece = THREE_SPACES)
+  def checkerboard_square(row, column, piece = '   ')
     if row.even? && column.odd? || row.odd? && column.even?
       board_square(piece, :light)
     else
