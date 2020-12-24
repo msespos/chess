@@ -60,17 +60,17 @@ RSpec.describe Board do
 
   describe '#to_s' do
     context 'at the beginning of the game' do
-      it 'contains the board setup without pieces' do
+      it 'contains the board setup without pieces or dashes' do
         expect { puts(board) }.to output(<<-BOARD).to_stdout
 
      a b c d e f g h
 
  8     8  
  7     7  
- 6   - - - - - - - -   6  
- 5   - - - - - - - -   5  
- 4   - - - - - - - -   4  
- 3   - - - - - - - -   3  
+ 6     6  
+ 5     5  
+ 4     4  
+ 3     3  
  2     2  
  1     1  
 
