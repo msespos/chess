@@ -17,7 +17,7 @@ https://repl.it/@msespos/chess
 
 ### Description:
 
-This is a fully functional version of standard chess written in Ruby for the command line.
+This is a fully functional version of standard chess written in Ruby for the command line. Unit and integration tests were performed using RSpec.
 
 The two player version allows two users to take turns moving.
 The one player version plays against a computer that makes random legal moves.
