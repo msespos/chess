@@ -1,17 +1,17 @@
-### Chess
+# Chess
 
 ![Chess game image](https://msespos.github.io/portfolio/imgs/Chess%20screenshot.png)
 
 ## A command line implementation of the classic game, for one or two players.
 
-# Installation:
+### Installation:
 
 Clone the repo and run the command `ruby lib/main.rb` from within the `chess` directory.
 
 For best display of the title screen, maximize the terminal window.
 For best display of the board, zoom in once the actual game has started.
 
-# Or play the game here:
+### Or play the game here:
 
 https://repl.it/@msespos/chess
 
