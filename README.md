@@ -15,6 +15,8 @@ For best display of the board, zoom in once the actual game has started.
 
 https://repl.it/@msespos/chess
 
+### Description:
+
 This is a fully functional version of chess for the command line.
 
 The two player version allows two users to take turns moving.
@@ -40,6 +42,6 @@ There are various display options for the board:
 
 Captured pieces are displayed along the side of the board in the order they were captured.
 
-Massive thanks to the Odin Project for providing me with all the tools I needed to finish this project.
+**Massive thanks to the Odin Project for providing me with all the tools I needed to finish this project.**
 
-Even more massive thanks to rlmoser, AA, and Pandenok for all of their support.
+***Even more massive thanks to rlmoser, AA, and Pandenok for all of their support.***
