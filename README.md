@@ -1,8 +1,8 @@
 # Chess
 
-![Chess game image](https://msespos.github.io/portfolio/imgs/Chess%20screenshot.png)
-
 ## A command line implementation of the classic game, for one or two players.
+
+![Chess game image](https://msespos.github.io/portfolio/imgs/Chess%20screenshot.png)
 
 ### Installation:
 
