@@ -17,7 +17,7 @@ https://repl.it/@msespos/chess
 
 ### Description:
 
-This is a fully functional version of chess for the command line.
+This is a fully functional version of standard chess written in Ruby for the command line.
 
 The two player version allows two users to take turns moving.
 The one player version plays against a computer that makes random legal moves.
@@ -26,7 +26,7 @@ Moves are made using four character algebraic notation, for example a2a4 or b8c6
 The board is labeled with a-h and 1-8 for easy reference.
 
 Castling, pawn promotion, and en passant are all supported as well as standard
-move validation, check validation, checkmate validation, and castling validation.
+move validation, check validation, and checkmate validation.
 
 During a turn, besides moving, a player can quit and resign immediately.
 A player can also save a game at any point to one of three slots, or load a saved game.
